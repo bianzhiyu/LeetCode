@@ -25,5 +25,8 @@ class TreeNode
 
 public class OutClasses
 {
-
+	public static void main(String[]args)
+	{
+		
+	}
 }

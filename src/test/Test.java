@@ -86,6 +86,5 @@ public class Test {
 		dispArr(a);
 		qs.qst(a, 0, a.length);
 		dispArr(a);
-		
 	}
 }
