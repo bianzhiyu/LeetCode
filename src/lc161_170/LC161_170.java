@@ -80,53 +80,75 @@ class Solution166
 	public String fractionToDecimal(long numerator, long denominator)
 	{
 		boolean posi;
-		if (denominator<0L)
+		if (denominator < 0L)
 		{
-			denominator=-denominator;
-			numerator=-numerator;
+			denominator = -denominator;
+			numerator = -numerator;
 		}
-		if (numerator<(long)0) posi=false;
-		else posi=true;
-		if (numerator<(long)0) numerator=-numerator;
-		long p1=numerator/denominator;
-		long p2=numerator%denominator;
-		if (p2==(long)0) return (posi?"":"-")+p1+"";
-		long[] ans=new long[2000];
-		long sp=1,r=p2;
-		HashMap<Long,Long> remToPos=new HashMap<Long,Long>();
-		remToPos.put(r,(long) 0);
+		if (numerator < (long) 0)
+			posi = false;
+		else
+			posi = true;
+		if (numerator < (long) 0)
+			numerator = -numerator;
+		long p1 = numerator / denominator;
+		long p2 = numerator % denominator;
+		if (p2 == (long) 0)
+			return (posi ? "" : "-") + p1 + "";
+		long[] ans = new long[2000];
+		long sp = 1, r = p2;
+		HashMap<Long, Long> remToPos = new HashMap<Long, Long>();
+		remToPos.put(r, (long) 0);
 		while (true)
 		{
-			r=r*10;
-			ans[(int)sp]=r/denominator;
+			r = r * 10;
+			ans[(int) sp] = r / denominator;
 			sp++;
-			r=r%denominator;
-			if (r==0)
+			r = r % denominator;
+			if (r == 0)
 			{
-				String res=p1+".";
-				for (int i=1;i<sp;i++)
-					res+=ans[i];
-				if (!posi) res='-'+res;
+				String res = p1 + ".";
+				for (int i = 1; i < sp; i++)
+					res += ans[i];
+				if (!posi)
+					res = '-' + res;
 				return res;
 			}
 			if (remToPos.containsKey(r))
 			{
-				long start=remToPos.get(r)+1;
-				String res=p1+".";
-				for (int i=1;i<start;i++)
-					res+=ans[i];
-				res+='(';
-				for (long i=start;i<=sp-1;i++)
-					res+=ans[(int)i];
-				res+=')';
-				if (!posi) res='-'+res;
+				long start = remToPos.get(r) + 1;
+				String res = p1 + ".";
+				for (int i = 1; i < start; i++)
+					res += ans[i];
+				res += '(';
+				for (long i = start; i <= sp - 1; i++)
+					res += ans[(int) i];
+				res += ')';
+				if (!posi)
+					res = '-' + res;
 				return res;
-			}
-			else
+			} else
 			{
-				remToPos.put(r,sp-1);
+				remToPos.put(r, sp - 1);
 			}
 		}
+	}
+}
+
+class Solution167
+{
+	public int[] twoSum(int[] numbers, int target)
+	{
+		int lp=0,rp=numbers.length-1;
+		while (lp<rp)
+		{
+			if (numbers[lp]+numbers[rp]==target)
+				return new int[] {lp+1,rp+1};
+			else if (numbers[lp]+numbers[rp]>target)
+				rp--;
+			else lp++;
+		}
+		return null;
 	}
 }
 
@@ -178,8 +200,8 @@ public class LC161_170
 {
 	public static void main(String[] args)
 	{
-		System.out.println(new Solution166().fractionToDecimal(2, 4));
-		System.out.println(0xA111);
+		int[] a=new int[] {2,7,11,15};
+		test.Test.dispArr(new Solution167().twoSum(a, 9));
 	}
 
 }
