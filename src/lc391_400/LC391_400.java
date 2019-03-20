@@ -375,8 +375,8 @@ class Solution398_2
 	}
 }
 
-//Runtime: 175 ms, faster than 19.30% of Java online submissions for Random Pick Index.
-//Memory Usage: 53.6 MB, less than 70.39% of Java online submissions for Random Pick Index.
+// Runtime: 140 ms, faster than 39.12% of Java online submissions for Random Pick Index.
+// Memory Usage: 56.4 MB, less than 41.34% of Java online submissions for Random Pick Index.
 
 class Solution398_3
 {
@@ -466,8 +466,8 @@ class Solution398_3
 	}
 }
 
-//Runtime: 174 ms, faster than 19.84% of Java online submissions for Random Pick Index.
-//Memory Usage: 56.3 MB, less than 41.90% of Java online submissions for Random Pick Index.
+// Runtime: 140 ms, faster than 39.12% of Java online submissions for Random Pick Index.
+// Memory Usage: 56.4 MB, less than 41.34% of Java online submissions for Random Pick Index.
 class Solution398_4
 {
 	Random rand;

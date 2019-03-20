@@ -2,9 +2,15 @@ set curpath=%cd%
 set outpath=%curpath%\bin
 set cpath="%classpath%;%curpath%\src\;%outpath%"
 
-rem:exit
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc451_460\LC451_460.java
 
-goto:sinceownlib
+pause
+
+goto:EOF
+
+goto:sincetest
+
+goto:unittest
 
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
@@ -41,6 +47,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc91_100\LC91_100.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\OuterClasses.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\BBST.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\BackGround101_110.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\LC101_110.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc111_120\LC111_120.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc121_130\LC121_130.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc131_140\LC131_140.java
@@ -146,4 +153,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC1.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC2.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\Test.java
 
+
+
  
+:unittest

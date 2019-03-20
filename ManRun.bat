@@ -1,7 +1,7 @@
 set curpath=%cd%
 set outpath=%curpath%\bin
-set cpath="%classpath%;%curpath%\src\;%curpath%\bin"
+set cpath="%classpath%;%curpath%\src\;%outpath%;"
 
-java -classpath %cpath% lc101_110.LC101_110
+java -classpath %cpath% lc451_460.LC451_460
 
-java -classpath %cpath% lc141_150.LC141_150
+pause

@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - LC441_450",
+            "request": "launch",
+            "mainClass": "lc441_450.LC441_450",
+            "projectName": "LeetCode"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MutualC1",
+            "request": "launch",
+            "mainClass": "test.MutualC1",
+            "projectName": "LeetCode"
+        }
+    ]
+}
