@@ -137,6 +137,8 @@ class Solution166
 
 //167
 //Damn, too hard to use github.
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Two Sum II - Input array is sorted.
+//Memory Usage: 38.5 MB, less than 10.59% of Java online submissions for Two Sum II - Input array is sorted.
 class Solution167
 {
 	public int[] twoSum(int[] numbers, int target)

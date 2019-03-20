@@ -10,6 +10,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+class TreeNode
+{
+	int val;
+	TreeNode left;
+	TreeNode right;
+
+	TreeNode(int x)
+	{
+		val = x;
+	}
+}
+
 //221. Maximal Square
 //Runtime: 7 ms, faster than 97.80% of Java online submissions for Maximal Square.
 //Memory Usage: 40.9 MB, less than 49.84% of Java online submissions for Maximal Square.
@@ -325,19 +337,22 @@ class Solution228
 {
 	public List<String> summaryRanges(int[] nums)
 	{
-		int len=nums.length;
-		int i=0;
-		List<String> ans=new ArrayList<String>();
-		
-		while (i<len)
+		int len = nums.length;
+		int i = 0;
+		List<String> ans = new ArrayList<String>();
+
+		while (i < len)
 		{
-			int j=i+1;
-			while (j<len && nums[j-1]+1==nums[j]) j++;
-			if (j>i+1) ans.add(nums[i]+"->"+nums[j-1]);
-			else ans.add(""+nums[i]);
-			i=j;
+			int j = i + 1;
+			while (j < len && nums[j - 1] + 1 == nums[j])
+				j++;
+			if (j > i + 1)
+				ans.add(nums[i] + "->" + nums[j - 1]);
+			else
+				ans.add("" + nums[i]);
+			i = j;
 		}
-		
+
 		return ans;
 	}
 }

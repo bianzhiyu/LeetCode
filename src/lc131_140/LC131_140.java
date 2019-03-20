@@ -9,6 +9,40 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+
+class Node
+{
+	public int val;
+	public List<Node> neighbors;
+
+	public Node()
+	{
+	}
+
+	public Node(int _val, List<Node> _neighbors)
+	{
+		val = _val;
+		neighbors = _neighbors;
+	}
+}
+
+
+class RNode 
+{
+    public int val;
+    public RNode next;
+    public RNode random;
+
+    public RNode() {}
+
+    public RNode(int _val,RNode _next,RNode _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+}
+
+
 //131. Palindrome Partitioning
 //Runtime: 2 ms, faster than 100.00% of Java online submissions for Palindrome Partitioning.
 //Memory Usage: 40.8 MB, less than 22.30% of Java online submissions for Palindrome Partitioning.

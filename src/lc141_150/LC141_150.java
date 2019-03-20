@@ -10,6 +10,26 @@ import java.util.Set;
 
 import bbst.BBST;
 
+class Point {
+	int x;
+	int y;
+	Point() { x = 0; y = 0; }
+	Point(int a, int b) { x = a; y = b; }
+}
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+
+class TreeNode {
+	int val;
+	TreeNode left;
+	TreeNode right;
+	TreeNode(int x) { val = x; }
+}
+
+
 //141. Linked List Cycle
 //Runtime: 51 ms, faster than 5.63% of Java online submissions for Linked List Cycle.
 //Memory Usage: 39.3 MB, less than 5.15% of Java online submissions for Linked List Cycle.
@@ -563,7 +583,32 @@ class Solution150
 	}
 }
 public class LC141_150 {
-	public static void main(String[] args)
+	public static void test148()
+	{
+		String in="[4,2,1,3]";
+		String[] data=in.substring(1,in.length()-1).split(",");
+		ListNode head;
+		if (data.length==0) head=null;
+		else
+		{
+			head=new ListNode(Integer.parseInt(data[0]));
+			ListNode p=head;
+			for (int i=1;i<data.length;i++)
+			{
+				p.next=new ListNode(Integer.parseInt(data[i]));
+				p=p.next;
+			}
+		}
+
+
+		ListNode p=new Solution148().sortList(head);
+		while (p!=null)
+		{
+			System.out.print(p.val+" ");
+			p=p.next;
+		}
+	}
+	public static void test149()
 	{
 		Point[]a=new Point[3];
 		a[0]=new Point(0,0);
@@ -571,6 +616,10 @@ public class LC141_150 {
 		a[2]=new Point(65536,0);
 		System.out.println(Solution149.jud(a[0], a[1], a[2]));
 		System.out.println(new Solution149().maxPoints(a ));
+	}
+	public static void main(String[] args)
+	{
+		test148();
 	}
 
 }

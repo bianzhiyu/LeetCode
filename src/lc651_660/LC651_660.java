@@ -1,6 +1,12 @@
 package lc651_660;
 
-//import bbst.BBST;
+class TreeNode 
+{
+	int val;
+	TreeNode left;
+	TreeNode right;
+	TreeNode(int x) { val = x; }
+}
 
 class SolutionHeap
 {

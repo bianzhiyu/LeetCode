@@ -4,6 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+class ListNode
+{
+	int val;
+	ListNode next;
+
+	ListNode(int x)
+	{
+		val = x;
+		next = null;
+	}
+}
+
 //151. Reverse Words in a String
 //Runtime: 19 ms, faster than 23.61% of Java online submissions for Reverse Words in a String.
 //Memory Usage: 40.4 MB, less than 9.94% of Java online submissions for Reverse Words in a String.
@@ -34,7 +46,6 @@ class Solution151
 	}
 }
 
-
 //152. Maximum Product Subarray
 //Runtime: 84 ms, faster than 9.49% of Java online submissions for Maximum Product Subarray.
 //Memory Usage: 46.8 MB, less than 7.02% of Java online submissions for Maximum Product Subarray.
@@ -42,14 +53,15 @@ class Solution152
 {
 	public int maxProduct(int[] nums)
 	{
-		int max=nums[0];
-		for (int i=0;i<nums.length;i++)
+		int max = nums[0];
+		for (int i = 0; i < nums.length; i++)
 		{
-			int t=1;
-			for (int j=i;j<nums.length;j++)
+			int t = 1;
+			for (int j = i; j < nums.length; j++)
 			{
-				t*=nums[j];
-				if (t>max) max=t;
+				t *= nums[j];
+				if (t > max)
+					max = t;
 			}
 		}
 		return max;
@@ -63,22 +75,27 @@ class Solution152_2
 {
 	public int maxProduct(int[] nums)
 	{
-		int len=nums.length;
-		int[] max=new int[len],min=new int[len];
-		max[0]=nums[0];
-		min[0]=nums[0];
-		for (int i=1;i<len;i++)
+		int len = nums.length;
+		int[] max = new int[len], min = new int[len];
+		max[0] = nums[0];
+		min[0] = nums[0];
+		for (int i = 1; i < len; i++)
 		{
-			max[i]=nums[i];
-			min[i]=nums[i];
-			if (max[i-1]*nums[i]>max[i]) max[i]=max[i-1]*nums[i];
-			if (min[i-1]*nums[i]>max[i]) max[i]=min[i-1]*nums[i];
-			if (max[i-1]*nums[i]<min[i]) min[i]=max[i-1]*nums[i];
-			if (min[i-1]*nums[i]<min[i]) min[i]=min[i-1]*nums[i];
+			max[i] = nums[i];
+			min[i] = nums[i];
+			if (max[i - 1] * nums[i] > max[i])
+				max[i] = max[i - 1] * nums[i];
+			if (min[i - 1] * nums[i] > max[i])
+				max[i] = min[i - 1] * nums[i];
+			if (max[i - 1] * nums[i] < min[i])
+				min[i] = max[i - 1] * nums[i];
+			if (min[i - 1] * nums[i] < min[i])
+				min[i] = min[i - 1] * nums[i];
 		}
-		int a=nums[0];
-		for (int i=0;i<len;i++)
-			if (max[i]>a) a=max[i];
+		int a = nums[0];
+		for (int i = 0; i < len; i++)
+			if (max[i] > a)
+				a = max[i];
 		return a;
 	}
 }
@@ -98,8 +115,6 @@ class Solution153
 
 	}
 }
-
-
 
 //t154. Find Minimum in Rotated Sorted Array II
 //t=0ms, m=36mb
