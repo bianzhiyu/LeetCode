@@ -4,6 +4,32 @@ import java.util.Stack;
 
 import bbst.BBST;
 
+
+class ListNode
+{
+	int val;
+	ListNode next;
+
+	ListNode(int x)
+	{
+		val = x;
+	}
+}
+
+class TreeNode
+{
+	int val;
+	TreeNode left;
+	TreeNode right;
+
+	TreeNode(int x)
+	{
+		val = x;
+	}
+}
+
+
+
 //232. Implement Queue using Stacks
 //Runtime: 47 ms, faster than 100.00% of Java online submissions for Implement Queue using Stacks.
 //Memory Usage: 36.6 MB, less than 87.66% of Java online submissions for Implement Queue using Stacks.
@@ -204,15 +230,15 @@ class Solution239_2
 		if (k == 1)
 			return nums;
 		int[] ans = new int[nums.length + 1 - k];
-		BBST<Integer> bbst = new BBST<Integer>(nums[0]);
+		BBST<Integer> rt = new BBST<Integer>(nums[0]);
 		for (int i = 1; i < k; i++)
-			bbst = bbst.insert(nums[i]);
-		ans[0] = bbst.getMaxData();
+			rt = rt.insert(nums[i]);
+		ans[0] = rt.getMaxData();
 		for (int i = 1; i < ans.length; i++)
 		{
-			bbst = bbst.removeNodeByData(nums[i - 1]);
-			bbst = bbst.insert(nums[i + k - 1]);
-			ans[i] = bbst.getMaxData();
+			rt = rt.removeNodeByData(nums[i - 1]);
+			rt = rt.insert(nums[i + k - 1]);
+			ans[i] = rt.getMaxData();
 		}
 		return ans;
 	}
