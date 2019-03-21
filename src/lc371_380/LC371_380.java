@@ -473,9 +473,13 @@ public class LC371_380
 			inLine = bfr.readLine();
 			int target = Integer.parseInt(inLine);
 
-			int ans = new Solution377_2().combinationSum4(nums, target);
+			int ans = new Solution377_3().combinationSum4(nums, target);
+			//Solution377_1, Solution377_2: time limit exceeded
+			
 			bfw.write("" + ans);
 			bfw.newLine();
+			
+			System.out.println(ans);
 		}
 
 		bfr.close();

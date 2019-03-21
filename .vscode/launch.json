@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - LC781_790",
+            "request": "launch",
+            "mainClass": "lc781_790.LC781_790",
+            "projectName": "LeetCode"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - LC441_450",
             "request": "launch",
             "mainClass": "lc441_450.LC441_450",

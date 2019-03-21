@@ -2,7 +2,7 @@ set curpath=%cd%
 set outpath=%curpath%\bin
 set cpath="%classpath%;%curpath%\src\;%outpath%"
 
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc451_460\LC451_460.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc781_790\LC781_790.java
 
 pause
 
