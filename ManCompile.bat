@@ -2,16 +2,13 @@ set curpath=%cd%
 set outpath=%curpath%\bin
 set cpath="%classpath%;%curpath%\src\;%outpath%"
 
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc781_790\LC781_790.java
+rem:goto:sincetest
 
-pause
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc461_470\LC461_470.java
 
-goto:EOF
+goto:EndPause
+rem:goto:EOF
 rem:exit
-
-goto:sincetest
-
-goto:unittest
 
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
@@ -78,7 +75,6 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc291_300\LC291_300.java
 
 
 :since301
-
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc301_310\LC301_310.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc311_320\LC311_320.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc321_330\LC321_330.java
@@ -92,13 +88,13 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc391_400\LC391_400.java
 
 
 :since401
-
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc401_410\LC401_410.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc411_420\LC411_420.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc421_430\LC421_430.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc431_440\LC431_440.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc441_450\LC441_450.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc451_460\LC451_460.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc461_470\LC461_470.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc471_480\LC471_480.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc491_500\LC491_500.java
 
@@ -158,7 +154,5 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC2.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC3.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\Test.java
 
-
-
- 
-:unittest
+:EndPause
+pause
