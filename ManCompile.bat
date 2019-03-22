@@ -4,9 +4,9 @@ set cpath="%classpath%;%curpath%\src\;%outpath%"
 
 rem:goto:sincetest
 
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc461_470\LC461_470.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC1.java
 
-goto:EndPause
+goto:sincetest
 rem:goto:EOF
 rem:exit
 
@@ -153,6 +153,10 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC1.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC2.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC3.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\Test.java
+
+javac -d  %outpath% -classpath %cpath% %curpath%\src\test\subtest\M1.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\test\subtest\M2.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\test\subtest\Subp.java
 
 :EndPause
 pause

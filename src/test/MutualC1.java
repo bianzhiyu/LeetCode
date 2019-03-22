@@ -10,7 +10,7 @@ public class MutualC1
 	}
 	public static void main(String[]args)
 	{
-		MutualC1 c=new MutualC1();
-		System.out.println(c.data.c2int);
+		System.out.println(new notPublicClass().x);
+		System.out.println(new MutualC2().c2int);
 	}
 }

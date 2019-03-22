@@ -3,5 +3,5 @@ package test;
 public class MutualC2
 {
 	MutualC1 data;
-	int c2int=1;
+	int c2int=3;
 }
