@@ -7,6 +7,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc781_790\LC781_790.java
 pause
 
 goto:EOF
+rem:exit
 
 goto:sincetest
 
@@ -15,13 +16,16 @@ goto:unittest
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\TestBBST.java
+
 javac -d  %outpath% -classpath %cpath% %curpath%\src\dijkstra\EdgeTo.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\dijkstra\Dijkstra.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\dijkstra\DijkstraResult.java
-javac -d  %outpath% -classpath %cpath% %curpath%\src\dijkstra\DijkstraResult.java
+
 javac -d  %outpath% -classpath %cpath% %curpath%\src\kmp\KMP.java
+
 javac -d  %outpath% -classpath %cpath% %curpath%\src\qsort\Qsort.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\qsort\TestQsort.java
+
 javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\BinaryTree.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeNode.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeCodec.java
@@ -151,6 +155,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\test\FileIOTest.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\OutClasses.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC1.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC2.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC3.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\Test.java
 
 

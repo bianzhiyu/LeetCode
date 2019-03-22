@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -153,24 +154,26 @@ class Solution452_2
 //454. 4Sum II
 class Solution454
 {
-	HashMap<Integer,Integer> parse(int[] A)
+	HashMap<Integer, Integer> parse(int[] A)
 	{
-		HashMap<Integer,Integer> hm=new HashMap<Integer,Integer>();
-		for (int i=0;i<A.length;i++)
+		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		for (int i = 0; i < A.length; i++)
 			if (hm.containsKey(A[i]))
-				hm.put(A[i],hm.get(A[i])+1);
-			else hm.put(A[i],1);
+				hm.put(A[i], hm.get(A[i]) + 1);
+			else
+				hm.put(A[i], 1);
 		return hm;
 	}
+
 	public int fourSumCount(int[] A, int[] B, int[] C, int[] D)
 	{
-		HashMap<Integer,Integer> h1=parse(A),h2=parse(B),h3=parse(C),h4=parse(D);
-		int tot=0;
-		for (int i:h1.keySet())
-			for (int j:h2.keySet())
-				for (int k:h3.keySet())
-					if (h4.containsKey(-i-j-k))
-						tot+=h1.get(i)*h2.get(j)*h3.get(k)*h4.get(-i-j-k);
+		HashMap<Integer, Integer> h1 = parse(A), h2 = parse(B), h3 = parse(C), h4 = parse(D);
+		int tot = 0;
+		for (int i : h1.keySet())
+			for (int j : h2.keySet())
+				for (int k : h3.keySet())
+					if (h4.containsKey(-i - j - k))
+						tot += h1.get(i) * h2.get(j) * h3.get(k) * h4.get(-i - j - k);
 		return tot;
 	}
 }
@@ -180,17 +183,93 @@ class Solution454
 //Memory Usage: 59.3 MB, less than 35.94% of Java online submissions for 4Sum II.
 class Solution454_2
 {
-	public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
-        Map<Integer,Integer> countAB = new HashMap<Integer,Integer>();
-        int answer=0;
-        for( int a : A ) 
-        	for( int b : B ) 
-        		countAB.put( a+b, 1+countAB.getOrDefault( a+b, 0 ) );
-        for( int c : C ) 
-        	for( int d : D ) 
-        		answer += countAB.getOrDefault( -c-d, 0 );
-        return answer;
-    }
+	public int fourSumCount(int[] A, int[] B, int[] C, int[] D)
+	{
+		Map<Integer, Integer> countAB = new HashMap<Integer, Integer>();
+		int answer = 0;
+		for (int a : A)
+			for (int b : B)
+				countAB.put(a + b, 1 + countAB.getOrDefault(a + b, 0));
+		for (int c : C)
+			for (int d : D)
+				answer += countAB.getOrDefault(-c - d, 0);
+		return answer;
+	}
+}
+
+//456. 132 Pattern
+//Runtime: 271 ms, faster than 30.78% of Java online submissions for 132 Pattern.
+//Memory Usage: 40.7 MB, less than 34.33% of Java online submissions for 132 Pattern.
+class Solution456
+{
+	public boolean find132pattern(int[] nums)
+	{
+		int len = nums.length;
+		if (len < 3)
+			return false;
+		int[] leftmin = new int[len];
+		leftmin[0] = Integer.MAX_VALUE;
+		for (int i = 1; i < len; i++)
+		{
+			leftmin[i] = nums[i - 1];
+			if (leftmin[i - 1] < leftmin[i])
+				leftmin[i] = leftmin[i - 1];
+		}
+		for (int i = 1; i < len; i++)
+			for (int j = i + 1; j < len; j++)
+				if (nums[i] > nums[j] && nums[j] > leftmin[i])
+					return true;
+		return false;
+	}
+}
+
+//457. Circular Array Loop
+//Runtime: 2 ms, faster than 48.37% of Java online submissions for Circular Array Loop.
+//Memory Usage: 36.8 MB, less than 19.83% of Java online submissions for Circular Array Loop.
+class Solution457
+{
+	private int next(int now, int len, int step)
+	{
+		now = now + step;
+		now %= len;
+		if (now < 0)
+			now += len;
+		return now;
+	}
+
+	public boolean circularArrayLoop(int[] nums)
+	{
+		int len = nums.length;
+		boolean[] checked = new boolean[len];
+		HashSet<Integer> hs;
+		int[] qe = new int[len];
+		for (int i = 0; i < len; i++)
+		{
+			if (checked[i])
+				continue;
+			hs = new HashSet<Integer>();
+			hs.add(i);
+			int pos = i;
+			boolean pm0 = nums[i] > 0 ? true : false;
+			int st = 1;
+			qe[0] = i;
+			checked[i] = true;
+			while (true)
+			{
+				pos = next(pos, len, nums[pos]);
+				if (nums[pos] < 0 && pm0 || nums[pos] > 0 && !pm0)
+					break;
+				if (pos == qe[st - 1])
+					break;
+				if (hs.contains(pos))
+					return true;
+				hs.add(pos);
+				checked[pos] = true;
+				qe[st++] = pos;
+			}
+		}
+		return false;
+	}
 }
 
 // 460. LFU Cache
@@ -283,45 +362,82 @@ public class LC451_460
 		c.get(1);
 		c.get(4);
 	}
+
 	public static void test454()
 	{
 		try
 		{
-			File inFile=new File("input"+File.separator+"input454.txt");
-			File outFile=new File("output"+File.separator+"output454.txt");
-			BufferedReader bfr=new BufferedReader(new FileReader(inFile));
-			BufferedWriter bfw=new BufferedWriter(new FileWriter(outFile));
-			
+			File inFile = new File("input" + File.separator + "input454.txt");
+			File outFile = new File("output" + File.separator + "output454.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
 			String str;
-			
-			Solution454_2 s=new Solution454_2();
-			
-			while ((str=bfr.readLine())!=null && str.length()>0)
+
+			Solution454_2 s = new Solution454_2();
+
+			while ((str = bfr.readLine()) != null && str.length() > 0)
 			{
-				int ans=s.fourSumCount(test.Test.parseIntArr(str), 
-						test.Test.parseIntArr(bfr.readLine()), 
-						test.Test.parseIntArr(bfr.readLine()),
-						test.Test.parseIntArr(bfr.readLine()));
-				
+				int ans = s.fourSumCount(test.Test.parseIntArr(str), test.Test.parseIntArr(bfr.readLine()),
+						test.Test.parseIntArr(bfr.readLine()), test.Test.parseIntArr(bfr.readLine()));
+
 				System.out.println(ans);
-				
-				bfw.write(ans+"");
+
+				bfw.write(ans + "");
 				bfw.newLine();
 			}
-
 
 			bfr.close();
 			bfw.flush();
 			bfw.close();
-		}
-		catch(IOException e)
+		} catch (IOException e)
 		{
 			System.out.println(e.toString());
 		}
 	}
+
+	public static void test457()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input457.txt");
+			File outFile = new File("output" + File.separator + "output457.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String str;
+
+			Solution457 s = new Solution457();
+
+			while ((str = bfr.readLine()) != null && str.length() > 0)
+			{
+				str = str.trim();
+				str = str.substring(1, str.length() - 1);
+				String[] spstr = str.split(",");
+				int[] nums = new int[spstr.length];
+				for (int i = 0; i < spstr.length; i++)
+					nums[i] = Integer.parseInt(spstr[i].trim());
+
+				boolean ans = s.circularArrayLoop(nums);
+				System.out.println(ans);
+
+				bfw.write(ans + "");
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		test454();
+		//		test454();
+		test457();
 	}
 
 }

@@ -254,8 +254,7 @@ class Solution214_2
 		if (i == s.length())
 			return s;
 
-		return new StringBuilder(s.substring(i)).reverse().toString() 
-		+ shortestPalindrome(s.substring(0, i))
+		return new StringBuilder(s.substring(i)).reverse().toString() + shortestPalindrome(s.substring(0, i))
 		+ s.substring(i);
 	}
 
@@ -273,7 +272,90 @@ class Solution215
 	}
 }
 
+//216. Combination Sum III
+//Misunderstand of the question.
+class Solution216
+{
+	List<List<Integer>> ans=new ArrayList<List<Integer>>();
+	int[]stack;
+	private void dfs(int sp, int start,int n)
+	{
+		if (sp==stack.length)
+		{
+			if (n==0)
+			{
+				List<Integer> tmp=new ArrayList<Integer>();
+				for (int i=0;i<stack.length;i++)
+					tmp.add(stack[i]);
+				ans.add(tmp);
+			}
+			return;
+		}
+		for (int i=start;(2*i+stack.length-1-sp)*(stack.length-sp)/2<=n;i++)
+		{
+			boolean contain0=false;
+			int x=i;
+			while (x>0)
+			{
+				if (x%10==0)
+				{
+					contain0=true;
+					break;
+				}
+				x/=10;
+			}
+			if (!contain0)
+			{
+				stack[sp]=i;
+				dfs(sp+1,i+1,n-i);
+			}
+			
+		}
+	}
+	public List<List<Integer>> combinationSum3(int k, int n)
+	{
+		stack=new int[k];
+		dfs(0,1,n);
+		return ans;
+	}
+}
+
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Combination Sum III.
+//Memory Usage: 32.1 MB, less than 100.00% of Java online submissions for Combination Sum III.
+class Solution216_2
+{
+	List<List<Integer>> ans=new ArrayList<List<Integer>>();
+	int[]stack;
+	private void dfs(int sp, int start,int n)
+	{
+		if (sp==stack.length)
+		{
+			if (n==0)
+			{
+				List<Integer> tmp=new ArrayList<Integer>();
+				for (int i=0;i<stack.length;i++)
+					tmp.add(stack[i]);
+				ans.add(tmp);
+			}
+			return;
+		}
+		if (n<=0) return;
+		for (int i=start;i<=9;i++)
+		{
+			stack[sp]=i;
+			dfs(sp+1,i+1,n-i);
+		}
+	}
+	public List<List<Integer>> combinationSum3(int k, int n)
+	{
+		stack=new int[k];
+		dfs(0,1,n);
+		return ans;
+	}
+}
+
 //217. Contains Duplicate
+//Runtime: 9 ms, 62.60%
 class Solution217
 {
 	public boolean containsDuplicate(int[] nums)
