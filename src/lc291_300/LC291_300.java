@@ -76,7 +76,7 @@ class MedianFinder_2
 	{
 		largerPart=new PriorityQueue<Integer>();
 		smallerPart=new PriorityQueue<Integer>(
-				(Comparator<? super Integer>) new Comparator<Integer>()
+				new Comparator<Integer>()
 				{
 					public int compare(Integer x,Integer y)
 					{

@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 //473. Matchsticks to Square
@@ -141,18 +143,119 @@ class Solution477
 class Solution478
 {
 	double r, x, y;
-	Random rd=new Random();
+	Random rd = new Random();
 
-	public Solution478(double radius, double x_center, double y_center) {
-		r=radius;
-		x=x_center;
-		y=y_center;
+	public Solution478(double radius, double x_center, double y_center)
+	{
+		r = radius;
+		x = x_center;
+		y = y_center;
 	}
 
 	public double[] randPoint()
 	{
-		double t=rd.nextDouble()*2*Math.PI,p=Math.sqrt(rd.nextDouble());
-		return new double[] {x+p*r*Math.cos(t),y+p*r*Math.sin(t)};
+		double t = rd.nextDouble() * 2 * Math.PI, p = Math.sqrt(rd.nextDouble());
+		return new double[]
+		{ x + p * r * Math.cos(t), y + p * r * Math.sin(t) };
+	}
+}
+
+//480. Sliding Window Median
+//Runtime: 30 ms, faster than 73.78% of Java online submissions for Sliding Window Median.
+//Memory Usage: 44 MB, less than 36.98% of Java online submissions for Sliding Window Median.
+class Solution480
+{
+	public double[] medianSlidingWindow(int[] nums, int k)
+	{
+		if (k==1)
+		{
+			double[] ans =new double[nums.length];
+			for (int i=0;i<nums.length;i++)
+				ans[i]=nums[i];
+			return ans;
+		}
+		PriorityQueue<Integer> smallerPart=new PriorityQueue<Integer>(
+				new Comparator<Integer>()
+				{
+					public int compare(Integer x,Integer y)
+					{
+						if (y<x) return -1;
+						if (y==x) return 0;
+						return 1;
+					}
+				});
+		PriorityQueue<Integer> largerPart=new PriorityQueue<Integer>();
+		double ans[]=new double[nums.length-k+1];
+		for (int i=0;i<k-1;i++)
+		{
+			if (i==0)
+			{
+				smallerPart.offer(nums[i]);
+			}
+			else if (smallerPart.size()>largerPart.size())
+			{
+				if (nums[i]<smallerPart.peek())
+				{
+					largerPart.offer(smallerPart.poll());
+					smallerPart.offer(nums[i]);
+				}
+				else largerPart.offer(nums[i]);
+			}
+			else
+			{
+				if (nums[i]>largerPart.peek())
+				{
+					smallerPart.offer(largerPart.poll());
+					largerPart.offer(nums[i]);
+				}
+				else smallerPart.offer(nums[i]);
+			}
+		}
+		for (int i=k-1;i<nums.length;i++)
+		{
+			if (smallerPart.size()>largerPart.size())
+			{
+				if (nums[i]<smallerPart.peek())
+				{
+					largerPart.offer(smallerPart.poll());
+					smallerPart.offer(nums[i]);
+				}
+				else largerPart.offer(nums[i]);
+			}
+			else
+			{
+				if (nums[i]>largerPart.peek())
+				{
+					smallerPart.offer(largerPart.poll());
+					largerPart.offer(nums[i]);
+				}
+				else smallerPart.offer(nums[i]);
+			}
+			if (smallerPart.size()==largerPart.size())
+				ans[i-k+1]=((double)smallerPart.peek()+largerPart.peek())/2.0;
+			else ans[i-k+1]=smallerPart.peek();
+			if (smallerPart.size()>largerPart.size())
+			{
+				if (nums[i-k+1]<=smallerPart.peek())
+					smallerPart.remove(nums[i-k+1]);
+				else
+				{
+					largerPart.remove(nums[i-k+1]);
+					largerPart.offer(smallerPart.poll());
+				}
+			}
+			else
+			{
+				if (nums[i-k+1]>=largerPart.peek())
+					largerPart.remove(nums[i-k+1]);
+				else
+				{
+					smallerPart.remove(nums[i-k+1]);
+					smallerPart.offer(largerPart.poll());
+				}
+			}
+		}
+		return ans;
 	}
 }
 
@@ -197,8 +300,48 @@ public class LC471_480
 		}
 	}
 
+	public static void test480()
+	{
+		try
+		{
+			Solution480 s=new Solution480();
+
+			File inFile = new File("input" + File.separator + "input480.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output480.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				String[] data = inLine.substring(1, inLine.length() - 1).split(",");
+				int[] nums = new int[data.length];
+				for (int i = 0; i < data.length; i++)
+					nums[i] = Integer.parseInt(data[i]);
+
+				inLine = bfr.readLine();
+				int k = Integer.parseInt(inLine);
+
+				double[] ans=s.medianSlidingWindow(nums, k);
+
+				for (int i=0;i<ans.length;i++)
+					bfw.write(ans[i]+" ");
+
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		test474();
+		test480();
 	}
 }

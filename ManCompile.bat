@@ -96,6 +96,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc441_450\LC441_450.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc451_460\LC451_460.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc461_470\LC461_470.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc471_480\LC471_480.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc481_490\LC481_490.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc491_500\LC491_500.java
 
 :since501
