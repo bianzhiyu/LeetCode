@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 //491. Increasing Subsequences
@@ -98,6 +99,42 @@ class Solution491_2
 	}
 }
 
+//494. Target Sum
+//Runtime: 173 ms, faster than 50.70% of Java online submissions for Target Sum.
+//Memory Usage: 37.5 MB, less than 53.79% of Java online submissions for Target Sum.
+class Solution494
+{
+	private int tot = 0;
+
+	public int findTargetSumWays(int[] nums, int S)
+	{
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++)
+			sum += nums[i];
+		if (sum - S < 0 || (sum - S) % 2 != 0)
+			return 0;
+		int target = (sum - S) / 2;
+		dfs(0, target, nums);
+		return tot;
+	}
+
+	private void dfs(int sp, int target, int[] nums)
+	{
+		if (target < 0)
+			return;
+		if (sp == nums.length)
+		{
+			if (target == 0)
+				tot++;
+			return;
+		}
+
+		if (target >= nums[sp])
+			dfs(sp + 1, target - nums[sp], nums);
+		dfs(sp + 1, target, nums);
+	}
+}
+
 //495. Teemo Attacking
 //Runtime: 4 ms, faster than 97.51% of Java online submissions for Teemo Attacking.
 //Memory Usage: 40 MB, less than 91.67% of Java online submissions for Teemo Attacking.
@@ -126,6 +163,63 @@ class Solution495
 		return tottimespan;
 	}
 }
+
+//497. Random Point in Non-overlapping Rectangles
+//Runtime: 111 ms, faster than 93.20% of Java online submissions for Random Point in Non-overlapping Rectangles.
+//Memory Usage: 47.2 MB, less than 77.78% of Java online submissions for Random Point in Non-overlapping Rectangles.
+class Solution497
+{
+	private int[][] rects;
+	private long cummulateAreas[];
+	private Random rd = new Random();
+	private long totalArea;
+
+	public Solution497(int[][] rects)
+	{
+		this.rects = rects;
+		int len = rects.length;
+		long tmp = -1;
+		cummulateAreas = new long[len];
+		for (int i = 0; i < len; i++)
+		{
+			tmp += (rects[i][2] - rects[i][0] + 1) * (rects[i][3] - rects[i][1] + 1);
+			cummulateAreas[i] = tmp;
+		}
+		totalArea = tmp + 1;
+	}
+
+	private int sch(int left, int right, long tar)
+	{
+		if (left == right)
+			return left;
+		if (right == left + 1)
+		{
+			if (cummulateAreas[left] >= tar)
+				return left;
+			return right;
+		}
+		int m = left + (right - left) / 2;
+		if (cummulateAreas[m] >= tar)
+			return sch(left, m, tar);
+		return sch(m + 1, right, tar);
+	}
+
+	public int[] pick()
+	{
+		long p = Math.round(rd.nextDouble() * totalArea);
+		if (p == totalArea)
+			p = 0;
+		int rectInd = sch(0, rects.length, p);
+		return new int[]
+		{ rects[rectInd][0] + rd.nextInt(rects[rectInd][2] - rects[rectInd][0] + 1),
+				rects[rectInd][1] + rd.nextInt(rects[rectInd][3] - rects[rectInd][1] + 1) };
+	}
+}
+
+/**
+ * Your Solution object will be instantiated and called as such: Solution obj =
+ * new Solution(rects); int[] param_1 = obj.pick();
+ */
 
 //498. Diagonal Traverse
 //Runtime: 4 ms, faster than 68.72% of Java online submissions for Diagonal Traverse.
@@ -243,9 +337,59 @@ public class LC491_500
 		}
 	}
 
-	public static void main(String[] agrs)
+	public static void test494(String[] args)
 	{
-		test491();
+		try
+		{
+			File inFile = new File("input" + File.separator + "input494.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output494.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				String[] data = inLine.substring(1, inLine.length() - 1).split(",");
+				int[] nums = new int[data.length];
+				for (int i = 0; i < data.length; i++)
+					nums[i] = Integer.parseInt(data[i].trim());
+
+				inLine = bfr.readLine();
+				int S = Integer.parseInt(inLine);
+
+				Solution494 solver = new Solution494();
+
+				int ans = solver.findTargetSumWays(nums, S);
+
+				bfw.write("" + ans);
+				bfw.newLine();
+				System.out.println(ans);
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void test497()
+	{
+		int[][] rs = new int[][]
+		{
+				{ -2, -2, -1, -1 },
+				{ 1, 0, 3, 0 } };
+		Solution497 s = new Solution497(rs);
+		test.Test.dispArr(s.pick());
+		test.Test.dispArr(s.pick());
+	}
+
+	public static void main(String[] args)
+	{
+		test497();
 	}
 
 }

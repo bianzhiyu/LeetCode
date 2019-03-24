@@ -2,6 +2,30 @@ package lc511_520;
 
 import java.util.ArrayList;
 import java.util.List;
+import treeCodec.*;
+
+//513. Find Bottom Left Tree Value
+//Runtime: 3 ms, faster than 95.04% of Java online submissions for Find Bottom Left Tree Value.
+//Memory Usage: 37.9 MB, less than 80.00% of Java online submissions for Find Bottom Left Tree Value.
+class Solution513
+{
+	private void travel(int sp, TreeNode rt, List<Integer> l)
+	{
+		if (rt == null)
+			return;
+		if (l.size() == sp)
+			l.add(rt.val);
+		travel(sp + 1, rt.left, l);
+		travel(sp + 1, rt.right, l);
+	}
+
+	public int findBottomLeftValue(TreeNode root)
+	{
+		List<Integer> layer = new ArrayList<Integer>();
+		travel(0, root, layer);
+		return layer.get(layer.size() - 1);
+	}
+}
 
 //514. Freedom Trail
 //Runtime: 17 ms, faster than 93.04% of Java online submissions for Freedom Trail.
@@ -74,18 +98,6 @@ class Solution514
 	}
 }
 
-class TreeNode
-{
-	int val;
-	TreeNode left;
-	TreeNode right;
-
-	TreeNode(int x)
-	{
-		val = x;
-	}
-}
-
 ///515. Find Largest Value in Each Tree Row
 //Runtime: 3 ms, faster than 100.00% of Java online submissions for Find Largest Value in Each Tree Row.
 //Memory Usage: 40.8 MB, less than 21.05% of Java online submissions for Find Largest Value in Each Tree Row.
@@ -94,16 +106,55 @@ class Solution515
 	public List<Integer> largestValues(TreeNode root)
 	{
 		List<Integer> ans = new ArrayList<Integer>();
-		dfs(root,0,ans);
+		dfs(root, 0, ans);
 		return ans;
 	}
-	void dfs(TreeNode rt,int layer,List<Integer> ans)
+
+	void dfs(TreeNode rt, int layer, List<Integer> ans)
 	{
-		if (rt==null) return;
-		if (ans.size()<=layer) ans.add(rt.val);
-		dfs(rt.left,layer+1,ans);
-		dfs(rt.right,layer+1,ans);
-		if (rt.val>ans.get(layer)) ans.set(layer, rt.val);
+		if (rt == null)
+			return;
+		if (ans.size() <= layer)
+			ans.add(rt.val);
+		dfs(rt.left, layer + 1, ans);
+		dfs(rt.right, layer + 1, ans);
+		if (rt.val > ans.get(layer))
+			ans.set(layer, rt.val);
+	}
+}
+
+//516. Longest Palindromic Subsequence
+//Runtime: 56 ms, faster than 9.50% of Java online submissions for Longest Palindromic Subsequence.
+//Memory Usage: 50.4 MB, less than 14.11% of Java online submissions for Longest Palindromic Subsequence.
+class Solution516
+{
+	public int longestPalindromeSubseq(String s)
+	{
+		int len=s.length();
+		if (len<2) return len;
+		int maxans =1;
+		int[][]d=new int[len][len];//init : false
+		for (int i=0;i<len;i++)
+			d[i][i]=1;
+		for (int i=0;i<len-1;i++)
+			if (s.charAt(i)==s.charAt(i+1))
+				d[i][i+1]=2;
+			else d[i][i+1]=1;
+				
+		for (int i=3;i<=len;i++)
+			for (int j=0;j+i-1<len;j++)
+			{
+				d[j][j+i-1]=d[j][j+i-2];
+				if (d[j+1][j+i-1]>d[j][j+i-1])
+					d[j][j+i-1]=d[j+1][j+i-1];
+				if (s.charAt(j)==s.charAt(j+i-1) && d[j+1][j+i-2]+2>d[j][j+i-1])
+					d[j][j+i-1]=d[j+1][j+i-2]+2;
+			}
+		for (int i=1;i<=len;i++)
+			for (int j=0;j+i-1<len;j++)
+				if (d[j][j+i-1]>maxans)
+					maxans=d[j][j+i-1];
+		return maxans;
 	}
 }
 
@@ -111,7 +162,7 @@ class Solution515
 //https://leetcode.com/problems/super-washing-machines/discuss/235584/Explanation-of-Java-O(n)-solution
 //Runtime: 5 ms, faster than 99.15% of Java online submissions for Super Washing Machines.
 //Memory Usage: 39.8 MB, less than 100.00% of Java online submissions for Super Washing Machines.
-class Solution517_2
+class Solution517
 {
 	public int findMinMoves(int[] machines)
 	{
@@ -145,7 +196,7 @@ class Solution517_2
 
 public class LC511_520
 {
-	public static void main(String args[])
+	public static void test514()
 	{
 		Solution514 s = new Solution514();
 		String ring = "godding";
@@ -153,5 +204,16 @@ public class LC511_520
 		System.out.println(s.dt(0, 4, 5));
 		System.out.println(s.findRotateSteps(ring, key));
 	}
-
+	public static void test516()
+	{
+		String in="bbbab";
+		Solution516 solver=new Solution516();
+		System.out.println(solver.longestPalindromeSubseq(in));
+		in="cbbd";
+		System.out.println(solver.longestPalindromeSubseq(in));
+	}
+	public static void main(String args[])
+	{
+		test516();
+	}
 }

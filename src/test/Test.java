@@ -1,6 +1,5 @@
 package test;
 
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -76,6 +75,7 @@ public class Test {
 			b[i]=a[i];
 		return b;
 	}
+	/** model: "[1,2,3]" */
 	public static int[] parseIntArr(String str)
 	{
 		str=str.trim();
@@ -85,15 +85,18 @@ public class Test {
 			a[i]=Integer.parseInt(strarr[i].trim());
 		return a;
 	}
+	public static String intArrToString(int[] arr)
+	{
+		if (arr==null) return "[]";
+		StringBuilder sb=new StringBuilder();
+		sb.append('[');
+		for (int i=0;i<arr.length-1;i++)
+			sb.append(arr[i]).append(',');
+		sb.append(arr[arr.length-1]).append(']');
+		return sb.toString();
+	}
 	public static void main(String[] args)
 	{
-		int[] a=genRandomArr(20,20);
-		dispArr(a);
-		int[] b=copyArr(a);
-		Arrays.parallelSort(b);
-		dispArr(b);
-		dispArr(a);
-		qs.qst(a, 0, a.length);
-		dispArr(a);
+		FileIOTest.test377();
 	}
 }

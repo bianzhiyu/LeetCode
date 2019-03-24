@@ -22,17 +22,14 @@ public class FileIOTest
 			String inLine;
 			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
 			{
-				String[] data = inLine.substring(1, inLine.length() - 1).split(",");
-				int[] nums = new int[data.length];
-				for (int i = 0; i < data.length; i++)
-					nums[i] = Integer.parseInt(data[i]);
+				int[] nums = test.Test.parseIntArr(inLine);
 
 				inLine = bfr.readLine();
 				int target = Integer.parseInt(inLine);
 
 				int ans = 0;
 
-				bfw.write("" + target + ans);
+				bfw.write("" + test.Test.intArrToString(nums) + target + ans);
 				bfw.newLine();
 			}
 
