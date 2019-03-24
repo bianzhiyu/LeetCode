@@ -24,7 +24,7 @@ One can slightly modify it to select which files to compile.
 ### ManRun.bat 
 Run selected .class file in cmd.
 
-###bin 
+### bin 
 This is the output path. It contains all output .class file. 
 And I set git to not track all .class files. 
 After running ManCompile.bat, one will see this folder.
