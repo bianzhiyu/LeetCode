@@ -2,6 +2,8 @@ package lc511_520;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import treeCodec.*;
 
 //513. Find Bottom Left Tree Value
@@ -130,30 +132,32 @@ class Solution516
 {
 	public int longestPalindromeSubseq(String s)
 	{
-		int len=s.length();
-		if (len<2) return len;
-		int maxans =1;
-		int[][]d=new int[len][len];//init : false
-		for (int i=0;i<len;i++)
-			d[i][i]=1;
-		for (int i=0;i<len-1;i++)
-			if (s.charAt(i)==s.charAt(i+1))
-				d[i][i+1]=2;
-			else d[i][i+1]=1;
-				
-		for (int i=3;i<=len;i++)
-			for (int j=0;j+i-1<len;j++)
+		int len = s.length();
+		if (len < 2)
+			return len;
+		int maxans = 1;
+		int[][] d = new int[len][len];// init : false
+		for (int i = 0; i < len; i++)
+			d[i][i] = 1;
+		for (int i = 0; i < len - 1; i++)
+			if (s.charAt(i) == s.charAt(i + 1))
+				d[i][i + 1] = 2;
+			else
+				d[i][i + 1] = 1;
+
+		for (int i = 3; i <= len; i++)
+			for (int j = 0; j + i - 1 < len; j++)
 			{
-				d[j][j+i-1]=d[j][j+i-2];
-				if (d[j+1][j+i-1]>d[j][j+i-1])
-					d[j][j+i-1]=d[j+1][j+i-1];
-				if (s.charAt(j)==s.charAt(j+i-1) && d[j+1][j+i-2]+2>d[j][j+i-1])
-					d[j][j+i-1]=d[j+1][j+i-2]+2;
+				d[j][j + i - 1] = d[j][j + i - 2];
+				if (d[j + 1][j + i - 1] > d[j][j + i - 1])
+					d[j][j + i - 1] = d[j + 1][j + i - 1];
+				if (s.charAt(j) == s.charAt(j + i - 1) && d[j + 1][j + i - 2] + 2 > d[j][j + i - 1])
+					d[j][j + i - 1] = d[j + 1][j + i - 2] + 2;
 			}
-		for (int i=1;i<=len;i++)
-			for (int j=0;j+i-1<len;j++)
-				if (d[j][j+i-1]>maxans)
-					maxans=d[j][j+i-1];
+		for (int i = 1; i <= len; i++)
+			for (int j = 0; j + i - 1 < len; j++)
+				if (d[j][j + i - 1] > maxans)
+					maxans = d[j][j + i - 1];
 		return maxans;
 	}
 }
@@ -194,6 +198,73 @@ class Solution517
 	}
 }
 
+//bag question
+//518. Coin Change 2
+//Runtime: 2 ms, faster than 100.00% of Java online submissions for Coin Change 2.
+//Memory Usage: 36.6 MB, less than 48.17% of Java online submissions for Coin Change 2.
+class Solution518
+{
+	public int change(int amount, int[] coins)
+	{
+		int[] d = new int[amount + 1];
+		d[0] = 1;
+		for (int i = 0; i < coins.length; i++)
+			for (int j = coins[i]; j <= amount; j++)
+				d[j] += d[j - coins[i]];
+		return d[amount];
+	}
+}
+
+//519. Random Flip Matrix
+//Runtime: 68 ms, faster than 96.28% of Java online submissions for Random Flip Matrix.
+//Memory Usage: 35.9 MB, less than 100.00% of Java online submissions for Random Flip Matrix.
+class Solution519
+{
+	private int rows, cols, selnum;
+	private int[] selected = new int[1010];
+	private Random rd = new Random();
+
+	public Solution519(int n_rows, int n_cols)
+	{
+		rows = n_rows;
+		cols = n_cols;
+		selnum = 0;
+	}
+
+	public int[] flip()
+	{
+		int p = rd.nextInt(rows * cols - selnum);
+		int j = 0;
+		while (j < selnum && selected[j] <= p)
+		{
+			p++;
+			j++;
+		}
+		if (j == selnum)
+			selected[selnum++] = p;
+		else
+		{
+			for (int i = selnum; i > j; i--)
+				selected[i] = selected[i - 1];
+			selnum++;
+			selected[j] = p;
+		}
+
+		return new int[]
+		{ p / cols, p % cols };
+	}
+
+	public void reset()
+	{
+		selnum = 0;
+	}
+}
+
+/**
+ * Your Solution object will be instantiated and called as such: Solution obj =
+ * new Solution(n_rows, n_cols); int[] param_1 = obj.flip(); obj.reset();
+ */
+
 public class LC511_520
 {
 	public static void test514()
@@ -204,14 +275,16 @@ public class LC511_520
 		System.out.println(s.dt(0, 4, 5));
 		System.out.println(s.findRotateSteps(ring, key));
 	}
+
 	public static void test516()
 	{
-		String in="bbbab";
-		Solution516 solver=new Solution516();
+		String in = "bbbab";
+		Solution516 solver = new Solution516();
 		System.out.println(solver.longestPalindromeSubseq(in));
-		in="cbbd";
+		in = "cbbd";
 		System.out.println(solver.longestPalindromeSubseq(in));
 	}
+
 	public static void main(String args[])
 	{
 		test516();
