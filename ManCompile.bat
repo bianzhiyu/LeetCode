@@ -27,6 +27,9 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\BinaryTree.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeNode.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeCodec.java
 
+javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\Heap.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\TestHeap.java
+
 rem:exit
 
 
