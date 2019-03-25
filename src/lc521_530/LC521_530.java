@@ -20,20 +20,29 @@ class Solution521
 }
 
 //522. Longest Uncommon Subsequence II
-//Runtime: 6 ms, faster than 53.56% of Java online submissions for Longest Uncommon Subsequence II.
-//Memory Usage: 37.4 MB, less than 25.00% of Java online submissions for Longest Uncommon Subsequence II.
+//Runtime: 5 ms, faster than 78.31% of Java online submissions for Longest Uncommon Subsequence II.
+//Memory Usage: 37.3 MB, less than 40.00% of Java online submissions for Longest Uncommon Subsequence II.
 class Solution522
 {
-	private boolean isSubstr(String sub,String str,int p1,int p2)
+	private boolean search(String sub, String str, int p1, int p2)
 	{
-		if (p1==sub.length()) return true;
-		if (p2==str.length()) return false;
-		boolean a1=isSubstr(sub,str,p1,p2+1);
-		if (a1) return true;
-		if (sub.charAt(p1)==str.charAt(p2))
-			a1=isSubstr(sub,str,p1+1,p2+1);
+		if (p1 == sub.length())
+			return true;
+		if (p2 == str.length())
+			return false;
+		boolean a1 = search(sub, str, p1, p2 + 1);
+		if (a1)
+			return true;
+		if (sub.charAt(p1) == str.charAt(p2))
+			a1 = search(sub, str, p1 + 1, p2 + 1);
 		return a1;
 	}
+
+	private boolean isSubstr(String sub, String str)
+	{
+		return search(sub, str, 0, 0);
+	}
+
 	public int findLUSlength(String[] strs)
 	{
 		int max = -1;
@@ -44,9 +53,9 @@ class Solution522
 					if (k - j <= max)
 						continue;
 					boolean exi = false;
-					String sub=strs[i].substring(j,k);
+					String sub = strs[i].substring(j, k);
 					for (int l = 0; l < strs.length; l++)
-						if (l != i && isSubstr(sub,strs[l],0,0))
+						if (l != i && isSubstr(sub, strs[l]))
 						{
 							exi = true;
 							break;
