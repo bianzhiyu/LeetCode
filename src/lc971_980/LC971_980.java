@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 import bbst.BBST;
+import heap.Heap;
 
 //973. K Closest Points to Origin
 //Runtime: 58 ms, faster than 41.04% of Java online submissions for K Closest Points to Origin.
@@ -103,6 +104,7 @@ class Solution973_4
 	}
 }
 
+
 //Based on quick sort alg
 //Runtime: 8 ms, faster than 96.34% of Java online submissions for K Closest Points to Origin.
 //Memory Usage: 60.9 MB, less than 47.54% of Java online submissions for K Closest Points to Origin.
@@ -136,6 +138,33 @@ class Solution973_5
 
 	private int compare(int[] p1, int[] p2) {
 	    return p1[0] * p1[0] + p1[1] * p1[1] - p2[0] * p2[0] - p2[1] * p2[1];
+	}
+}
+
+
+//test self implementes heap
+//Runtime: 98 ms, faster than 7.82% of Java online submissions for K Closest Points to Origin.
+//Memory Usage: 61 MB, less than 42.04% of Java online submissions for K Closest Points to Origin.
+class Solution973_6
+{
+	public int[][] kClosest(int[][] points, int K)
+	{
+		Heap<int[]> pq = new Heap<int[]>(
+				(p1, p2) -> p2[0] * p2[0] + p2[1] * p2[1] - p1[0] * p1[0] - p1[1] * p1[1]);
+		for (int[] p : points)
+		{
+			pq.offer(p);
+			if (pq.size() > K)
+			{
+				pq.poll();
+			}
+		}
+		int[][] res = new int[K][2];
+		while (K > 0)
+		{
+			res[--K] = pq.poll();
+		}
+		return res;
 	}
 }
 
