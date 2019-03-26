@@ -9,6 +9,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import treeCodec.*;
+import heap.Heap;
 
 //292. Nim Game
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Nim Game.
@@ -105,6 +106,64 @@ class MedianFinder_2
 		{
 			if (num<=largerPart.peek())
 				smallerPart.add(num);
+			else 
+			{
+				smallerPart.offer(largerPart.poll());
+				largerPart.offer(num);
+			}
+		}
+		size++;
+	}
+
+	public double findMedian()
+	{
+		if (size%2==0) return (smallerPart.peek()+largerPart.peek())/2.0;
+		return smallerPart.peek();
+	}
+}
+
+//test Heap
+//Runtime: 129 ms, faster than 56.31% of Java online submissions for Find Median from Data Stream.
+//Memory Usage: 68.9 MB, less than 8.02% of Java online submissions for Find Median from Data Stream.
+class MedianFinder_3
+{
+	Heap<Integer> largerPart,smallerPart;
+	int size=0;
+
+	/** initialize your data structure here. */
+	public MedianFinder_3()
+	{
+		largerPart=new Heap<Integer>();
+		smallerPart=new Heap<Integer>(
+				new Comparator<Integer>()
+				{
+					public int compare(Integer x,Integer y)
+					{
+						return y-x;
+					}
+				});
+	}
+
+	public void addNum(int num)
+	{
+		if (size==0)
+		{
+			smallerPart.offer(num);
+		}
+		else if (smallerPart.size()>largerPart.size())
+		{
+			if (num>=smallerPart.peek())
+				largerPart.offer(num);
+			else
+			{
+				largerPart.offer(smallerPart.poll());
+				smallerPart.offer(num);
+			}
+		}
+		else 
+		{
+			if (num<=largerPart.peek())
+				smallerPart.offer(num);
 			else 
 			{
 				smallerPart.offer(largerPart.poll());

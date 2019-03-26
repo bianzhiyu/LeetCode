@@ -1,9 +1,18 @@
 package lc521_530;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 //521. Longest Uncommon Subsequence I
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Longest Uncommon Subsequence I .
@@ -155,6 +164,95 @@ class Solution524
 	}
 }
 
+//525. Contiguous Array
+//Runtime: 959 ms, faster than 5.05% of Java online submissions for Contiguous Array.
+//Memory Usage: 53.2 MB, less than 12.70% of Java online submissions for Contiguous Array.
+class Solution525
+{
+	private int[] s;
+
+	private int partSum(int left, int right)
+	{
+		if (left == 0)
+			return s[right];
+		return s[right] - s[left - 1];
+	}
+
+	public int findMaxLength(int[] nums)
+	{
+		int len = nums.length;
+		if (len == 0)
+			return 0;
+		s = new int[len];
+		s[0] = nums[0];
+		for (int i = 1; i < len; i++)
+			s[i] = s[i - 1] + nums[i];
+		for (int i = len / 2 * 2; i >= 2; i -= 2)
+			for (int j = 0; j + i <= len; j++)
+				if (partSum(j, j + i - 1) == i / 2)
+					return i;
+		return 0;
+	}
+}
+
+//Runtime: 28 ms, faster than 96.21% of Java online submissions for Contiguous Array.
+//Memory Usage: 52.9 MB, less than 31.75% of Java online submissions for Contiguous Array.
+//https://leetcode.com/problems/contiguous-array/discuss/99646/Easy-Java-O(n)-Solution-PreSum-%2B-HashMap
+class Solution525_2
+{
+
+	public int findMaxLength(int[] nums)
+	{
+		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		int s = 0, max = 0;
+		hm.put(0, -1);
+		for (int i = 0; i < nums.length; i++)
+		{
+			if (nums[i] == 1)
+				s += 1;
+			else
+				s += -1;
+			if (hm.containsKey(s))
+				max = Math.max(max, i - hm.get(s));
+			else
+				hm.put(s, i);
+		}
+		return max;
+	}
+}
+
+//526. Beautiful Arrangement
+//Runtime: 62 ms, faster than 57.62% of Java online submissions for Beautiful Arrangement.
+//Memory Usage: 31.6 MB, less than 100.00% of Java online submissions for Beautiful Arrangement.
+class Solution526
+{
+	private boolean[] used;
+	private int tot = 0;
+
+	private void dfs(int sp)
+	{
+		if (sp == used.length)
+		{
+			tot++;
+			return;
+		}
+		for (int i = 0; i < used.length; i++)
+			if (!used[i] && ((sp + 1) % (i + 1) == 0 || (i + 1) % (sp + 1) == 0))
+			{
+				used[i] = true;
+				dfs(sp + 1);
+				used[i] = false;
+			}
+	}
+
+	public int countArrangement(int N)
+	{
+		used = new boolean[N];
+		dfs(0);
+		return tot;
+	}
+}
+
 //528. Random Pick with Weight
 //Runtime: 70 ms, faster than 94.84% of Java online submissions for Random Pick with Weight.
 //Memory Usage: 53.3 MB, less than 42.91% of Java online submissions for Random Pick with Weight.
@@ -212,13 +310,151 @@ class Solution528
  * new Solution(w); int param_1 = obj.pickIndex();
  */
 
+//529. Minesweeper
+//Runtime: 5 ms, faster than 37.03% of Java online submissions for Minesweeper.
+//Memory Usage: 41.5 MB, less than 40.82% of Java online submissions for Minesweeper.
+class Solution529
+{
+	private final static int[][] di = new int[][]
+	{
+			{ 1, 0 },
+			{ 1, 1 },
+			{ 0, 1 },
+			{ -1, 1 },
+			{ -1, 0 },
+			{ -1, -1 },
+			{ 0, -1 },
+			{ 1, -1 } };
+
+	public char[][] updateBoard(char[][] board, int[] click)
+	{
+		if (board[click[0]][click[1]] == 'M')
+		{
+			board[click[0]][click[1]] = 'X';
+			return board;
+		}
+		int row = board.length, col = board[0].length;
+		int[][] queue = new int[row * col][2];
+		Set<Integer> used = new HashSet<Integer>();
+		queue[0][0] = click[0];
+		queue[0][1] = click[1];
+		used.add(click[0] * col + click[1]);
+		int f = 0, r = 1;
+		while (f < r)
+		{
+			int x = queue[f][0], y = queue[f][1];
+			f++;
+			int nearMineNum = 0;
+			for (int i = 0; i < 8; i++)
+			{
+				int nx = x + di[i][0], ny = y + di[i][1];
+				if (nx >= 0 && ny >= 0 && nx < row && ny < col && board[nx][ny] == 'M')
+					nearMineNum++;
+			}
+			if (nearMineNum > 0)
+				board[x][y] = (char) (nearMineNum + '0');
+			else
+			{
+				board[x][y] = 'B';
+				for (int i = 0; i < 8; i++)
+				{
+					int nx = x + di[i][0], ny = y + di[i][1];
+					if (nx >= 0 && ny >= 0 && nx < row && ny < col && board[nx][ny] == 'E'
+							&& !used.contains(nx * col + ny))
+					{
+						queue[r][0] = nx;
+						queue[r][1] = ny;
+						used.add(nx * col + ny);
+						r++;
+					}
+				}
+			}
+		}
+
+		return board;
+	}
+}
+
 public class LC521_530
 {
+	public static void test529()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input529.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output529.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+
+			Set<Character> nulchar = new HashSet<Character>(Arrays.asList(' ', ',', '[', ']', '"', '\''));
+
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int row = Integer.parseInt(inLine);
+
+				inLine = bfr.readLine();
+				int col = Integer.parseInt(inLine);
+
+				inLine = bfr.readLine();
+
+				char[][] b = new char[row][col];
+
+				int p = 0, st = 0;
+				while (st < row * col)
+				{
+					if (nulchar.contains(inLine.charAt(p)))
+						p++;
+					else
+					{
+						b[st / col][st % col] = inLine.charAt(p);
+						st++;
+						p++;
+					}
+				}
+
+				inLine = bfr.readLine();
+				inLine = inLine.trim();
+				inLine = inLine.substring(1, inLine.length() - 1);
+				String[] nums = inLine.split(",");
+				nums[0] = nums[0].trim();
+				nums[1] = nums[1].trim();
+
+				int[] click = new int[]
+				{ Integer.parseInt(nums[0]), Integer.parseInt(nums[1]) };
+
+				Solution529 solver = new Solution529();
+
+				b = solver.updateBoard(b, click);
+
+				StringBuilder out = new StringBuilder();
+				for (int i = 0; i < b.length; i++)
+				{
+					for (int j = 0; j < b[i].length; j++)
+					{
+						out.append(b[i][j]).append(" ");
+					}
+					out.append("\n");
+				}
+
+				bfw.write(out.toString());
+				bfw.newLine();
+
+			}
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		Solution524 s = new Solution524();
-		System.out.println(s.reachable("aaa", "aaa"));
-		System.out.println("a".compareTo("b"));
+		test529();
 	}
 
 }
