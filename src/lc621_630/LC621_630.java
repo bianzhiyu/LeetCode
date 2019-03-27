@@ -1,11 +1,125 @@
 package lc621_630;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import heap.Heap;
+import treeCodec.*;
+
+//621. Task Scheduler
+//Wrong answer
+class Solution621
+{
+	public int leastInterval(char[] tasks, int n)
+	{
+		int[] tks = new int[26];
+		int[] et = new int[n + 1];
+		for (int i = 0; i < tasks.length; i++)
+			tks[tasks[i] - 'A']++;
+		Arrays.sort(tks
+//				,new Comparator<Integeger>()
+//				{
+//					@Override
+//					public int compare(Integeger o1, Integeger o2)
+//					{
+//						return o2-o1;
+//					}
+//			
+//				}
+		);
+		for (int i = 25; i >= 0; i--)
+		{
+			if (tks[i] == 0)
+				break;
+			int minind = 0;
+			for (int j = 1; j <= n; j++)
+			{
+				if (et[j] < et[minind])
+					minind = j;
+			}
+			et[minind] += tks[i];
+		}
+		int mint = 0;
+		for (int i = 0; i <= n; i++)
+			if (et[i] > 0)
+			{
+				mint = Math.max(mint, (et[i] - 1) * (n + 1) + (i + 1));
+			}
+		return mint;
+	}
+}
+
+//https://leetcode.com/problems/task-scheduler/discuss/259218/Java-solution-using-priority-queue-with-explanation
+//Runtime: 37 ms, faster than 40.21% of Java online submissions for Task Scheduler.
+//Memory Usage: 40 MB, less than 60.78% of Java online submissions for Task Scheduler.
+class Solution621_2
+{
+	private static class Mp implements Comparable<Mp>
+	{
+		private int type, ct;
+
+		public Mp(int _t, int _c)
+		{
+			type = _t;
+			ct = _c;
+		}
+
+		public int compareTo(Mp o)
+		{
+			return o.ct - ct;
+		}
+
+		public String toString()
+		{
+			return "(" + type + ", " + ct + ")";
+		}
+	}
+
+	public int leastInterval(char[] tasks, int n)
+	{
+		int[] tks = new int[26];
+		for (int i = 0; i < tasks.length; i++)
+		{
+			tks[tasks[i] - 'A']++;
+		}
+		PriorityQueue<Mp> pq = new PriorityQueue<Mp>();
+		for (int i = 0; i < 26; i++)
+			if (tks[i] > 0)
+				pq.offer(new Mp(i, tks[i]));
+		int tot = 0;
+		List<Mp> thisPeriod = new ArrayList<Mp>();
+		while (!pq.isEmpty())
+		{
+			thisPeriod.clear();
+			for (int i = 0; i < n + 1; i++)
+			{
+				if (pq.isEmpty())
+				{
+					if (!thisPeriod.isEmpty())
+						tot++;// idle time;
+					continue;
+				}
+				Mp t = pq.poll();
+				t.ct--;
+				tot++;
+				if (t.ct > 0)
+					thisPeriod.add(t);
+			}
+			for (int i = 0; i < thisPeriod.size(); i++)
+				pq.offer(thisPeriod.get(i));
+		}
+		return tot;
+	}
+}
 
 //622. Design Circular Queue
 //Runtime: 49 ms, faster than 99.72% of Java online submissions for Design Circular Queue.
@@ -93,6 +207,45 @@ class MyCircularQueue
  * boolean param_6 = obj.isFull();
  */
 //--------
+
+//623. Add One Row to Tree
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Add One Row to Tree.
+//Memory Usage: 37.7 MB, less than 96.72% of Java online submissions for Add One Row to Tree.
+class Solution623
+{
+	private void travel(TreeNode rt, int depth, int v, int d)
+	{
+		if (rt == null)
+			return;
+		if (depth < d - 1)
+		{
+			travel(rt.left, depth + 1, v, d);
+			travel(rt.right, depth + 1, v, d);
+			return;
+		}
+		if (depth == d - 1)
+		{
+			TreeNode tn = new TreeNode(v);
+			tn.left = rt.left;
+			rt.left = tn;
+			tn = new TreeNode(v);
+			tn.right = rt.right;
+			rt.right = tn;
+		}
+	}
+
+	public TreeNode addOneRow(TreeNode root, int v, int d)
+	{
+		if (d == 1)
+		{
+			TreeNode rt = new TreeNode(v);
+			rt.left = root;
+			return rt;
+		}
+		travel(root, 1, v, d);
+		return root;
+	}
+}
 
 //630. Course Schedule III
 //Runtime: 79 ms, faster than 88.14% of Java online submissions for Course Schedule III.
@@ -238,13 +391,53 @@ class Solution630_3
 
 public class LC621_630
 {
+	public static void test621()
+	{
+
+		try
+		{
+			File inFile = new File("input" + File.separator + "input621.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output621.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				List<Character> l = new ArrayList<Character>();
+				for (char c : inLine.toCharArray())
+				{
+					if (c >= 'A' && c <= 'Z')
+						l.add(c);
+				}
+				char[] c = new char[l.size()];
+				for (int i = 0; i < c.length; i++)
+					c[i] = l.get(i);
+
+				inLine = bfr.readLine();
+				int n = Integer.parseInt(inLine);
+
+				Solution621_2 s = new Solution621_2();
+				int ans = s.leastInterval(c, n);
+				System.out.println(ans);
+
+				bfw.write("" + ans);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		List<MPair> l = new ArrayList<MPair>();
-		l.add(new MPair(1, 2));
-		l.add(new MPair(2, 3));
-		Collections.sort(l);
-		System.out.println(l);
+		test621();
 	}
 
 }
