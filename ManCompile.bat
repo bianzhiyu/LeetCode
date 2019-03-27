@@ -110,9 +110,12 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc531_540\LC531_540.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc541_550\LC541_550.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc551_560\LC551_560.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc561_570\LC561_570.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc571_580\LC571_580.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc581_590\LC581_590.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc591_600\LC591_600.java
 
 :since601
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc611_620\LC611_620.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc621_630\LC621_630.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc631_640\LC631_640.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc641_650\LC641_650.java
