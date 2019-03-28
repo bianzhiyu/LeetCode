@@ -1,0 +1,5 @@
+x=2
+Infinite solutions
+x=0
+x=-1
+No solution

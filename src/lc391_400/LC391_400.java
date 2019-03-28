@@ -1,6 +1,7 @@
 package lc391_400;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -183,41 +184,42 @@ class Solution397
 {
 	public int integerReplacement(int n)
 	{
-		if (n==1) return 0;
-		long start=n;
-		Queue<Long> q1=new LinkedList<Long>();
-		Queue<Integer> q2=new LinkedList<Integer>();
-		HashSet<Long> h=new HashSet<Long>();
+		if (n == 1)
+			return 0;
+		long start = n;
+		Queue<Long> q1 = new LinkedList<Long>();
+		Queue<Integer> q2 = new LinkedList<Integer>();
+		HashSet<Long> h = new HashSet<Long>();
 		q1.add(start);
 		q2.add(0);
 		h.add(start);
 		while (!q1.isEmpty())
 		{
-			long nn=q1.poll();
-			int step=q2.poll();
-			if (nn==1) return step;
-			if (nn%2==0)
+			long nn = q1.poll();
+			int step = q2.poll();
+			if (nn == 1)
+				return step;
+			if (nn % 2 == 0)
 			{
-				if (!h.contains(nn/2))
+				if (!h.contains(nn / 2))
 				{
-					q1.add(nn/2);
-					q2.add(step+1);
-					h.add(nn/2);
+					q1.add(nn / 2);
+					q2.add(step + 1);
+					h.add(nn / 2);
 				}
-			}
-			else
+			} else
 			{
-				if (!h.contains(nn+1))
+				if (!h.contains(nn + 1))
 				{
-					q1.add(nn+1);
-					q2.add(step+1);
-					h.add(nn+1);
+					q1.add(nn + 1);
+					q2.add(step + 1);
+					h.add(nn + 1);
 				}
-				if (!h.contains(nn-1))
+				if (!h.contains(nn - 1))
 				{
-					q1.add(nn-1);
-					q2.add(step+1);
-					h.add(nn-1);
+					q1.add(nn - 1);
+					q2.add(step + 1);
+					h.add(nn - 1);
 				}
 			}
 		}
@@ -255,9 +257,8 @@ class Solution398
 	}
 }
 
-//self implemented
-//Runtime: 6468 ms, faster than 5.04% of Java online submissions for Random Pick Index.
-//Memory Usage: 53.6 MB, less than 70.39% of Java online submissions for Random Pick Index.
+//Runtime: 165 ms, faster than 15.42% of Java online submissions for Random Pick Index.
+//Memory Usage: 57.3 MB, less than 29.05% of Java online submissions for Random Pick Index.
 class Mp implements Comparable<Mp>
 {
 	int val, ind;
@@ -271,12 +272,20 @@ class Mp implements Comparable<Mp>
 	@Override
 	public int compareTo(Mp o)
 	{
-		return val - o.val;
+		if (val < o.val)
+			return -1;
+		if (val > o.val)
+			return 1;
+		return 0;
 	}
 
 	int compareTo(int x)
 	{
-		return val - x;
+		if (val < x)
+			return -1;
+		if (val > x)
+			return 1;
+		return 0;
 	}
 
 	public String toString()
@@ -289,7 +298,6 @@ class Solution398_2
 {
 	Random rand;
 	List<Mp> in;
-	boolean __debug = false;
 
 	public Solution398_2(int[] nums)
 	{
@@ -297,22 +305,7 @@ class Solution398_2
 		rand = new Random();
 		for (int i = 0; i < nums.length; i++)
 			in.add(new Mp(nums[i], i));
-		// Collections.sort(in);
-		for (int i = 0; i < nums.length; i++)
-			for (int j = i + 1; j < nums.length; j++)
-				if (in.get(i).val > in.get(j).val)
-				{
-					Mp p = in.get(i);
-					in.set(i, in.get(j));
-					in.set(j, p);
-				}
-		if (__debug && in.size() > 13000)
-			System.out.println(nums.length);
-		for (int i = 0; i < in.size() - 1; i++)
-		{
-			if (in.get(i).val > in.get(i + 1).val)
-				System.out.println("SortBug" + i);
-		}
+		Collections.sort(in);
 	}
 
 	int fdleft(int tar)
@@ -364,13 +357,6 @@ class Solution398_2
 	public int pick(int target)
 	{
 		int l = fdleft(target), r = fdright(target);
-		if (__debug && 13106 < in.size())
-		{
-			System.out.println(l + " " + r);
-			for (int i = 0; i < in.size(); i++)
-				if (in.get(i).compareTo(target) == 0)
-					System.out.println("!!" + i);
-		}
 		return in.get(l + rand.nextInt(r - l + 1)).ind;
 	}
 }
@@ -382,7 +368,6 @@ class Solution398_3
 {
 	Random rand;
 	List<Mp> in;
-	boolean __debug = false;
 
 	public Solution398_3(int[] nums)
 	{
@@ -397,13 +382,6 @@ class Solution398_3
 			in.add(rt.getMinData());
 			rt = rt.removeMin();
 		}
-		if (__debug && in.size() > 13000)
-			System.out.println(nums.length);
-		for (int i = 0; i < in.size() - 1; i++)
-		{
-			if (in.get(i).val > in.get(i + 1).val)
-				System.out.println("SortBug" + i);
-		}
 	}
 
 	int fdleft(int tar)
@@ -455,13 +433,6 @@ class Solution398_3
 	public int pick(int target)
 	{
 		int l = fdleft(target), r = fdright(target);
-		if (__debug && 13106 < in.size())
-		{
-			System.out.println(l + " " + r);
-			for (int i = 0; i < in.size(); i++)
-				if (in.get(i).compareTo(target) == 0)
-					System.out.println("!!" + i);
-		}
 		return in.get(l + rand.nextInt(r - l + 1)).ind;
 	}
 }
@@ -548,7 +519,7 @@ public class LC391_400
 	{
 
 		int[] a = new int[]
-				{ 1, 2, 3, 3, 3 };
+		{ 1, 2, 3, 3, 3 };
 		Solution398_4 s = new Solution398_4(a);
 		System.out.println(s.pick(3));
 	}
