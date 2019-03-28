@@ -25,17 +25,7 @@ class Solution621
 		int[] et = new int[n + 1];
 		for (int i = 0; i < tasks.length; i++)
 			tks[tasks[i] - 'A']++;
-		Arrays.sort(tks
-//				,new Comparator<Integeger>()
-//				{
-//					@Override
-//					public int compare(Integeger o1, Integeger o2)
-//					{
-//						return o2-o1;
-//					}
-//			
-//				}
-		);
+		Arrays.sort(tks);
 		for (int i = 25; i >= 0; i--)
 		{
 			if (tks[i] == 0)

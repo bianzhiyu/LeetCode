@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import treeCodec.*;
 
 //611. Valid Triangle Number
 //Runtime: 33 ms, faster than 34.12% of Java online submissions for Valid Triangle Number.
@@ -43,6 +44,36 @@ class Solution611
 				tot += l - j;
 			}
 		return tot;
+	}
+}
+
+//617. Merge Two Binary Trees
+//Runtime: 1 ms, faster than 98.29% of Java online submissions for Merge Two Binary Trees.
+//Memory Usage: 41.1 MB, less than 81.90% of Java online submissions for Merge Two Binary Trees.
+class Solution617
+{
+	public TreeNode mergeTrees(TreeNode t1, TreeNode t2)
+	{
+		if (t1 == null && t2 == null)
+			return null;
+		if (t1 != null && t2 != null)
+		{
+			TreeNode nt = new TreeNode(t1.val + t2.val);
+			nt.left = mergeTrees(t1.left, t2.left);
+			nt.right = mergeTrees(t1.right, t2.right);
+			return nt;
+		}
+		if (t1 != null)
+		{
+			TreeNode nt = new TreeNode(t1.val);
+			nt.left = mergeTrees(t1.left, null);
+			nt.right = mergeTrees(t1.right, null);
+			return nt;
+		}
+		TreeNode nt = new TreeNode(t2.val);
+		nt.left = mergeTrees(null, t2.left);
+		nt.right = mergeTrees(null, t2.right);
+		return nt;
 	}
 }
 
