@@ -8,11 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 
+import heap.Heap;
 import treeCodec.*;
 
 //652. Find Duplicate Subtrees
@@ -255,6 +258,95 @@ class Solution654
 	public TreeNode constructMaximumBinaryTree(int[] nums)
 	{
 		return Cons(nums, 0, nums.length - 1);
+	}
+}
+
+//658. Find K Closest Elements
+//Runtime: 36 ms, faster than 15.14% of Java online submissions for Find K Closest Elements.
+//Memory Usage: 41.4 MB, less than 34.87% of Java online submissions for Find K Closest Elements.
+class Solution658
+{
+	private class NCmp implements Comparator<Integer>
+	{
+		private final int mid;
+
+		public NCmp(int m)
+		{
+			mid = m;
+		}
+
+		@Override
+		public int compare(Integer o1, Integer o2)
+		{
+			int d1 = o1 - mid;
+			if (d1 < 0)
+				d1 = -d1;
+			int d2 = o2 - mid;
+			if (d2 < 0)
+				d2 = -d2;
+			if (d1 != d2)
+				return d1 - d2;
+			if (o1 <= mid)
+				return -1;
+			return 1;
+		}
+
+	}
+
+	public List<Integer> findClosestElements(int[] arr, int k, int x)
+	{
+		PriorityQueue<Integer> pq = new PriorityQueue<Integer>(new NCmp(x));
+		for (int i = 0; i < arr.length; i++)
+			pq.offer(arr[i]);
+		List<Integer> ans = new ArrayList<Integer>(k);
+		for (int i = 0; i < k; i++)
+			ans.add(pq.poll());
+		Collections.sort(ans);
+		return ans;
+	}
+}
+
+//Runtime: 36 ms, faster than 15.14% of Java online submissions for Find K Closest Elements.
+//Memory Usage: 42.1 MB, less than 5.17% of Java online submissions for Find K Closest Elements.
+class Solution658_2
+{
+	private class NCmp implements Comparator<Integer>
+	{
+		private final int mid;
+
+		public NCmp(int m)
+		{
+			mid = m;
+		}
+
+		@Override
+		public int compare(Integer o1, Integer o2)
+		{
+			int d1 = o1 - mid;
+			if (d1 < 0)
+				d1 = -d1;
+			int d2 = o2 - mid;
+			if (d2 < 0)
+				d2 = -d2;
+			if (d1 != d2)
+				return d1 - d2;
+			if (o1 <= mid)
+				return -1;
+			return 1;
+		}
+
+	}
+
+	public List<Integer> findClosestElements(int[] arr, int k, int x)
+	{
+		Heap<Integer> pq=new Heap<Integer>(new NCmp(x));
+		for (int i = 0; i < arr.length; i++)
+			pq.offer(arr[i]);
+		List<Integer> ans = new ArrayList<Integer>(k);
+		for (int i = 0; i < k; i++)
+			ans.add(pq.poll());
+		Collections.sort(ans);
+		return ans;
 	}
 }
 

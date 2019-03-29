@@ -105,6 +105,8 @@ public class TestHeap
 	// the 5th test: Solution630_3
 	
 	// the 6th test: MedianFinder_3 295_3
+	
+	// the 7th test: Solution658_2
 
 	public static void main(String[] args)
 	{
