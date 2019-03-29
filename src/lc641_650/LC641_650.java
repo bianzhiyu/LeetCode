@@ -1,9 +1,18 @@
 package lc641_650;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 import java.util.Comparator;
+import java.util.LinkedList;
+
 import lc201_210.StrTrie;
 
 //641. Design Circular Deque
@@ -147,7 +156,7 @@ class Solution645
 			else if (b[i] == 2)
 				d = i;
 		return new int[]
-				{ d, m };
+		{ d, m };
 
 	}
 }
@@ -160,27 +169,31 @@ class Solution646
 	public int findLongestChain(int[][] pairs)
 	{
 		Arrays.parallelSort(pairs, new Comparator<int[]>()
-				{
-					public int compare(int[] o1,int[] o2)
-					{
-						if (o1[0]<o2[0]) return -1;
-						if (o1[0]==o2[0]) return 0;
-						return 1;
-					}
-				});
-		int len=pairs.length;
-		int[] maxLen=new int[len];
-		if (len==0) return 0;
-		for (int i=len-1;i>=0;i--)
 		{
-			maxLen[i]=1;
-			for (int j=i+1;j<len;j++)
-				if (pairs[j][0]>pairs[i][1] && maxLen[j]+1>maxLen[i])
-					maxLen[i]=maxLen[j]+1;
+			public int compare(int[] o1, int[] o2)
+			{
+				if (o1[0] < o2[0])
+					return -1;
+				if (o1[0] == o2[0])
+					return 0;
+				return 1;
+			}
+		});
+		int len = pairs.length;
+		int[] maxLen = new int[len];
+		if (len == 0)
+			return 0;
+		for (int i = len - 1; i >= 0; i--)
+		{
+			maxLen[i] = 1;
+			for (int j = i + 1; j < len; j++)
+				if (pairs[j][0] > pairs[i][1] && maxLen[j] + 1 > maxLen[i])
+					maxLen[i] = maxLen[j] + 1;
 		}
-		int ans=0;
-		for (int i=0;i<len;i++)
-			if (maxLen[i]>ans) ans=maxLen[i];
+		int ans = 0;
+		for (int i = 0; i < len; i++)
+			if (maxLen[i] > ans)
+				ans = maxLen[i];
 		return ans;
 	}
 }
@@ -310,7 +323,119 @@ class Solution648_3
 	}
 }
 
+//649. Dota2 Senate
+//Runtime: 3 ms, faster than 100.00% of Java online submissions for Dota2 Senate.
+//Memory Usage: 37.4 MB, less than 100.00% of Java online submissions for Dota2 Senate.
+//https://leetcode.com/problems/dota2-senate/discuss/244922/Java-beats-100-no-need-for-any-algorithm....
+class Solution649
+{
+	public String predictPartyVictory(String senate)
+	{
+		int[] inQueue = new int[senate.length()];
+		int[] outQueue = new int[inQueue.length];
+		int[] live = new int[2];
+		for (int i = 0; i < inQueue.length; i++)
+			inQueue[i] = senate.charAt(i) == 'R' ? 0 : 1;
+		int wp = 0, rlen = inQueue.length;
+		int[] banRight = new int[2];
+		while (rlen > 0)
+		{
+			for (int i = 0; i < rlen; i++)
+			{
+				int type = inQueue[i];
+				if (banRight[1 - type] > 0)
+				{
+					banRight[1 - type]--;
+				} else
+				{
+					live[type]++;
+					banRight[type]++;
+					outQueue[wp++] = type;
+				}
+			}
+			if (live[0] == 0)
+				return "Dire";
+			else if (live[1] == 0)
+				return "Radiant";
+			live[0] = 0;
+			live[1] = 0;
+			int[] tmp = inQueue;
+			inQueue = outQueue;
+			outQueue = tmp;
+			rlen = wp;
+			wp = 0;
+		}
+		return "R";
+	}
+}
+
+//650. 2 Keys Keyboard
+//Runtime: 3 ms, faster than 98.22% of Java online submissions for 2 Keys Keyboard.
+//Memory Usage: 33.7 MB, less than 100.00% of Java online submissions for 2 Keys Keyboard.
+class Solution650
+{
+	public int minSteps(int n)
+	{
+		if (n == 1)
+			return 0;
+		Queue<int[]> q = new LinkedList<int[]>();
+		q.add(new int[]
+		{ 1, 1, 1 });
+		// used step, copied length, text total length
+		while (!q.isEmpty())
+		{
+			int[] state = q.remove();
+			if (state[2] == n)
+				return state[0];
+			if (state[1] != state[2] && (n - state[2]) % state[2] == 0)
+				q.add(new int[]
+				{ state[0] + 1, state[2], state[2] });
+			if (state[2] + state[1] <= n)
+				q.add(new int[]
+				{ state[0] + 1, state[1], state[2] + state[1] });
+		}
+		return -1;
+	}
+}
+
 public class LC641_650
 {
+	public static void test649()
+	{
 
+		try
+		{
+			File inFile = new File("input" + File.separator + "input649.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output649.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				inLine = inLine.substring(1, inLine.length() - 1);
+
+				Solution649 s = new Solution649();
+
+				String ans = s.predictPartyVictory(inLine);
+				System.out.println(ans);
+
+				bfw.write(ans);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void main(String[] args)
+	{
+		test649();
+	}
 }
