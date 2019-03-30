@@ -1,5 +1,6 @@
 package bbst;
 
+//706. Design HashMap
 public class MHashMap<K, V>
 {
 	private BBST<HPair<K, V>> root;

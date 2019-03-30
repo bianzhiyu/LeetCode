@@ -1,14 +1,15 @@
 package bbst;
 
+//705. Design HashSet
 public class MHashSet<T>
 {
-	public static class Pair<P> implements Comparable<Pair<P>>
+	public static class HPair<P> implements Comparable<HPair<P>>
 	{
 		private int hash;
 		private P data;
 
 		@Override
-		public int compareTo(Pair<P> o)
+		public int compareTo(HPair<P> o)
 		{
 			if (hash < o.hash)
 				return -1;
@@ -17,7 +18,7 @@ public class MHashSet<T>
 			return 1;
 		}
 
-		public Pair(P d)
+		public HPair(P d)
 		{
 			data = d;
 			hash = d.hashCode();
@@ -29,7 +30,7 @@ public class MHashSet<T>
 		}
 	}
 
-	private BBST<Pair<T>> root = null;
+	private BBST<HPair<T>> root = null;
 
 	public MHashSet()
 	{
@@ -37,9 +38,9 @@ public class MHashSet<T>
 
 	public void add(T x)
 	{
-		Pair<T> p = new Pair<T>(x);
+		HPair<T> p = new HPair<T>(x);
 		if (root == null)
-			root = new BBST<Pair<T>>(p);
+			root = new BBST<HPair<T>>(p);
 		else if (!root.containData(p))
 		{
 			root = root.insert(p);
@@ -50,7 +51,7 @@ public class MHashSet<T>
 	{
 		if (root == null)
 			return;
-		Pair<T> p = new Pair<T>(x);
+		HPair<T> p = new HPair<T>(x);
 		if (root.containData(p))
 			root = root.removeNodeByData(p);
 	}
@@ -59,7 +60,7 @@ public class MHashSet<T>
 	{
 		if (root == null)
 			return false;
-		Pair<T> p = new Pair<T>(x);
+		HPair<T> p = new HPair<T>(x);
 		return root.containData(p);
 	}
 
