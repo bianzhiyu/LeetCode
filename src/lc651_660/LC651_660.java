@@ -12,8 +12,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -360,23 +358,22 @@ class Solution659
 	public boolean isPossible(int[] nums)
 	{
 		HashMap<Integer, PriorityQueue<Integer>> tailAt = new HashMap<Integer, PriorityQueue<Integer>>();
-		//tailAt.get(n): contains lengths of all subsequences which end at n.
+		// tailAt.get(n): contains lengths of all subsequences which end at n.
 		for (int n : nums)
 		{
-			if (!tailAt.containsKey(n-1))
-				tailAt.put(n-1,new PriorityQueue<Integer>());
-			if (tailAt.get(n-1).isEmpty())
+			if (!tailAt.containsKey(n - 1))
+				tailAt.put(n - 1, new PriorityQueue<Integer>());
+			if (tailAt.get(n - 1).isEmpty())
 			{
 				if (!tailAt.containsKey(n))
-					tailAt.put(n,new PriorityQueue<Integer>());
+					tailAt.put(n, new PriorityQueue<Integer>());
 				tailAt.get(n).offer(1);
-			}
-			else
+			} else
 			{
-				int len=tailAt.get(n-1).poll();
+				int len = tailAt.get(n - 1).poll();
 				if (!tailAt.containsKey(n))
-					tailAt.put(n,new PriorityQueue<Integer>());
-				tailAt.get(n).offer(len+1);
+					tailAt.put(n, new PriorityQueue<Integer>());
+				tailAt.get(n).offer(len + 1);
 			}
 		}
 		for (int tails : tailAt.keySet())
