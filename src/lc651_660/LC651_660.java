@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -339,7 +341,7 @@ class Solution658_2
 
 	public List<Integer> findClosestElements(int[] arr, int k, int x)
 	{
-		Heap<Integer> pq=new Heap<Integer>(new NCmp(x));
+		Heap<Integer> pq = new Heap<Integer>(new NCmp(x));
 		for (int i = 0; i < arr.length; i++)
 			pq.offer(arr[i]);
 		List<Integer> ans = new ArrayList<Integer>(k);
@@ -347,6 +349,44 @@ class Solution658_2
 			ans.add(pq.poll());
 		Collections.sort(ans);
 		return ans;
+	}
+}
+
+//659. Split Array into Consecutive Subsequences
+//Runtime: 80 ms, faster than 12.42% of Java online submissions for Split Array into Consecutive Subsequences.
+//Memory Usage: 46.3 MB, less than 18.18% of Java online submissions for Split Array into Consecutive Subsequences.
+class Solution659
+{
+	public boolean isPossible(int[] nums)
+	{
+		HashMap<Integer, PriorityQueue<Integer>> tailAt = new HashMap<Integer, PriorityQueue<Integer>>();
+		//tailAt.get(n): contains lengths of all subsequences which end at n.
+		for (int n : nums)
+		{
+			if (!tailAt.containsKey(n-1))
+				tailAt.put(n-1,new PriorityQueue<Integer>());
+			if (tailAt.get(n-1).isEmpty())
+			{
+				if (!tailAt.containsKey(n))
+					tailAt.put(n,new PriorityQueue<Integer>());
+				tailAt.get(n).offer(1);
+			}
+			else
+			{
+				int len=tailAt.get(n-1).poll();
+				if (!tailAt.containsKey(n))
+					tailAt.put(n,new PriorityQueue<Integer>());
+				tailAt.get(n).offer(len+1);
+			}
+		}
+		for (int tails : tailAt.keySet())
+		{
+			PriorityQueue<Integer> pq = tailAt.get(tails);
+			while (!pq.isEmpty())
+				if (pq.poll() < 3)
+					return false;
+		}
+		return true;
 	}
 }
 
@@ -391,8 +431,41 @@ public class LC651_660
 		}
 	}
 
+	public static void test659()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input659.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output659.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[] nums = test.Test.parseIntArr(inLine);
+
+				Solution659 s = new Solution659();
+
+				boolean ans = s.isPossible(nums);
+				System.out.println(ans);
+
+				bfw.write("" + ans);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		test652();
+		test659();
 	}
 }

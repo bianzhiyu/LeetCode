@@ -1,0 +1,14 @@
+[4, 1, 8, 7]
+[1, 2, 1, 2]
+[4,1,8,7]
+[3,3,8,8]
+[1,2,1,2]
+
+
+blank line to stop input
+-----ans-
+true
+false
+true
+true
+false
