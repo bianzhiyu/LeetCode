@@ -2,13 +2,9 @@ set curpath=%cd%
 set outpath=%curpath%\bin
 set cpath="%classpath%;%curpath%\src\;%outpath%"
 
-rem:goto:sincetest
-
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC1.java
 
-goto:sincetest
-rem:goto:EOF
-rem:exit
+goto:EndPause
 
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
