@@ -2,6 +2,7 @@ package dijkstra;
 
 import java.util.List;
 
+//743. Network Delay Time
 public class Dijkstra 
 {
 	/*
@@ -9,32 +10,36 @@ public class Dijkstra
 	 * 	These nodes should be index from 0 to nodenums-1.
 	 * startnode: Path starts from it.
 	 */
-	public static DijkstraResult dijksta(int nodenums,
+	public static DijkstraResult dijksta(int nodeNum,
 			List<List<EdgeTo>> LL,
 			int startnode)
 	{
-		int[] dist=new int[nodenums];
-		int[] pred=new int[nodenums];
-		boolean[] used=new boolean[nodenums];
-		int[] q=new int[nodenums];
-		for (int i=0;i<nodenums;i++)
+		int[] dist=new int[nodeNum];
+		int[] pred=new int[nodeNum];
+		boolean[] used=new boolean[nodeNum];
+		for (int i=0;i<nodeNum;i++)
 			dist[i]=Integer.MAX_VALUE;
 		dist[startnode]=0;
 		pred[startnode]=-1;
-		used[startnode]=true;
-		int f=0,r=1;
-		q[0]=startnode;
-		while (f<r)
+		for (int i=0;i<nodeNum;i++)
 		{
-			int nt=q[f++];
-			for (EdgeTo i:LL.get(nt))
-				if (!used[i.Ind] && (long)dist[nt]+i.Weight<(long)dist[i.Ind])
+			int minD=Integer.MAX_VALUE;
+			int minN=0;
+			for (int j=0;j<nodeNum;j++)
+				if (!used[j] && dist[j]<minD)
 				{
-					used[i.Ind]=true;
-					dist[i.Ind]=dist[nt]+i.Weight;
-					q[r++]=i.Ind;
-					pred[i.Ind]=nt;
+					minD=dist[j];
+					minN=j;
 				}
+			used[minN]=true;
+			for (EdgeTo e:LL.get(minN))
+			{
+				if (minD+e.Weight<dist[e.Ind])
+				{
+					dist[e.Ind]=minD+e.Weight;
+					pred[e.Ind]=minN;
+				}
+			}
 		}
 		return new DijkstraResult(dist,pred);
 	}

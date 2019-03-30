@@ -364,21 +364,27 @@ class MyCalendar
 {
 	private static class Mp implements Comparable<Mp>
 	{
-		int st,ed;
-		public Mp(int a,int b)
+		int st, ed;
+
+		public Mp(int a, int b)
 		{
-			st=a;
-			ed=b;
+			st = a;
+			ed = b;
 		}
+
 		@Override
 		public int compareTo(Mp o)
 		{
-			if (ed<o.st) return -1;
-			if (st>o.ed) return 1;
+			if (ed < o.st)
+				return -1;
+			if (st > o.ed)
+				return 1;
 			return 0;
 		}
 	}
+
 	private BBST<Mp> root;
+
 	public MyCalendar()
 	{
 
@@ -386,16 +392,17 @@ class MyCalendar
 
 	public boolean book(int start, int end)
 	{
-		if (root==null)
+		if (root == null)
 		{
-			root=new BBST<Mp>(new Mp(start,end-1));
+			root = new BBST<Mp>(new Mp(start, end - 1));
 			return true;
 		}
-		Mp p=new Mp(start,end-1);
-		if (root.containData(p)) return false;
+		Mp p = new Mp(start, end - 1);
+		if (root.containData(p))
+			return false;
 		else
 		{
-			root=root.insert(p);
+			root = root.insert(p);
 			return true;
 		}
 	}

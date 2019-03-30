@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import dijkstra.*;
 
 //741. Cherry Pickup
 //https://leetcode.com/problems/cherry-pickup/discuss/109917/JAVA-DP-Solution-with-O(n5)-Time-and-O(n2)-Space
@@ -29,16 +30,12 @@ class Solution741
 				{
 					if (pre[left][right] > -1)
 					{
-						for (int l = left, count = pre[left][right]; 
-								l < n && grid[i][l] > -1; 
-								++l)
+						for (int l = left, count = pre[left][right]; l < n && grid[i][l] > -1; ++l)
 						{
 							count += grid[i][l];
 							if (l >= right)
 								curr[l][l] = Math.max(curr[l][l], count);
-							for (int r = Math.max(l + 1, right), count2 = count; 
-									r < n && grid[i][r] > -1; 
-									++r)
+							for (int r = Math.max(l + 1, right), count2 = count; r < n && grid[i][r] > -1; ++r)
 							{
 								count2 += grid[i][r];
 								curr[l][r] = Math.max(curr[l][r], count2);
@@ -50,6 +47,27 @@ class Solution741
 			pre = curr;
 		}
 		return Math.max(pre[n - 1][n - 1], 0);
+	}
+}
+
+//743. Network Delay Time
+//Runtime: 9 ms, faster than 97.88% of Java online submissions for Network Delay Time.
+//Memory Usage: 50.1 MB, less than 60.17% of Java online submissions for Network Delay Time.
+class Solution743
+{
+	public int networkDelayTime(int[][] times, int N, int K)
+	{
+		List<List<EdgeTo>> l=new ArrayList<List<EdgeTo>>(N);
+		for (int i=0;i<N;i++)
+			l.add(new ArrayList<EdgeTo>());
+		for (int i=0;i<times.length;i++)
+			l.get(times[i][0]-1).add(new EdgeTo(times[i][1]-1,times[i][2]));
+		DijkstraResult r=Dijkstra.dijksta(N, l, K-1);
+		int maxT=0;
+		for (int i=0;i<N;i++)
+			if (r.dist[i]==Integer.MAX_VALUE) return -1;
+			else if (r.dist[i]>maxT) maxT=r.dist[i];
+		return maxT;
 	}
 }
 
