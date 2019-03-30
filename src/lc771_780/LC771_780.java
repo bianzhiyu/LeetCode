@@ -49,7 +49,7 @@ class Solution773
 		int[] step = new int[50000];
 		add(q, 0, board[0][0], board[0][1], board[0][2], board[1][0], board[1][1], board[1][2]);
 		used[toInt(new int[]
-				{ board[0][0], board[0][1], board[0][2], board[1][0], board[1][1], board[1][2] })] = false;
+		{ board[0][0], board[0][1], board[0][2], board[1][0], board[1][1], board[1][2] })] = false;
 		step[0] = 0;
 		int head = 0, tail = 1;
 		while (head < tail)
@@ -209,6 +209,25 @@ class Solution773
 	}
 }
 
+//777. Swap Adjacent in LR String
+//Wrong answer
+class Solution777
+{
+	public boolean canTransform(String start, String end)
+	{
+		int len1=start.length();
+		StringBuilder sb1=new StringBuilder();
+		for (int i=0;i<len1;i++)
+			if (start.charAt(i)!='X') sb1.append(start.charAt(i));
+		
+		int len2=end.length();
+		StringBuilder sb2=new StringBuilder();
+		for (int i=0;i<len2;i++)
+			if (end.charAt(i)!='X') sb2.append(end.charAt(i));
+		return sb1.toString().compareTo(sb2.toString())==0;
+	}
+}
+
 //778. Swim in Rising Water
 //Runtime: 28 ms, faster than 76.08% of Java online submissions for Swim in Rising Water.
 //Memory Usage: 39.6 MB, less than 100.00% of Java online submissions for Swim in Rising Water.
@@ -220,11 +239,11 @@ class Solution778
 	boolean frozen;
 	boolean[][] used;
 	final static int[][] di =
-		{
-				{ 1, 0 },
-				{ 0, 1 },
-				{ -1, 0 },
-				{ 0, -1 } };
+	{
+			{ 1, 0 },
+			{ 0, 1 },
+			{ -1, 0 },
+			{ 0, -1 } };
 
 	void init(int[][] grid)
 	{
@@ -318,11 +337,11 @@ class Solution778_2
 	boolean frozen;
 	boolean[][] used;
 	final static int[][] di =
-		{
-				{ 1, 0 },
-				{ 0, 1 },
-				{ -1, 0 },
-				{ 0, -1 } };
+	{
+			{ 1, 0 },
+			{ 0, 1 },
+			{ -1, 0 },
+			{ 0, -1 } };
 
 	void init(int[][] grid)
 	{

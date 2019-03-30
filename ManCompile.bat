@@ -2,9 +2,7 @@ set curpath=%cd%
 set outpath=%curpath%\bin
 set cpath="%classpath%;%curpath%\src\;%outpath%"
 
-javac -d  %outpath% -classpath %cpath% %curpath%\src\test\MutualC1.java
-
-goto:EndPause
+rem:goto:EndPause
 
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
@@ -26,7 +24,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeCodec.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\Heap.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\TestHeap.java
 
-rem:exit
+goto:EndPause
 
 
 
@@ -127,6 +125,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc711_720\LC711_720.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc721_730\LC721_730.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc731_740\LC731_740.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc741_750\LC741_750.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc751_760\LC751_760.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc761_770\LC761_770.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc771_780\LC771_780.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc781_790\LC781_790.java
