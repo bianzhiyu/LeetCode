@@ -75,6 +75,68 @@ class Solution713
 	}
 }
 
+//714. Best Time to Buy and Sell Stock with Transaction Fee
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/
+//Runtime: 6 ms, faster than 95.85% of Java online submissions for Best Time to Buy and Sell Stock with Transaction Fee.
+//Memory Usage: 53.8 MB, less than 5.04% of Java online submissions for Best Time to Buy and Sell Stock with Transaction Fee.
+class Solution714
+{
+	public int maxProfit(int[] prices, int fee)
+	{
+		int cash = 0, hold = -prices[0];
+		for (int i = 1; i < prices.length; i++)
+		{
+			cash = Math.max(cash, hold + prices[i] - fee);
+			hold = Math.max(hold, cash - prices[i]);
+		}
+		return cash;
+	}
+}
+
+//the same
+//Runtime: 5 ms, faster than 99.32% of Java online submissions for Best Time to Buy and Sell Stock with Transaction Fee.
+//Memory Usage: 53.5 MB, less than 6.72% of Java online submissions for Best Time to Buy and Sell Stock with Transaction Fee.
+class Solution714_2
+{
+	public int maxProfit(int[] prices, int fee)
+	{
+		int cash = 0, hold = -prices[0] - fee;
+		for (int i = 1; i < prices.length; i++)
+		{
+			cash = Math.max(cash, hold + prices[i]);
+			hold = Math.max(hold, cash - prices[i] - fee);
+		}
+		return cash;
+	}
+}
+
+//718. Maximum Length of Repeated Subarray
+//Runtime: 57 ms, faster than 26.71% of Java online submissions for Maximum Length of Repeated Subarray.
+//Memory Usage: 53.6 MB, less than 5.68% of Java online submissions for Maximum Length of Repeated Subarray.
+class Solution718
+{
+	public int findLength(int[] A, int[] B)
+	{
+		int len1 = A.length, len2 = B.length, max = 0;
+		int[][] d = new int[len1 + 1][len2 + 1];
+		for (int i = 1; i <= len1; i++)
+			d[i][0] = 0;
+		for (int i = 1; i <= len2; i++)
+			d[0][i] = 0;
+		for (int i = 1; i <= len1; i++)
+			for (int j = 1; j <= len2; j++)
+			{
+				if (A[i - 1] == B[j - 1])
+					d[i][j] = 0;
+				else
+					d[i][j] = 1 + d[i - 1][j - 1];
+				if (d[i][j] > max)
+					max = d[i][j];
+			}
+		return max;
+	}
+}
+
 //719. Find K-th Smallest Pair Distance
 //Runtime: 549 ms, faster than 8.93% of Java online submissions for Find K-th Smallest Pair Distance.
 //Memory Usage: 39.9 MB, less than 100.00% of Java online submissions for Find K-th Smallest Pair Distance.
