@@ -87,7 +87,10 @@ public class Test {
 	public static int[] parseIntArr(String str)
 	{
 		str=str.trim();
-		String[] strarr=str.substring(1,str.length()-1).split(",");
+		str=str.substring(1,str.length()-1);
+		str=str.trim();
+		if (str.length()==0) return new int[0];
+		String[] strarr=str.split(",");
 		int[] a=new int[strarr.length];
 		for (int i=0;i<strarr.length;i++)
 			a[i]=Integer.parseInt(strarr[i].trim());

@@ -210,21 +210,48 @@ class Solution773
 }
 
 //777. Swap Adjacent in LR String
-//Wrong answer
+//Runtime: 4 ms, faster than 98.40% of Java online submissions for Swap Adjacent in LR String.
+//Memory Usage: 38 MB, less than 95.28% of Java online submissions for Swap Adjacent in LR String.
 class Solution777
 {
 	public boolean canTransform(String start, String end)
 	{
-		int len1=start.length();
-		StringBuilder sb1=new StringBuilder();
-		for (int i=0;i<len1;i++)
-			if (start.charAt(i)!='X') sb1.append(start.charAt(i));
-		
-		int len2=end.length();
-		StringBuilder sb2=new StringBuilder();
-		for (int i=0;i<len2;i++)
-			if (end.charAt(i)!='X') sb2.append(end.charAt(i));
-		return sb1.toString().compareTo(sb2.toString())==0;
+		int p1 = 0, p2 = 0;
+		while (p1 < start.length() && p2 < end.length())
+		{
+			if (start.charAt(p1) == 'L')
+			{
+				while (p2 < end.length() && end.charAt(p2) == 'X')
+					p2++;
+				if (!(p2 < end.length() && p2 <= p1 && end.charAt(p2) != 'L'))
+					return false;
+				p1++;
+				p2++;
+			} else if (start.charAt(p1) == 'R')
+			{
+				while (p2 < end.length() && end.charAt(p2) == 'X')
+					p2++;
+				if (!(p2 < end.length() && p2 >= p1 && end.charAt(p2) != 'R'))
+					return false;
+				p1++;
+				p2++;
+			} else
+			{
+				p1++;
+			}
+		}
+		if (p1 == start.length())
+		{
+			while (p2 < end.length())
+				if (end.charAt(p2++) != 'X')
+					return false;
+		} else if (p2 == end.length())
+		{
+			while (p1 < start.length())
+				if (start.charAt(p1++) != 'X')
+					return false;
+		}
+		return true;
 	}
 }
 
@@ -424,6 +451,28 @@ class Solution778_2
 	}
 }
 
+//779. K-th Symbol in Grammar
+//hint:Try to represent the current (N, K) in terms of some (N-1, prevK). What is prevK ?
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for K-th Symbol in Grammar.
+//Memory Usage: 31.8 MB, less than 100.00% of Java online submissions for K-th Symbol in Grammar.
+class Solution779
+{
+	public int kthGrammar(int N, int K)
+	{
+		N--;
+		int[] stack = new int[N];
+		for (int i = 0; i < N; i++)
+		{
+			stack[i] = (K + 1) % 2;
+			K = (K + 1) / 2;
+		}
+		int state = 0;
+		for (int i = N - 1; i >= 0; i--)
+			state ^= stack[i];
+		return state;
+	}
+}
+
 //780. Reaching Points
 //java.lang.StackOverflowError, with case
 //new Solution780().reachingPoints(35, 13, 455955547, 420098884)
@@ -525,7 +574,17 @@ public class LC771_780
 {
 	public static void main(String[] args)
 	{
-		System.out.println(new Solution780_2().reachingPoints(3, 3, 12, 9));
+		System.out.println("-----------");
+		String s = "[[]]";
+		String[] a = s.split("(\\[\\[)|(\\],\\[)|(\\]\\])");
+		for (String i : a)
+			System.out.println(i);
+		System.out.println("-----------");
+		String s2 = ",";
+		String[] a2 = s2.split(",");
+		for (String i : a2)
+			System.out.println(i);
+		System.out.println("-----------");
 	}
 
 }
