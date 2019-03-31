@@ -356,6 +356,40 @@ class Solution799
 	}
 }
 
+//797. All Paths From Source to Target
+//Runtime: 2 ms, faster than 99.80% of Java online submissions for All Paths From Source to Target.
+//Memory Usage: 42.7 MB, less than 46.80% of Java online submissions for All Paths From Source to Target.
+class Solution797
+{
+	private int[] stack;
+	private List<List<Integer>>ans;
+	private int[][]g;
+	private void dfs(int node,int st,int tar)
+	{
+		if (node==tar)
+		{
+			List<Integer> t=new ArrayList<Integer>();
+			for (int i=0;i<st;i++)
+				t.add(stack[i]);
+			ans.add(t);
+			return;
+		}
+		for (int i=0;i<g[node].length;i++)
+		{
+			stack[st]=g[node][i];
+			dfs(g[node][i],st+1,tar);
+		}
+	}
+	public List<List<Integer>> allPathsSourceTarget(int[][] graph)
+	{
+		stack=new int[graph.length+2];
+		ans=new ArrayList<List<Integer>>();
+		g=graph;
+		dfs(0,1,graph.length-1);
+		return ans;
+	}
+}
+
 public class LC791_800
 {
 	public static void main(String[] args)

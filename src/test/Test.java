@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -105,6 +107,48 @@ public class Test {
 			sb.append(arr[i]).append(',');
 		sb.append(arr[arr.length-1]).append(']');
 		return sb.toString();
+	}
+	/** model: "[1,2,3]" */
+	public static List<Integer> parseIntList(String str)
+	{
+		str=str.trim();
+		str=str.substring(1,str.length()-1);
+		str=str.trim();
+		if (str.length()==0) return new ArrayList<Integer>();
+		String[] strarr=str.split(",");
+		List<Integer> a=new ArrayList<Integer>(strarr.length);
+		for (int i=0;i<strarr.length;i++)
+			a.add(Integer.parseInt(strarr[i].trim()));
+		return a;
+	}
+	public static List<List<Integer>> parse2DIntList(String in)
+	{
+		List<List<Integer>> out=new ArrayList<List<Integer>>();
+		int p=1;
+		while (p<in.length()-1)
+		{
+			if (in.charAt(p)=='[')
+			{
+				int k=p+1;
+				while (in.charAt(k)!=']') k++;
+				out.add(parseIntList(in.substring(p,k+1)));
+				p=k+1;
+			}
+			else p++;
+		}
+		return out;
+	}
+	public static int[][] parse2DIntArr(String in)
+	{
+		List<List<Integer>> out=parse2DIntList(in);
+		int[][] o2=new int[out.size()][];
+		for (int i=0;i<o2.length;i++)
+		{
+			o2[i]=new int[out.get(i).size()];
+			for (int j=0;j<o2[i].length;j++)
+				o2[i][j]=out.get(i).get(j);
+		}
+		return o2;
 	}
 	public static void main(String[] args)
 	{
