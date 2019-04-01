@@ -64,35 +64,43 @@ class Solution199
 //Memory Usage: 41 MB, less than 29.29% of Java online submissions for Number of Islands.
 class Solution200
 {
-	final static int[][]di=new int[][] {{0,1},{1,0},{0,-1},{-1,0}};
+	final static int[][] di = new int[][]
+	{
+			{ 0, 1 },
+			{ 1, 0 },
+			{ 0, -1 },
+			{ -1, 0 } };
+
 	public int numIslands(char[][] grid)
 	{
-		if (grid.length==0 || grid[0].length==0) return 0;
-		int n1=grid.length,n2=grid[0].length;
-		boolean[][]used=new boolean[n1][n2];
-		int[]qx=new int[n1*n2];
-		int[]qy=new int[n1*n2];
-		int ct=0,f,r,nx,ny;
-		for (int i=0;i<n1;i++)
-			for (int j=0;j<n2;j++)
-				if (grid[i][j]=='1' && !used[i][j])
+		if (grid.length == 0 || grid[0].length == 0)
+			return 0;
+		int n1 = grid.length, n2 = grid[0].length;
+		boolean[][] used = new boolean[n1][n2];
+		int[] qx = new int[n1 * n2];
+		int[] qy = new int[n1 * n2];
+		int ct = 0, f, r, nx, ny;
+		for (int i = 0; i < n1; i++)
+			for (int j = 0; j < n2; j++)
+				if (grid[i][j] == '1' && !used[i][j])
 				{
 					ct++;
-					qx[0]=i;qy[0]=j;
-					used[i][j]=true;
-					f=0;r=1;
-					while (f<r)
+					qx[0] = i;
+					qy[0] = j;
+					used[i][j] = true;
+					f = 0;
+					r = 1;
+					while (f < r)
 					{
-						for (int k=0;k<4;k++)
+						for (int k = 0; k < 4; k++)
 						{
-							nx=qx[f]+di[k][0];
-							ny=qy[f]+di[k][1];
-							if (nx>=0 && ny>=0 && nx<n1 && ny<n2 && 
-									!used[nx][ny] && grid[nx][ny]=='1')
+							nx = qx[f] + di[k][0];
+							ny = qy[f] + di[k][1];
+							if (nx >= 0 && ny >= 0 && nx < n1 && ny < n2 && !used[nx][ny] && grid[nx][ny] == '1')
 							{
-								qx[r]=nx;
-								qy[r]=ny;
-								used[nx][ny]=true;
+								qx[r] = nx;
+								qy[r] = ny;
+								used[nx][ny] = true;
 								r++;
 							}
 						}

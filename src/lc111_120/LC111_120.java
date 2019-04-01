@@ -106,15 +106,18 @@ class Solution114
 {
 	public void flatten(TreeNode root)
 	{
-		if (root==null) return;
-		if (root.left==null && root.right==null) return;
+		if (root == null)
+			return;
+		if (root.left == null && root.right == null)
+			return;
 		flatten(root.left);
 		flatten(root.right);
-		TreeNode p=root.right;
-		root.right=root.left;
-		root.left=null;
-		while (root.right!=null) root=root.right;
-		root.right=p;
+		TreeNode p = root.right;
+		root.right = root.left;
+		root.left = null;
+		while (root.right != null)
+			root = root.right;
+		root.right = p;
 	}
 }
 
@@ -380,16 +383,16 @@ public class LC111_120
 {
 	public static void main(String[] args)
 	{
-		
-		String in="[1,2,5,3,4,null,6]";
+
+		String in = "[1,2,5,3,4,null,6]";
 		System.out.println(in);
-		TreeNode r=TreeCodec.deserialize(in);
+		TreeNode r = TreeCodec.deserialize(in);
 		System.out.println(TreeCodec.serialize(r));
-		
-		Solution114 s=new Solution114();
+
+		Solution114 s = new Solution114();
 		s.flatten(r);
-		
+
 		System.out.println(TreeCodec.serialize(r));
-		
+
 	}
 }

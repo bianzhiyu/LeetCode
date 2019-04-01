@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-
 class Node
 {
 	public int val;
@@ -26,22 +25,23 @@ class Node
 	}
 }
 
-
-class RNode 
+class RNode
 {
-    public int val;
-    public RNode next;
-    public RNode random;
+	public int val;
+	public RNode next;
+	public RNode random;
 
-    public RNode() {}
+	public RNode()
+	{
+	}
 
-    public RNode(int _val,RNode _next,RNode _random) {
-        val = _val;
-        next = _next;
-        random = _random;
-    }
+	public RNode(int _val, RNode _next, RNode _random)
+	{
+		val = _val;
+		next = _next;
+		random = _random;
+	}
 }
-
 
 //131. Palindrome Partitioning
 //Runtime: 2 ms, faster than 100.00% of Java online submissions for Palindrome Partitioning.
@@ -437,23 +437,24 @@ class Solution138
 {
 	public RNode copyRandomList(RNode head)
 	{
-		if (head==null) return null;	
-		HashMap<RNode,RNode> hm=new HashMap<RNode,RNode>();
-		RNode h2=new RNode(head.val,head.next,head.random);
-		hm.put(head,h2);
-		RNode p=head,q=h2;
-		while (p.next!=null)
+		if (head == null)
+			return null;
+		HashMap<RNode, RNode> hm = new HashMap<RNode, RNode>();
+		RNode h2 = new RNode(head.val, head.next, head.random);
+		hm.put(head, h2);
+		RNode p = head, q = h2;
+		while (p.next != null)
 		{
-			p=p.next;
-			q.next=new RNode(p.val,p.next,p.random);
-			q=q.next;
-			hm.put(p,q);
+			p = p.next;
+			q.next = new RNode(p.val, p.next, p.random);
+			q = q.next;
+			hm.put(p, q);
 		}
-		p=head;
-		while (p!=null)
+		p = head;
+		while (p != null)
 		{
-			hm.get(p).random=hm.get(p.random);
-			p=p.next;
+			hm.get(p).random = hm.get(p.random);
+			p = p.next;
 		}
 		return h2;
 	}
