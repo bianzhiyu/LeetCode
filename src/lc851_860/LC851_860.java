@@ -309,11 +309,55 @@ class ExamRoom_2
 }
 
 //856. Score of Parentheses
+//Runtime: 1 ms, faster than 96.94% of Java online submissions for Score of Parentheses.
+//Memory Usage: 35.4 MB, less than 19.23% of Java online submissions for Score of Parentheses.
 class Solution856
 {
+	private class Token
+	{
+		private int type; // 0: num; 1:(; 
+		private int num;
+
+		public Token(int t, int n)
+		{
+			type = t;
+			num = n;
+		}
+	}
+
 	public int scoreOfParentheses(String S)
 	{
-		return 0;
+		Token[] stack = new Token[100];
+		int p = 0, len = S.length(), st = 0;
+		while (p < len)
+		{
+			if (S.charAt(p) == '(')
+			{
+				stack[st++] = new Token(1, 0);
+				p++;
+			} else if (S.charAt(p) == ')')
+			{
+				if (stack[st - 1].type == 1)
+				{
+					stack[st - 1].type = 0;
+					stack[st - 1].num = 1;
+				} else
+				{
+					int s = 0;
+					while (st > 0 && stack[st - 1].type == 0)
+					{
+						s += stack[--st].num;
+					}
+					stack[st - 1].type = 0;
+					stack[st - 1].num = s * 2;
+				}
+				p++;
+			}
+		}
+		int s = 0;
+		while (st > 0)
+			s += stack[--st].num;
+		return s;
 	}
 }
 
