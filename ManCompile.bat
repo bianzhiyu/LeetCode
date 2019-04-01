@@ -24,7 +24,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeCodec.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\Heap.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\TestHeap.java
 
-goto:EndPause
+rem:goto:EndPause
 
 
 

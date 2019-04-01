@@ -4,6 +4,12 @@ All the source files are contained in the src folder.
 
 All others files and folders are auxiliary.
 
+One can clone this repository to his own disk. 
+Some compile error may occur at the first run. 
+They should be caused by the class dependency.
+To solve this, one can run the ManCompile.bat at its position. 
+It also gives a feasible compile order.
+
 ## Contents:
 
 ### src
