@@ -13,11 +13,11 @@ It also gives a feasible compile order.
 ## How to use/read these codes?
 
 Unfortunately, these codes are organized for the convenience of writing them, but not using or reading them.
-But these explanations will help.
+But these words can help.
 
 Like lc101_110/LC101_110.java,
-it should contain all questions from 101 to 110.
-For each question, I may give more than one solutions, like 
+it should contain all solutions to questions from 101 to 110.
+For each question, I may give more than one solutions, specified as  
 class  Solution101, Solution101_2, Solution101_3 and so on.
 
 Some of them may be wrong. 
@@ -26,7 +26,6 @@ For the accepted solution,
 before the class definition are time and space performance.
 
 Of course these information can be placed in a better place.
-
 But for my first try on Leet Code, 
 I do all things as simple as the way can be. 
 
