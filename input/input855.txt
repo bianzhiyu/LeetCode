@@ -1,0 +1,6 @@
+["ExamRoom","seat","seat","seat","seat","leave","seat"]
+[[10],[],[],[],[],[4],[]]
+["ExamRoom","seat","seat","seat","seat","leave","leave","seat"]
+[[4],[],[],[],[],[1],[3],[]]
+["ExamRoom","seat","seat","seat","leave","leave","seat","seat","seat","seat","seat","seat","seat","seat","seat","leave","leave","seat","seat","leave","seat","leave","seat","leave","seat","leave","seat","leave","leave","seat","seat","leave","leave","seat","seat","leave"]
+[[10],[],[],[],[0],[4],[],[],[],[],[],[],[],[],[],[0],[4],[],[],[7],[],[3],[],[3],[],[9],[],[0],[8],[],[],[0],[8],[],[],[2]]
