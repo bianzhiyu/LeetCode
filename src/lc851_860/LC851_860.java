@@ -308,6 +308,15 @@ class ExamRoom_2
 	}
 }
 
+//856. Score of Parentheses
+class Solution856
+{
+	public int scoreOfParentheses(String S)
+	{
+		return 0;
+	}
+}
+
 public class LC851_860
 {
 	public static void test853()
