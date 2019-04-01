@@ -1,7 +1,39 @@
 package lc841_850;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+//841. Keys and Rooms
+//Runtime: 2 ms, faster than 96.97% of Java online submissions for Keys and Rooms.
+//Memory Usage: 44.5 MB, less than 6.40% of Java online submissions for Keys and Rooms.
+class Solution841
+{
+	public boolean canVisitAllRooms(List<List<Integer>> rooms)
+	{
+		HashSet<Integer> used = new HashSet<Integer>();
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(0);
+		int canGetNum = 1;
+		used.add(0);
+		while (!q.isEmpty())
+		{
+			int h = q.poll();
+			for (int j : rooms.get(h))
+				if (!used.contains(j))
+				{
+					used.add(j);
+					q.add(j);
+					canGetNum++;
+				}
+		}
+		return canGetNum == rooms.size();
+	}
+}
 
 //Split Array into Fibonacci Sequence
 //Runtime: 6 ms, faster than 71.48% of Java online submissions for Split Array into Fibonacci Sequence.
@@ -17,8 +49,7 @@ class Solution842
 			try
 			{
 				Integer.parseInt(S.substring(0, i));
-			} 
-			catch (NumberFormatException e)
+			} catch (NumberFormatException e)
 			{
 				break;
 			}
@@ -86,8 +117,7 @@ class Solution842
 			try
 			{
 				ans.add(Integer.parseInt(num.substring(readpos, readpos + digitlen3)));
-			} 
-			catch(NumberFormatException e)
+			} catch (NumberFormatException e)
 			{
 				return null;
 			}
@@ -136,6 +166,88 @@ class Solution845
 	}
 }
 
+//846. Hand of Straights
+//Runtime: 39 ms, faster than 71.85% of Java online submissions for Hand of Straights.
+//Memory Usage: 39 MB, less than 87.81% of Java online submissions for Hand of Straights.
+class Solution846
+{
+	private static class Mp implements Comparable<Mp>
+	{
+		private int num, ct;
+
+		public Mp(int n, int c)
+		{
+			num = n;
+			ct = c;
+		}
+
+		public int compareTo(Mp o)
+		{
+			if (num < o.num)
+				return -1;
+			if (num == o.num)
+				return 0;
+			return 1;
+		}
+
+	}
+
+	public boolean isNStraightHand(int[] hand, int W)
+	{
+		HashMap<Integer, Integer> freq = new HashMap<Integer, Integer>();
+		for (int i = 0; i < hand.length; i++)
+			freq.put(hand[i], freq.getOrDefault(hand[i], 0) + 1);
+		PriorityQueue<Mp> heap = new PriorityQueue<Mp>();
+		for (int num : freq.keySet())
+			heap.offer(new Mp(num, freq.get(num)));
+		List<Mp> arr = new ArrayList<Mp>(W);
+		for (int i = 0; i < W; i++)
+			arr.add(new Mp(0, 0));
+		while (!heap.isEmpty())
+		{
+			for (int i = 0; i < W; i++)
+			{
+				if (heap.isEmpty())
+					return false;
+				arr.set(i, heap.poll());
+			}
+			int minNum = arr.get(0).num;
+			for (int i = 0; i < W; i++)
+			{
+				Mp p = arr.get(i);
+				if (p.num != minNum + i)
+					return false;
+				p.ct--;
+				if (p.ct > 0)
+					heap.offer(p);
+			}
+		}
+		return true;
+	}
+}
+
+//848. Shifting Letters
+//Runtime: 4 ms, faster than 93.09% of Java online submissions for Shifting Letters.
+//Memory Usage: 42.3 MB, less than 24.64% of Java online submissions for Shifting Letters.
+class Solution848
+{
+	public String shiftingLetters(String S, int[] shifts)
+	{
+		int len=shifts.length;
+		shifts[len-1]%=26;
+		for (int i=len-2;i>=0;i--)
+			shifts[i]=(shifts[i]%26+shifts[i+1])%26;
+		StringBuilder sb=new StringBuilder();
+		for (int i=0;i<len;i++)
+		{
+			int c=S.charAt(i);
+			c=((c-'a')+shifts[i])%26+'a';
+			sb.append((char)c);
+		}
+		return sb.toString();
+	}
+}
+
 public class LC841_850
 {
 	public static void main(String[] args)
@@ -143,6 +255,6 @@ public class LC841_850
 		// System.out.println(new Solution845().longestMountain(
 		// new int[] {2,1,4,7,3,2,5}
 		// ));
-		  
+
 	}
 }
