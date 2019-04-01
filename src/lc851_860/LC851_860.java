@@ -315,7 +315,7 @@ class Solution856
 {
 	private class Token
 	{
-		private int type; // 0: num; 1:(; 
+		private int type; // 0: num; 1:(;
 		private int num;
 
 		public Token(int t, int n)
@@ -358,6 +358,134 @@ class Solution856
 		while (st > 0)
 			s += stack[--st].num;
 		return s;
+	}
+}
+
+//858. Mirror Reflection
+//Runtime: 4 ms, faster than 18.81% of Java online submissions for Mirror Reflection.
+//Memory Usage: 31.9 MB, less than 100.00% of Java online submissions for Mirror Reflection.
+class Solution858
+{
+	public final static double ERR = 1e-9;
+
+	public int mirrorReflection(int p, int q)
+	{
+		double x = 0, y = 0;
+		double rx = p, ry = q;
+		double[] candt = new double[4];
+		while (true)
+		{
+			if (x < 1 && rx > 0)
+				candt[0] = (1 - x) / rx;
+			else
+				candt[0] = -1;
+			if (y < 1 && ry > 0)
+				candt[1] = (1 - y) / ry;
+			else
+				candt[1] = -1;
+			if (x > 0 && rx < 0)
+				candt[2] = x / (-rx);
+			else
+				candt[2] = -1;
+			if (y > 0 && ry < 0)
+				candt[3] = y / (-ry);
+			else
+				candt[3] = -1;
+			int ind = -1;
+			for (int i = 0; i < 4; i++)
+				if (candt[i] > -0.5 && (ind == -1 || candt[i] < candt[ind]))
+					ind = i;
+			x = x + rx * candt[ind];
+			y = y + ry * candt[ind];
+			if (equ(1, x) || equ(0, x))
+				rx = -rx;
+			if (equ(1, y) || equ(0, y))
+				ry = -ry;
+			;
+			if (equ(x, 1) && equ(y, 0))
+				return 0;
+			if (equ(x, 1) && equ(y, 1))
+				return 1;
+			if (equ(x, 0) && equ(y, 1))
+				return 2;
+		}
+	}
+
+	private boolean equ(double a, double b)
+	{
+		double t = a - b;
+		return t < ERR && -t < ERR;
+	}
+}
+
+//std858
+class Solution858_2
+{
+	double EPS = 1e-6;
+
+	public int mirrorReflection(int p, int q)
+	{
+		double x = 0, y = 0;
+		double rx = p, ry = q;
+
+		// While it hasn't reached a receptor,...
+		while (!(close(x, p) && (close(y, 0) || close(y, p)) || close(x, 0) && close(y, p)))
+		{
+			// Want smallest t so that some x + rx, y + ry is 0 or p
+			// x + rxt = 0, then t = -x/rx etc.
+			double t = 1e9;
+			if ((-x / rx) > EPS)
+				t = Math.min(t, -x / rx);
+			if ((-y / ry) > EPS)
+				t = Math.min(t, -y / ry);
+			if (((p - x) / rx) > EPS)
+				t = Math.min(t, (p - x) / rx);
+			if (((p - y) / ry) > EPS)
+				t = Math.min(t, (p - y) / ry);
+
+			x += rx * t;
+			y += ry * t;
+
+			if (close(x, p) || close(x, 0))
+				rx *= -1;
+			if (close(y, p) || close(y, 0))
+				ry *= -1;
+		}
+
+		if (close(x, p) && close(y, p))
+			return 1;
+		return close(x, p) ? 0 : 2;
+	}
+
+	public boolean close(double x, double y)
+	{
+		return Math.abs(x - y) < EPS;
+	}
+}
+
+//std solution
+///https://leetcode.com/articles/mirror-reflection/
+class Solution858_3
+{
+
+	public int mirrorReflection(int p, int q)
+	{
+		int g = gcd(p, q);
+		p /= g;
+		p %= 2;
+		q /= g;
+		q %= 2;
+
+		if (p == 1 && q == 1)
+			return 1;
+		return p == 1 ? 0 : 2;
+	}
+
+	public int gcd(int a, int b)
+	{
+		if (a == 0)
+			return b;
+		return gcd(b % a, a);
 	}
 }
 
@@ -456,8 +584,14 @@ public class LC851_860
 		test.Test.dispArr(r.stu);
 	}
 
+	public static void test858()
+	{
+		Solution858 s = new Solution858();
+		System.out.println(s.mirrorReflection(4, 3));
+	}
+
 	public static void main(String[] args)
 	{
-
+		test858();
 	}
 }

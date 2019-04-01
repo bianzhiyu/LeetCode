@@ -138,7 +138,9 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc821_830\LC821_830.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc831_840\LC831_840.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc841_850\LC841_850.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc851_860\LC851_860.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc861_870\LC861_870.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc871_880\LC871_880.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc881_890\LC881_890.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc891_900\LC891_900.java
 
 :since901
