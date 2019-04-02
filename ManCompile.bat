@@ -7,6 +7,9 @@ rem:goto:EndPause
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST2.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\MTreeSet.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\MHashMap.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\MHashSet.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\TestBBST.java
 
 javac -d  %outpath% -classpath %cpath% %curpath%\src\dijkstra\EdgeTo.java
@@ -24,6 +27,8 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeCodec.java
 
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\Heap.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\TestHeap.java
+
+javac -d  %outpath% -classpath %cpath% %curpath%\src\mineSweep\MineSweeper.java
 
 rem:goto:EndPause
 
@@ -148,6 +153,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc891_900\LC891_900.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc901_910\LC901_910.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc911_920\LC911_920.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc921_930\LC921_930.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc931_940\LC931_940.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc941_950\LC941_950.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc961_970\LC961_970.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc971_980\LC971_980.java

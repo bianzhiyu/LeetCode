@@ -3,6 +3,7 @@ package lc921_930;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 //921. Minimum Add to Make Parentheses Valid
@@ -205,11 +206,77 @@ class Solution924
 }
 
 //926. Flip String to Monotone Increasing
+//Runtime: 8 ms, faster than 55.56% of Java online submissions for Flip String to Monotone Increasing.
+//Memory Usage: 37.4 MB, less than 27.27% of Java online submissions for Flip String to Monotone Increasing.
 class Solution926
 {
+	private int[] pct;
+
 	public int minFlipsMonoIncr(String S)
 	{
-		return 0;
+		int len = S.length();
+		pct = new int[len];
+		pct[0] = S.charAt(0) == '1' ? 1 : 0;
+		for (int i = 1; i < len; i++)
+			pct[i] = S.charAt(i) == '1' ? pct[i - 1] + 1 : pct[i - 1];
+		int min = Math.min(pct[len - 1], len - pct[len - 1]);
+		for (int i = 0; i < len - 1; i++)
+		{
+			int t = pct[i] + (len - i - 1 - (pct[len - 1] - pct[i]));
+			if (min > t)
+				min = t;
+		}
+		return min;
+	}
+}
+
+//930. Binary Subarrays With Sum
+//Runtime: 25 ms, faster than 49.47% of Java online submissions for Binary Subarrays With Sum.
+//Memory Usage: 43.2 MB, less than 5.66% of Java online submissions for Binary Subarrays With Sum.
+class Solution930
+{
+	public int numSubarraysWithSum(int[] A, int S)
+	{
+		if (S==0)
+		{
+			int tot=0,i=0,len=A.length;
+			while (i<len)
+			{
+				if (A[i]==1)
+				{
+					i++;
+				}
+				else
+				{
+					int j=i+1;
+					while(j<len && A[j]==0) j++;
+					tot+=(1+j-i)*(j-i)/2;
+					i=j;
+				}
+			}
+			return tot;
+		}
+		int sum=0,len=A.length;
+		HashMap<Integer,Integer>h=new HashMap<Integer,Integer>();
+		for (int i=0;i<len;i++)
+		{
+			sum+=A[i];
+			h.put(sum,h.getOrDefault(sum,0)+1);
+		}
+		
+		HashSet<Integer> used=new HashSet<Integer>();
+		int tot=h.getOrDefault(S, 0);
+		sum=0;
+		for (int i=0;i<len;i++)
+		{
+			sum+=A[i];
+			if (!used.contains(sum))
+			{
+				tot+=h.getOrDefault(sum, 0)*h.getOrDefault(sum+S, 0);
+				used.add(sum);
+			}
+		}
+		return tot;
 	}
 }
 
