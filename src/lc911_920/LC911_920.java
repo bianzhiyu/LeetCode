@@ -1,8 +1,6 @@
 package lc911_920;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import bbst.BBST;
@@ -137,6 +135,9 @@ class TopVotedCandidate
 //Memory Usage: 71.5 MB, less than 80.21% of Java online submissions for Online Election.
 
 //Note that: the leader change event can be detected easily.
+//We don't need to record the total order of all persons.
+//We just need to record the leader.
+//This saves us the us of a BBST.
 class TopVotedCandidate_2
 {
 	private int[] top, times;
