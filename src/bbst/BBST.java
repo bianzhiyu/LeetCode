@@ -12,7 +12,14 @@ import treeCodec.TreeCodec;
  * with BBST<T> rt,...
  * rt=rt.insert(o1).insert(o2),
  * the tree will have two nodes.
- * @author bianz
+ * 
+ * If one wants to avoid duplication,
+ * he needs to check containData(x) before insert.
+ * The caller himself needs to guarantee no-duplication.
+ * 
+ * With no duplication, this class can be used to implement things
+ * like hash set, hash map, et al.
+ * @author bianzhiyu
  *
  * @param <T>
  */
@@ -27,6 +34,8 @@ implements BinaryTree<T>
 	{
 		dataLink=x;
 		height=1;
+		left=null;
+		right=null;
 	}
 	
 	protected void setLeft(BBST<T> nl){left=nl;}
@@ -168,6 +177,10 @@ implements BinaryTree<T>
 		updateHeight();
 		return balance();
 	}
+	
+	/** Remove the node whose dataLink: dataLink.comparesTo(x)==0.
+	 *  If no such node exists, this method will do nothing.
+	 * */
 	public BBST<T> removeNodeByData(T x)
 	{
 		if (left==null && right==null)
@@ -216,6 +229,10 @@ implements BinaryTree<T>
 		updateHeight();
 		return balance();
 	}
+	
+	/** Check whether this tree has some node whose dataLink:
+	 * dataLink.comparesTo(d)==0.
+	 */
 	public boolean containData(T d)
 	{
 		if (dataLink.compareTo(d)==0) return true;
@@ -255,7 +272,10 @@ implements BinaryTree<T>
 	}
 	
 	/** This method can change the node.
-	/*	Be careful not to change the order.*/
+	 *	Be careful not to change the order.
+	 *  This method replace the dataLink, dataLink.compareTo(x)==0,
+	 *  contained in some node.
+	 *  If no such node exists, the method will do nothing.*/
 	public void replaceData(T d)
 	{
 		if (dataLink.compareTo(d)==0) dataLink=d;
@@ -263,6 +283,7 @@ implements BinaryTree<T>
 		{
 			if (right==null) return;
 			else right.replaceData(d);
+			return;
 		}
 		if (left==null) return;
 		else left.replaceData(d);

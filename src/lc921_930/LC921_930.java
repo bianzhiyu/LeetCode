@@ -1,6 +1,9 @@
 package lc921_930;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 //921. Minimum Add to Make Parentheses Valid
 //Runtime: 3 ms, faster than 100.00% of Java online submissions for Minimum Add to Make Parentheses Valid.
@@ -9,18 +12,126 @@ class Solution921
 {
 	public int minAddToMakeValid(String S)
 	{
-		int p=0,a=0;
-		for (char c:S.toCharArray())
+		int p = 0, a = 0;
+		for (char c : S.toCharArray())
 		{
-			if (c=='(') p++;
-			else 
+			if (c == '(')
+				p++;
+			else
 			{
-				if (p>0) p--;
-				else a++;
+				if (p > 0)
+					p--;
+				else
+					a++;
 			}
 		}
-		a+=p;
+		a += p;
 		return a;
+	}
+}
+
+//923. 3Sum With Multiplicity
+//Runtime: 788 ms, faster than 5.08% of Java online submissions for 3Sum With Multiplicity.
+//Memory Usage: 72.9 MB, less than 5.88% of Java online submissions for 3Sum With Multiplicity.
+class Solution923
+{
+	private final static int MOD = 1_000_000_007;
+
+	public int threeSumMulti(int[] A, int target)
+	{
+		int len = A.length;
+		List<HashMap<Integer, Integer>> a = new ArrayList<HashMap<Integer, Integer>>(len);
+		a.add(new HashMap<Integer, Integer>());
+		a.get(0).put(A[0], 1);
+		for (int i = 1; i < len; i++)
+		{
+			HashMap<Integer, Integer> t = new HashMap<Integer, Integer>();
+			t.putAll(a.get(i - 1));
+			t.put(A[i], t.getOrDefault(A[i], 0) + 1);
+			a.add(t);
+		}
+		int tot = 0;
+		for (int i = len - 1; i >= 0; i--)
+			for (int j = i - 1; j >= 1; j--)
+			{
+				int rem = target - A[i] - A[j];
+				if (a.get(j - 1).containsKey(rem))
+					tot = (tot + a.get(j - 1).get(rem)) % MOD;
+			}
+		return tot;
+	}
+}
+
+//https://leetcode.com/problems/3sum-with-multiplicity/solution/
+//Runtime: 4 ms, faster than 96.07% of Java online submissions for 3Sum With Multiplicity.
+//Memory Usage: 38.4 MB, less than 83.33% of Java online submissions for 3Sum With Multiplicity.
+class Solution923_2
+{
+	private final static int MOD = 1_000_000_007;
+
+	public int threeSumMulti(int[] A, int target)
+	{
+		int len = A.length;
+		Arrays.parallelSort(A);
+		int[] n = new int[len];
+		int[] c = new int[len];
+		int nlen = 0;
+		int i = 0;
+		HashMap<Integer, Integer> f = new HashMap<Integer, Integer>();
+		while (i < len)
+		{
+			int j = i + 1;
+			while (j < len && A[j] == A[i])
+				j++;
+			n[nlen] = A[i];
+			c[nlen] = j - i;
+			f.put(n[nlen], c[nlen]);
+			nlen++;
+			i = j;
+		}
+		int tot = 0;
+		for (i = 0; i < nlen; i++)
+		{
+			int T = target - n[i];
+			int j = i + 1, k = nlen - 1;
+			int c2 = f.getOrDefault(target - n[i] - n[i], 0);
+			if (c[i] > 1 && c2 > 0 && target - n[i] - n[i] > n[i])
+			{
+				long tmp = ((long) c[i]) * (c[i] - 1) / 2 * c2 % MOD;
+				tot = (tot + ((int) tmp)) % MOD;
+			}
+			if (n[i] * 3 == target && c[i] >= 3)
+			{
+				long tmp = ((long) c[i]) * (c[i] - 1) * (c[i] - 2) / 6 % MOD;
+				tot = (tot + ((int) tmp)) % MOD;
+			}
+			while (j <= k)
+			{
+				if (j == k)
+				{
+					if (T == n[j] + n[j])
+					{
+						long tmp = ((long) c[j]) * (c[j] - 1) / 2 * c[i] % MOD;
+						tot = (tot + ((int) tmp)) % MOD;
+					}
+					j++;
+				} else
+				{
+					if (n[j] + n[k] < T)
+						j++;
+					else if (n[j] + n[k] > T)
+						k--;
+					else
+					{
+						long tmp = ((long) c[j]) * c[k] * c[i] % MOD;
+						tot = (tot + ((int) tmp)) % MOD;
+						j++;
+					}
+				}
+			}
+		}
+
+		return tot;
 	}
 }
 
@@ -90,6 +201,15 @@ class Solution924
 			return fdNodeInd;
 		else
 			return initial[0];
+	}
+}
+
+//926. Flip String to Monotone Increasing
+class Solution926
+{
+	public int minFlipsMonoIncr(String S)
+	{
+		return 0;
 	}
 }
 
