@@ -8,7 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 //901. Online Stock Span
 //Runtime: 88 ms, faster than 91.97% of Java online submissions for Online Stock Span.
@@ -49,62 +52,68 @@ class StockSpanner
 }
 
 //904. Fruit Into Baskets
+//Runtime: 12 ms, faster than 77.82% of Java online submissions for Fruit Into Baskets.
+//Memory Usage: 51 MB, less than 45.11% of Java online submissions for Fruit Into Baskets.
 class Solution904
 {
 	public int totalFruit(int[] tree)
 	{
-		int len=tree.length;
-		int[] contLen=new int[len];
-		contLen[len-1]=1;
-		for (int i=len-2;i>=0;i--)
-			if (tree[i]==tree[i+1])
-				contLen[i]=contLen[i+1]+1;
-			else contLen[i]=1;
-		int[] typeCont=new int[2];
-		int max=1,p,count,typeCt;
-		for (int i=0;i<len;i++)
+		int len = tree.length;
+		int[] contLen = new int[len];
+		contLen[len - 1] = 1;
+		for (int i = len - 2; i >= 0; i--)
+			if (tree[i] == tree[i + 1])
+				contLen[i] = contLen[i + 1] + 1;
+			else
+				contLen[i] = 1;
+		int[] typeCont = new int[2];
+		int max = 1, p, count, typeCt;
+		for (int i = 0; i < len; i++)
 		{
-			typeCt=0;
-			p=i;
-			count=0;
-			typeCont[0]=typeCont[1]=0;
-			while (p<len)
+			if (len - i < max)
+				break;
+			if (i > 0 && tree[i] == tree[i - 1])
+				continue;
+
+			typeCt = 0;
+			p = i;
+			count = 0;
+			typeCont[0] = typeCont[1] = 0;
+			while (p < len)
 			{
-				if (typeCt==0)
+				if (typeCt == 0)
 				{
-					typeCont[0]=tree[p];
+					typeCont[0] = tree[p];
 					typeCt++;
-					count+=contLen[p];
-					p+=contLen[p];
-				}
-				else if (typeCt==1)
+					count += contLen[p];
+					p += contLen[p];
+				} else if (typeCt == 1)
 				{
-					if (typeCont[0]==tree[p])
+					if (typeCont[0] == tree[p])
 					{
-						count+=contLen[p];
-						p+=contLen[p];
-					}
-					else
+						count += contLen[p];
+						p += contLen[p];
+					} else
 					{
-						typeCont[1]=tree[p];
+						typeCont[1] = tree[p];
 						typeCt++;
-						count+=contLen[p];
-						p+=contLen[p];
+						count += contLen[p];
+						p += contLen[p];
 					}
-				}
-				else
+				} else
 				{
-					if (typeCont[0]==tree[p] || typeCont[1]==tree[p])
+					if (typeCont[0] == tree[p] || typeCont[1] == tree[p])
 					{
-						count+=contLen[p];
-						p+=contLen[p];
-					}
-					else break;
+						count += contLen[p];
+						p += contLen[p];
+					} else
+						break;
 				}
 			}
-			if (count>max) max=count;
+			if (count > max)
+				max = count;
 		}
-		
+
 		return max;
 	}
 }
@@ -130,6 +139,116 @@ class Solution907
 			}
 		}
 		return (int) tot;
+	}
+}
+
+//909. Snakes and Ladders
+//Runtime: 16 ms, faster than 54.79% of Java online submissions for Snakes and Ladders.
+//Memory Usage: 39.8 MB, less than 76.97% of Java online submissions for Snakes and Ladders.
+class Solution909
+{
+	private int N;
+	private int[][] b;
+	private int[][] rcToInd;
+	private int[][] indToRC;
+	private HashMap<Integer, Integer> stateToStep = new HashMap<Integer, Integer>();
+
+	private class State implements Comparable<State>
+	{
+		private int ind;
+		private boolean afterSkill;
+		private int hash;
+
+		public State(int _ind, boolean _a)
+		{
+			ind = _ind;
+			afterSkill = _a;
+			hash = ind * 3 + (afterSkill ? 1 : 0);
+		}
+
+		public void jump()
+		{
+			ind = b[getR()][getC()];
+			afterSkill = true;
+			hash = ind * 3 + (afterSkill ? 1 : 0);
+		}
+
+		public int compareTo(State o)
+		{
+			return hash - o.hash;
+		}
+
+		public int getR()
+		{
+			return indToRC[ind][0];
+		}
+
+		public int getC()
+		{
+			return indToRC[ind][1];
+		}
+
+		public boolean onSpecial()
+		{
+			return b[indToRC[ind][0]][indToRC[ind][1]] != -1;
+		}
+	}
+
+	private void establishMap(int[][] b)
+	{
+		N = b.length;
+		this.b = b;
+		int r = N - 1, c = 0;
+		int d = 1;
+
+		rcToInd = new int[N][N];
+		indToRC = new int[N * N + 1][2];
+		for (int i = 0; i < N * N; i++)
+		{
+			rcToInd[r][c] = i + 1;
+			indToRC[i + 1][0] = r;
+			indToRC[i + 1][1] = c;
+			c += d;
+			if (c == N)
+			{
+				c = N - 1;
+				d = -1;
+				r--;
+			} else if (c == -1)
+			{
+				c = 0;
+				d = 1;
+				r--;
+			}
+		}
+	}
+
+	public int snakesAndLadders(int[][] board)
+	{
+		establishMap(board);
+		State initState = new State(1, false);
+		stateToStep.put(initState.hash, 0);
+		Queue<State> q = new LinkedList<State>();
+		q.add(initState);
+		while (!q.isEmpty())
+		{
+			State s = q.remove();
+			int step = stateToStep.get(s.hash);
+			if (s.ind == N * N)
+				return step;
+			for (int ind = s.ind + 1; ind <= s.ind + 6 && ind <= N * N; ind++)
+			{
+				State ns = new State(ind, false);
+				if (ns.onSpecial())
+					ns.jump();
+				if (!stateToStep.containsKey(ns.hash))
+				{
+					q.add(ns);
+					stateToStep.put(ns.hash, step + 1);
+				}
+			}
+		}
+		return -1;
 	}
 }
 
@@ -168,7 +287,7 @@ public class LC901_910
 			{
 				int[] nums = test.Test.parseIntArr(inLine);
 
-				Solution904 s=new Solution904();
+				Solution904 s = new Solution904();
 
 				int ans = s.totalFruit(nums);
 				System.out.println(ans);
@@ -185,9 +304,43 @@ public class LC901_910
 			System.out.println(e.toString());
 		}
 	}
+
+	public static void test909()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input909.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output909.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[][] b = test.Test.parse2DIntArr(inLine);
+
+				Solution909 s = new Solution909();
+
+				int ans = s.snakesAndLadders(b);
+
+				System.out.println(ans);
+				bfw.write(ans + "");
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		test904();
+		test909();
 	}
 
 }

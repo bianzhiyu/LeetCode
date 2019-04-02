@@ -1,5 +1,7 @@
 package bbst;
 
+import java.util.Comparator;
+
 import treeCodec.BinaryTree;
 import treeCodec.TreeCodec;
 
@@ -16,21 +18,22 @@ import treeCodec.TreeCodec;
  *
  * @param <T>
  */
-public class BBST<T extends Comparable<T>>  
+public class BBST2<T extends Comparable<T>>  
 implements BinaryTree<T>
 {
 	protected T dataLink;
 	protected int height;
-	protected BBST<T> left,right;
+	protected BBST2<T> left,right;
+	protected Comparator<T> cmp;
 	
-	public BBST(T x)
+	public BBST2(T x)
 	{
 		dataLink=x;
 		height=1;
 	}
 	
-	protected void setLeft(BBST<T> nl){left=nl;}
-	protected void setRight(BBST<T> nr){right=nr;}
+	protected void setLeft(BBST2<T> nl){left=nl;}
+	protected void setRight(BBST2<T> nr){right=nr;}
 	protected int getLeftHeight()
 	{
 		if (left!=null) return left.height;
@@ -44,11 +47,11 @@ implements BinaryTree<T>
 	
 	/** return the root of the right rotated tree
 	 */
-	protected BBST<T> rightRotate()
+	protected BBST2<T> rightRotate()
 	
 	{
 		if (left==null) return this;
-		BBST<T> tmpleft=left;
+		BBST2<T> tmpleft=left;
 		setLeft(tmpleft.right);
 		tmpleft.setRight(this);
 		this.updateHeight();
@@ -58,10 +61,10 @@ implements BinaryTree<T>
 	
 	/** return the root of the left rotated tree
 	 */
-	protected BBST<T> leftRotate()
+	protected BBST2<T> leftRotate()
 	{
 		if (right==null) return this;
-		BBST<T> tmpright=right;
+		BBST2<T> tmpright=right;
 		setRight(tmpright.left);
 		tmpright.setLeft(this);
 		this.updateHeight();
@@ -74,7 +77,7 @@ implements BinaryTree<T>
 	  * This method will do nothing.
 	  * If not, it will only adjusts once.
 	 */
-	protected BBST<T> balance()
+	protected BBST2<T> balance()
 	{
 		if (getLeftHeight()>=getRightHeight()+2)
 		{
@@ -106,13 +109,13 @@ implements BinaryTree<T>
 	/**return the root of new BBST after x is inserted.
 	 * Note that the tree can have multiple nodes which are equal.
 	 */
-	public BBST<T> insert(T x)
+	public BBST2<T> insert(T x)
 	{
 		if (dataLink.compareTo(x)<0)
 		{
 			if (right==null)
 			{
-				setRight(new BBST<T>(x));
+				setRight(new BBST2<T>(x));
 				updateHeight();
 				return this;
 			}
@@ -127,7 +130,7 @@ implements BinaryTree<T>
 		{
 			if (left==null)
 			{
-				setLeft(new BBST<T>(x));
+				setLeft(new BBST2<T>(x));
 				updateHeight();
 				return this;
 			}
@@ -142,17 +145,17 @@ implements BinaryTree<T>
 	
 	public T getMinData()
 	{
-		BBST<T> t=this;
+		BBST2<T> t=this;
 		while (t.left!=null) t=t.left;
 		return t.dataLink;
 	}
 	public T getMaxData()
 	{
-		BBST<T> t=this;
+		BBST2<T> t=this;
 		while (t.right!=null) t=t.right;
 		return t.dataLink;
 	}
-	public BBST<T> removeMin()
+	public BBST2<T> removeMin()
 	{
 		if (left==null) return right;
 		//Now,left sub tree will remove one node
@@ -160,7 +163,7 @@ implements BinaryTree<T>
 		updateHeight();
 		return balance();
 	}
-	public BBST<T> removeMax()
+	public BBST2<T> removeMax()
 	{
 		if (right==null) return left;
 		//Now,left sub tree will remove one node
@@ -168,7 +171,7 @@ implements BinaryTree<T>
 		updateHeight();
 		return balance();
 	}
-	public BBST<T> removeNodeByData(T x)
+	public BBST2<T> removeNodeByData(T x)
 	{
 		if (left==null && right==null)
 		{
