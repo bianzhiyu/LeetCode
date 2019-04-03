@@ -1,9 +1,11 @@
 package lc961_970;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import treeCodec.TreeNode;
 
@@ -108,6 +110,61 @@ class Solution963
 	}
 }
 
+//967. Numbers With Same Consecutive Differences
+//Runtime: 4 ms, faster than 100.00% of Java online submissions for Numbers With Same Consecutive Differences.
+//Memory Usage: 40.5 MB, less than 6.82% of Java online submissions for Numbers With Same Consecutive Differences.
+class Solution967
+{
+	private int[] toArr(List<Integer> l)
+	{
+		int[] a = new int[l.size()];
+		for (int i = 0; i < l.size(); i++)
+			a[i] = l.get(i);
+		return a;
+	}
+
+	private void dfs(List<Integer> ans, int[] stack, int st, int N, int K, int bef)
+	{
+		if (st == 0)
+		{
+			for (int i = 1; i <= 9; i++)
+			{
+				stack[0] = i;
+				dfs(ans, stack, 1, N, K, i);
+			}
+			return;
+		}
+		if (st == N)
+		{
+			int x = 0;
+			for (int i = 0; i < N; i++)
+				x = x * 10 + stack[i];
+			ans.add(x);
+			return;
+		}
+		if (bef + K <= 9)
+		{
+			stack[st] = bef + K;
+			dfs(ans, stack, st + 1, N, K, bef + K);
+		}
+		if (K != 0 && bef - K >= 0)
+		{
+			stack[st] = bef - K;
+			dfs(ans, stack, st + 1, N, K, bef - K);
+		}
+	}
+
+	public int[] numsSameConsecDiff(int N, int K)
+	{
+		List<Integer> ans = new ArrayList<Integer>();
+		if (N == 1)
+			return new int[]
+			{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		dfs(ans, new int[N], 0, N, K, 0);
+		return toArr(ans);
+	}
+}
+
 //968. Binary Tree Cameras
 //I tried to solve this upside to downside, which is very redundant.
 //This method downside to upside is more clear and comprehensive.
@@ -137,6 +194,41 @@ class Solution968
 			return 2;
 		// otherwise: left==2 && right==2
 		return 0;
+	}
+}
+
+//969. Pancake Sorting
+//Runtime: 1 ms, faster than 100.00% of Java online submissions for Pancake Sorting.
+//Memory Usage: 37.9 MB, less than 90.29% of Java online submissions for Pancake Sorting.
+class Solution969
+{
+	private void flip(int[] A,int l, int r)
+	{
+		int t;
+		while (l<r)
+		{
+			t=A[l];
+			A[l]=A[r];
+			A[r]=t;
+			l++;r--;
+		}
+	}
+	public List<Integer> pancakeSort(int[] A)
+	{
+		List<Integer> ans=new ArrayList<Integer>();
+		int len=A.length;
+		for (int i=0;i<len-1;i++)
+		{
+			int maxind=0;
+			for (int j=1;j<len-i;j++)
+				if (A[j]>=A[maxind]) maxind=j;
+			if (maxind==len-1-i) continue;
+			ans.add(maxind+1);
+			ans.add(len-i);
+			flip(A,0,maxind);
+			flip(A,0,len-i-1);
+		}
+		return ans;
 	}
 }
 
