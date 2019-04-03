@@ -1,6 +1,15 @@
 package lc941_950;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 //942. DI String Match
 //Runtime: 5 ms, faster than 99.66% of Java online submissions for DI String Match.
@@ -104,12 +113,144 @@ class Solution946
 	}
 }
 
+//947. Most Stones Removed with Same Row or Column
+//Runtime: 25 ms, faster than 53.01% of Java online submissions for Most Stones Removed with Same Row or Column.
+//Memory Usage: 41.4 MB, less than 76.52% of Java online submissions for Most Stones Removed with Same Row or Column.
+class Solution947
+{
+	private int[] father;
+
+	private int getTop(int x)
+	{
+		int p = x;
+		while (father[p] != p)
+			p = father[p];
+		while (x != p && father[x] != p)
+		{
+			int q = father[x];
+			father[x] = p;
+			x = q;
+		}
+		return p;
+	}
+
+	private void merge(int x, int y)
+	{
+		int p = getTop(x);
+		int q = getTop(y);
+		father[q] = p;
+	}
+
+	public int removeStones(int[][] stones)
+	{
+		int len = stones.length;
+		father = new int[len];
+		for (int i = 0; i < len; i++)
+			father[i] = i;
+		for (int i = 0; i < len; i++)
+			for (int j = 0; j < i; j++)
+				if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+					merge(i, j);
+		HashMap<Integer, Integer> h = new HashMap<Integer, Integer>();
+		int cps = 0;
+		for (int i = 0; i < len; i++)
+		{
+			int p = getTop(i);
+			if (!h.containsKey(p))
+			{
+				h.put(p, 1);
+				cps++;
+			} else
+				h.put(p, h.get(p) + 1);
+		}
+		return len - cps;
+	}
+}
+
+//std
+class Solution947_2
+{
+	private static class DSU
+	{
+		int[] parent;
+
+		public DSU(int N)
+		{
+			parent = new int[N];
+			for (int i = 0; i < N; ++i)
+				parent[i] = i;
+		}
+
+		public int find(int x)
+		{
+			if (parent[x] != x)
+				parent[x] = find(parent[x]);
+			return parent[x];
+		}
+
+		public void union(int x, int y)
+		{
+			parent[find(x)] = find(y);
+		}
+	}
+
+	public int removeStones(int[][] stones)
+	{
+		int N = stones.length;
+		DSU dsu = new DSU(20000);
+
+		for (int[] stone : stones)
+			dsu.union(stone[0], stone[1] + 10000);
+
+		Set<Integer> seen = new HashSet<Integer>();
+		for (int[] stone : stones)
+			seen.add(dsu.find(stone[0]));
+
+		return N - seen.size();
+	}
+}
+
 public class LC941_950
 {
+	public static void test947()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input947.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output947.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[][] g = test.Test.parse2DIntArr(inLine);
+
+				Solution947 s = new Solution947();
+
+				Solution947_2 s2 = new Solution947_2();
+
+				int ans = s.removeStones(g);
+
+				System.out.println(ans);
+				System.out.println(s2.removeStones(g));
+				bfw.write(ans + "");
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		System.out.println(new Solution945().minIncrementForUnique(new int[]
-		{ 0, 2, 2 }));
+		test947();
 	}
 
 }

@@ -201,7 +201,7 @@ class TopVotedCandidate_3
 {
 	private int[] top, times;
 
-	private static class Data
+	private static class Data implements Comparable<Data>
 	{
 		private int person, vote, lastTime;
 
@@ -216,14 +216,11 @@ class TopVotedCandidate_3
 		{
 			return "(" + person + ", " + vote + ", " + lastTime + ")";
 		}
-	}
 
-	private static class CmpByPerson implements Comparator<Data>
-	{
 		@Override
-		public int compare(Data o1, Data o2)
+		public int compareTo(Data o)
 		{
-			return o1.person - o2.person;
+			return person-o.person;
 		}
 	}
 
@@ -244,7 +241,7 @@ class TopVotedCandidate_3
 		this.times = times;
 		int len = persons.length;
 		top = new int[len];
-		MTreeSet<Data> sortByPerson = new MTreeSet<Data>(new CmpByPerson());
+		MTreeSet<Data> sortByPerson = new MTreeSet<Data>();
 		MTreeSet<Data> sortByVandT = new MTreeSet<Data>(new CmpByVandT());
 		top[0] = persons[0];
 		Data d = new Data(persons[0], 1, times[0]);
