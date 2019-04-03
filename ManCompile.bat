@@ -155,6 +155,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc911_920\LC911_920.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc921_930\LC921_930.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc931_940\LC931_940.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc941_950\LC941_950.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc951_960\LC951_960.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc961_970\LC961_970.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc971_980\LC971_980.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc991_1000\LC991_1000.java

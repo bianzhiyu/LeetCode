@@ -1,14 +1,110 @@
 package lc961_970;
 
-class TreeNode
-{
-	int val;
-	TreeNode left;
-	TreeNode right;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 
-	TreeNode(int x)
+import treeCodec.TreeNode;
+
+//962. Maximum Width Ramp
+//https://leetcode.com/problems/maximum-width-ramp/solution/
+//by awice
+//After modification.
+//Runtime: 36 ms, faster than 65.80% of Java online submissions for Maximum Width Ramp.
+//Memory Usage: 50.5 MB, less than 91.43% of Java online submissions for Maximum Width Ramp.
+class Solution962
+{
+	private static class Cmp implements Comparator<Integer>
 	{
-		val = x;
+		private int[] a;
+
+		public Cmp(int[] A)
+		{
+			a = A;
+		}
+
+		@Override
+		public int compare(Integer o1, Integer o2)
+		{
+			if (a[o1] != a[o2])
+				return a[o1] - a[o2];
+			return o1 - o2;
+		}
+	}
+
+	public int maxWidthRamp(int[] A)
+	{
+		int N = A.length;
+		Integer[] B = new Integer[N];
+		for (int i = 0; i < N; ++i)
+			B[i] = i;
+		Arrays.sort(B, new Cmp(A));
+		int ans = 0, m = N;
+		for (int i : B)
+		{
+			ans = Math.max(ans, i - m);
+			m = Math.min(m, i);
+		}
+		return ans;
+	}
+}
+
+//963. Minimum Area Rectangle II
+//Runtime: 55 ms, faster than 45.35% of Java online submissions for Minimum Area Rectangle II.
+//Memory Usage: 39.6 MB, less than 52.38% of Java online submissions for Minimum Area Rectangle II.
+class Solution963
+{
+	private static double ERR = 1e-8;
+
+	private int[] vec(int[] p1, int[] p2)
+	{
+		return new int[]
+		{ p2[0] - p1[0], p2[1] - p1[1] };
+	}
+
+	private int ip(int[] v1, int[] v2)
+	{
+		return v1[0] * v2[0] + v1[1] * v2[1];
+	}
+
+	private int[] add(int[] p, int[] v)
+	{
+		return new int[]
+		{ p[0] + v[0], p[1] + v[1] };
+	}
+
+	private double ln(int[] v)
+	{
+		return Math.sqrt(v[0] * v[0] + v[1] * v[1]);
+	}
+
+	public double minAreaFreeRect(int[][] points)
+	{
+		HashMap<Integer, HashSet<Integer>> h = new HashMap<Integer, HashSet<Integer>>();
+		for (int[] p : points)
+		{
+			if (!h.containsKey(p[0]))
+				h.put(p[0], new HashSet<Integer>());
+			h.get(p[0]).add(p[1]);
+		}
+		double min = -1;
+		int[] v1, v2;
+		for (int[] p1 : points)
+			for (int[] p2 : points)
+				if (ln(v1 = vec(p1, p2)) > ERR)
+					for (int[] p3 : points)
+						if (ln(v2 = vec(p1, p3)) > ERR && ip(v1, v2) == 0 && ln(vec(p2, p3)) > ERR)
+						{
+							int[] p4 = add(p2, v2);
+							if (h.containsKey(p4[0]) && h.get(p4[0]).contains(p4[1]))
+							{
+								double ar = ln(v1) * ln(v2);
+								if (min < -0.5 || min > ar)
+									min = ar;
+							}
+						}
+		return min < -0.5 ? 0 : min;
 	}
 }
 
@@ -20,23 +116,26 @@ class TreeNode
 //https://leetcode.com/problems/binary-tree-cameras/discuss/211180/JavaC%2B%2BPython-Greedy-DFS
 class Solution968
 {
-	int tot=0;
+	int tot = 0;
+
 	public int minCameraCover(TreeNode root)
 	{
 		return (dfs(root) < 1 ? 1 : 0) + tot;
 	}
-	
+
 	int dfs(TreeNode rt)
 	{
-		if (rt==null) return 2;
-		int left=dfs(rt.left),right=dfs(rt.right);
-		if (left==0 || right==0)
+		if (rt == null)
+			return 2;
+		int left = dfs(rt.left), right = dfs(rt.right);
+		if (left == 0 || right == 0)
 		{
 			tot++;
 			return 1;
 		}
-		if (left==1 || right==1) return 2;
-		//otherwise: left==2 && right==2
+		if (left == 1 || right == 1)
+			return 2;
+		// otherwise: left==2 && right==2
 		return 0;
 	}
 }
@@ -45,7 +144,11 @@ public class LC961_970
 {
 	public static void main(String[] args)
 	{
-//		int a=2;
-		System.out.println();
+		Solution962 s = new Solution962();
+		int[] a = new int[]
+		{ 6, 6, 6, 6, 6, 6 };
+//				{6,0,8,2,1,5};
+		int ans = s.maxWidthRamp(a);
+		System.out.println(ans);
 	}
 }

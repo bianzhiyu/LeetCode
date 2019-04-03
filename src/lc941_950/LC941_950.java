@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 //942. DI String Match
@@ -210,6 +212,75 @@ class Solution947_2
 	}
 }
 
+//948. Bag of Tokens
+//Runtime: 4 ms, faster than 91.37% of Java online submissions for Bag of Tokens.
+//Memory Usage: 39.6 MB, less than 50.00% of Java online submissions for Bag of Tokens.
+//greedy.
+class Solution948
+{
+	public int bagOfTokensScore(int[] tokens, int P)
+	{
+		int len = tokens.length;
+		if (len == 0)
+			return 0;
+		Arrays.parallelSort(tokens);
+		int p1 = 0, p2 = len - 1, scr = 0, max = 0;
+		while (p1 <= p2)
+		{
+			if (p1 == p2)
+			{
+				if (P >= tokens[p1])
+				{
+					P -= tokens[p1];
+					scr++;
+				}
+				max = Math.max(max, scr);
+				p1++;
+			} else
+			{
+				int k = p1, tP = P, ct = 0;
+				while (k <= p2 && tP >= tokens[k])
+				{
+					ct++;
+					tP -= tokens[k];
+					k++;
+				}
+				max = Math.max(max, scr + ct);
+				if (P < tokens[p1])
+					break;
+				P += tokens[p2] - tokens[p1];
+				p1++;
+				p2--;
+			}
+		}
+		return max;
+	}
+}
+
+//950. Reveal Cards In Increasing Order
+//Runtime: 2 ms, faster than 99.86% of Java online submissions for Reveal Cards In Increasing Order.
+//Memory Usage: 38.3 MB, less than 32.83% of Java online submissions for Reveal Cards In Increasing Order.
+class Solution950
+{
+	public int[] deckRevealedIncreasing(int[] deck)
+	{
+		int len = deck.length;
+		Arrays.parallelSort(deck);
+		int[] ans = new int[len];
+		Queue<Integer> l = new LinkedList<Integer>();
+		for (int i = 0; i < len; i++)
+			l.add(i);
+		for (int i = 0; i < len; i++)
+		{
+			int p = l.remove();
+			ans[p] = deck[i];
+			if (!l.isEmpty())
+				l.add(l.remove());
+		}
+		return ans;
+	}
+}
+
 public class LC941_950
 {
 	public static void test947()
@@ -248,9 +319,15 @@ public class LC941_950
 		}
 	}
 
+	public static void test950()
+	{
+		test.Test.dispArr(new Solution950().deckRevealedIncreasing(new int[]
+		{ 17, 13, 11, 2, 3, 5, 7 }));
+	}
+
 	public static void main(String[] args)
 	{
-		test947();
+
 	}
 
 }

@@ -85,7 +85,7 @@ public class Test {
 			b[i]=a[i];
 		return b;
 	}
-	/** model: "[1,2,3]" */
+	/** model: [1,2,3] */
 	public static int[] parseIntArr(String str)
 	{
 		str=str.trim();
@@ -97,6 +97,18 @@ public class Test {
 		for (int i=0;i<strarr.length;i++)
 			a[i]=Integer.parseInt(strarr[i].trim());
 		return a;
+	}
+	/** model: ["a","b","c"] */
+	public static String[] parseStrArr(String str)
+	{
+		str=str.trim();
+		str=str.substring(1,str.length()-1);
+		str=str.trim();
+		if (str.length()==0) return new String[0];
+		String[] strarr=str.split(",");
+		for (int i=0;i<strarr.length;i++)
+			strarr[i]=strarr[i].substring(1,strarr[i].length()-1);
+		return strarr;
 	}
 	public static String intArrToString(int[] arr)
 	{
