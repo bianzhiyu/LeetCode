@@ -8,46 +8,50 @@ import java.util.Comparator;
 //Memory Usage: 36.5 MB, less than 94.37% of Java online submissions for Minimum Genetic Mutation.
 class Solution433
 {
-	int countDiff(String s1,String s2)
+	int countDiff(String s1, String s2)
 	{
-		int ct=0;
-		for (int i=0;i<8;i++)
-			if (s1.charAt(i)!=s2.charAt(i)) ct++;
+		int ct = 0;
+		for (int i = 0; i < 8; i++)
+			if (s1.charAt(i) != s2.charAt(i))
+				ct++;
 		return ct;
 	}
+
 	public int minMutation(String start, String end, String[] bank)
 	{
-		if (countDiff(start,end)==0) return 0;
-		int endInd=-1;
-		for (int i=0;i<bank.length;i++)
-			if (countDiff(end,bank[i])==0)
+		if (countDiff(start, end) == 0)
+			return 0;
+		int endInd = -1;
+		for (int i = 0; i < bank.length; i++)
+			if (countDiff(end, bank[i]) == 0)
 			{
-				endInd=i;
+				endInd = i;
 				break;
 			}
-		if (endInd==-1) return -1;
-		int len=bank.length;
-		int[]q=new int[len+1];
-		int[]step=new int[len+1];
-		boolean[]used=new boolean[len+1];
-		int f=0,r=0;
-		for (int i=0;i<bank.length;i++)
-			if (countDiff(start,bank[i])==1)
+		if (endInd == -1)
+			return -1;
+		int len = bank.length;
+		int[] q = new int[len + 1];
+		int[] step = new int[len + 1];
+		boolean[] used = new boolean[len + 1];
+		int f = 0, r = 0;
+		for (int i = 0; i < bank.length; i++)
+			if (countDiff(start, bank[i]) == 1)
 			{
-				step[r]=1;
-				q[r++]=i;
-				used[i]=true;
+				step[r] = 1;
+				q[r++] = i;
+				used[i] = true;
 			}
-		while (f<r)
+		while (f < r)
 		{
-			if (q[f]==endInd)
+			if (q[f] == endInd)
 				return step[f];
-			for (int i=0;i<len;i++)
-				if (!used[i] && countDiff(bank[q[f]],bank[i])==1)
+			for (int i = 0; i < len; i++)
+				if (!used[i] && countDiff(bank[q[f]], bank[i]) == 1)
 				{
-					used[i]=true;
-					step[r]=step[f]+1;
-					q[r++]=i;
+					used[i] = true;
+					step[r] = step[f] + 1;
+					q[r++] = i;
 				}
 			f++;
 		}
@@ -83,27 +87,27 @@ class Interval
 	}
 }
 
-class Mt
-{
-	int s, e, idx;
-
-	public Mt(int _s, int _e, int _idx)
-	{
-		s = _s;
-		e = _e;
-		idx = _idx;
-	}
-
-	public String toString()
-	{
-		return "(" + idx + ": " + s + ", " + e + ")";
-	}
-}
-
 //Runtime: 10 ms, faster than 98.07% of Java online submissions for Find Right Interval.
 //Memory Usage: 47.8 MB, less than 58.93% of Java online submissions for Find Right Interval.
 class Solution436
 {
+	private static class Mt
+	{
+		int s, e, idx;
+
+		public Mt(int _s, int _e, int _idx)
+		{
+			s = _s;
+			e = _e;
+			idx = _idx;
+		}
+
+		public String toString()
+		{
+			return "(" + idx + ": " + s + ", " + e + ")";
+		}
+	}
+
 	private int fd(Mt[] a, int l, int r, int t)
 	{
 		if (l > r)
@@ -168,7 +172,7 @@ public class LC431_440
 	{
 		Solution436 s = new Solution436();
 		Interval[] a = new Interval[]
-				{ new Interval(3, 4), new Interval(2, 3), new Interval(1, 2) };
+		{ new Interval(3, 4), new Interval(2, 3), new Interval(1, 2) };
 		s.findRightInterval(a);
 	}
 }

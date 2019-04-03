@@ -136,25 +136,26 @@ class Solution154
 //155. Min Stack
 //Runtime: 56 ms, faster than 99.60% of Java online submissions for Min Stack.
 //Memory Usage: 38.2 MB, less than 100.00% of Java online submissions for Min Stack.
-class DDLinkNode
-{
-	int val;
-	DDLinkNode pred, succ;
-
-	DDLinkNode()
-	{
-	}
-
-	DDLinkNode(int v, DDLinkNode p, DDLinkNode s)
-	{
-		val = v;
-		pred = p;
-		succ = s;
-	}
-}
-
 class MinStack
 {
+	private static class DDLinkNode
+	{
+		int val;
+		DDLinkNode pred, succ;
+
+		@SuppressWarnings("unused")
+		DDLinkNode()
+		{
+		}
+
+		DDLinkNode(int v, DDLinkNode p, DDLinkNode s)
+		{
+			val = v;
+			pred = p;
+			succ = s;
+		}
+	}
+
 	DDLinkNode head, tail;
 	int minv;
 

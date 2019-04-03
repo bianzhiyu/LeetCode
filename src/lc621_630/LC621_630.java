@@ -240,35 +240,36 @@ class Solution623
 //630. Course Schedule III
 //Runtime: 79 ms, faster than 88.14% of Java online submissions for Course Schedule III.
 //Memory Usage: 61.9 MB, less than 36.36% of Java online submissions for Course Schedule III.
-class MPair implements Comparable<MPair>
-{
-	int Length, Deadline;
-
-	MPair(int l, int d)
-	{
-		Length = l;
-		Deadline = d;
-	}
-
-	@Override
-	public int compareTo(MPair o)
-	{
-		if (Deadline != o.Deadline)
-			return Deadline - o.Deadline;
-		else
-			return Length - o.Length;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "[" + Length + ", " + Deadline + "]";
-	}
-
-}
 
 class Solution630
 {
+	private static class MPair implements Comparable<MPair>
+	{
+		int Length, Deadline;
+
+		MPair(int l, int d)
+		{
+			Length = l;
+			Deadline = d;
+		}
+
+		@Override
+		public int compareTo(MPair o)
+		{
+			if (Deadline != o.Deadline)
+				return Deadline - o.Deadline;
+			else
+				return Length - o.Length;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "[" + Length + ", " + Deadline + "]";
+		}
+
+	}
+
 	public int scheduleCourse(int[][] courses)
 	{
 		int clen = courses.length;
@@ -307,6 +308,33 @@ class Solution630
 //Memory Usage: 47.1 MB, less than 100.00% of Java online submissions for Course Schedule III.
 class Solution630_2
 {
+	private static class MPair implements Comparable<MPair>
+	{
+		int Length, Deadline;
+
+		MPair(int l, int d)
+		{
+			Length = l;
+			Deadline = d;
+		}
+
+		@Override
+		public int compareTo(MPair o)
+		{
+			if (Deadline != o.Deadline)
+				return Deadline - o.Deadline;
+			else
+				return Length - o.Length;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "[" + Length + ", " + Deadline + "]";
+		}
+
+	}
+
 	public int scheduleCourse(int[][] courses)
 	{
 		int clen = courses.length;
@@ -349,6 +377,33 @@ class Solution630_2
 //Memory Usage: 60.1 MB, less than 70.91% of Java online submissions for Course Schedule III.
 class Solution630_3
 {
+	private static class MPair implements Comparable<MPair>
+	{
+		int Length, Deadline;
+
+		MPair(int l, int d)
+		{
+			Length = l;
+			Deadline = d;
+		}
+
+		@Override
+		public int compareTo(MPair o)
+		{
+			if (Deadline != o.Deadline)
+				return Deadline - o.Deadline;
+			else
+				return Length - o.Length;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "[" + Length + ", " + Deadline + "]";
+		}
+
+	}
+
 	public int scheduleCourse(int[][] courses)
 	{
 		int clen = courses.length;

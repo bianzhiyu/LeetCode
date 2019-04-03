@@ -68,11 +68,11 @@ class WordDictionary
 class Solution212
 {
 	final static int[][] di =
-		{
-				{ 1, 0 },
-				{ 0, 1 },
-				{ -1, 0 },
-				{ 0, -1 } };
+	{
+			{ 1, 0 },
+			{ 0, 1 },
+			{ -1, 0 },
+			{ 0, -1 } };
 	boolean used[][];
 
 	boolean sch(char[][] b, char[] s, int x, int y, int sp)
@@ -126,49 +126,50 @@ class Solution212
 //Using Trie Tree: prefix tree, a data structure
 //Runtime: 20 ms, faster than 66.10% of Java online submissions for Word Search II.
 //Memory Usage: 48.3 MB, less than 100.00% of Java online submissions for Word Search II.
-class Trie
+class Solution212_2
 {
-	boolean isKey;
-	char Val;
-	Trie[] next;
-
-	Trie()
+	private static class Trie
 	{
-		isKey = false;
-		next = new Trie[26];
-	}
+		boolean isKey;
+		@SuppressWarnings("unused")
+		char Val;
+		Trie[] next;
 
-	static void insert(Trie prend, int strsp, char[] s)
-	{
-		if (s.length == 0 || strsp >= s.length)
-			return;
-		if (strsp == s.length - 1)
+		Trie()
 		{
+			isKey = false;
+			next = new Trie[26];
+		}
+
+		static void insert(Trie prend, int strsp, char[] s)
+		{
+			if (s.length == 0 || strsp >= s.length)
+				return;
+			if (strsp == s.length - 1)
+			{
+				if (prend.next[s[strsp] - 'a'] == null)
+				{
+					prend.next[s[strsp] - 'a'] = new Trie();
+					prend.next[s[strsp] - 'a'].isKey = true;
+					prend.next[s[strsp] - 'a'].Val = s[strsp];
+				} else
+				{
+					prend.next[s[strsp] - 'a'].isKey = true;
+				}
+				return;
+			}
 			if (prend.next[s[strsp] - 'a'] == null)
 			{
 				prend.next[s[strsp] - 'a'] = new Trie();
-				prend.next[s[strsp] - 'a'].isKey = true;
 				prend.next[s[strsp] - 'a'].Val = s[strsp];
+				insert(prend.next[s[strsp] - 'a'], strsp + 1, s);
 			} else
 			{
-				prend.next[s[strsp] - 'a'].isKey = true;
+				insert(prend.next[s[strsp] - 'a'], strsp + 1, s);
 			}
-			return;
-		}
-		if (prend.next[s[strsp] - 'a'] == null)
-		{
-			prend.next[s[strsp] - 'a'] = new Trie();
-			prend.next[s[strsp] - 'a'].Val = s[strsp];
-			insert(prend.next[s[strsp] - 'a'], strsp + 1, s);
-		} else
-		{
-			insert(prend.next[s[strsp] - 'a'], strsp + 1, s);
 		}
 	}
-}
 
-class Solution212_2
-{
 	void sch(Trie prert, int x, int y, char[][] b, String strsta, List<String> res)
 	{
 		// if one can step into x,y
@@ -255,7 +256,7 @@ class Solution214_2
 			return s;
 
 		return new StringBuilder(s.substring(i)).reverse().toString() + shortestPalindrome(s.substring(0, i))
-		+ s.substring(i);
+				+ s.substring(i);
 	}
 
 }
@@ -276,46 +277,48 @@ class Solution215
 //Misunderstand of the question.
 class Solution216
 {
-	List<List<Integer>> ans=new ArrayList<List<Integer>>();
-	int[]stack;
-	private void dfs(int sp, int start,int n)
+	List<List<Integer>> ans = new ArrayList<List<Integer>>();
+	int[] stack;
+
+	private void dfs(int sp, int start, int n)
 	{
-		if (sp==stack.length)
+		if (sp == stack.length)
 		{
-			if (n==0)
+			if (n == 0)
 			{
-				List<Integer> tmp=new ArrayList<Integer>();
-				for (int i=0;i<stack.length;i++)
+				List<Integer> tmp = new ArrayList<Integer>();
+				for (int i = 0; i < stack.length; i++)
 					tmp.add(stack[i]);
 				ans.add(tmp);
 			}
 			return;
 		}
-		for (int i=start;(2*i+stack.length-1-sp)*(stack.length-sp)/2<=n;i++)
+		for (int i = start; (2 * i + stack.length - 1 - sp) * (stack.length - sp) / 2 <= n; i++)
 		{
-			boolean contain0=false;
-			int x=i;
-			while (x>0)
+			boolean contain0 = false;
+			int x = i;
+			while (x > 0)
 			{
-				if (x%10==0)
+				if (x % 10 == 0)
 				{
-					contain0=true;
+					contain0 = true;
 					break;
 				}
-				x/=10;
+				x /= 10;
 			}
 			if (!contain0)
 			{
-				stack[sp]=i;
-				dfs(sp+1,i+1,n-i);
+				stack[sp] = i;
+				dfs(sp + 1, i + 1, n - i);
 			}
-			
+
 		}
 	}
+
 	public List<List<Integer>> combinationSum3(int k, int n)
 	{
-		stack=new int[k];
-		dfs(0,1,n);
+		stack = new int[k];
+		dfs(0, 1, n);
 		return ans;
 	}
 }
@@ -324,32 +327,35 @@ class Solution216
 //Memory Usage: 32.1 MB, less than 100.00% of Java online submissions for Combination Sum III.
 class Solution216_2
 {
-	List<List<Integer>> ans=new ArrayList<List<Integer>>();
-	int[]stack;
-	private void dfs(int sp, int start,int n)
+	List<List<Integer>> ans = new ArrayList<List<Integer>>();
+	int[] stack;
+
+	private void dfs(int sp, int start, int n)
 	{
-		if (sp==stack.length)
+		if (sp == stack.length)
 		{
-			if (n==0)
+			if (n == 0)
 			{
-				List<Integer> tmp=new ArrayList<Integer>();
-				for (int i=0;i<stack.length;i++)
+				List<Integer> tmp = new ArrayList<Integer>();
+				for (int i = 0; i < stack.length; i++)
 					tmp.add(stack[i]);
 				ans.add(tmp);
 			}
 			return;
 		}
-		if (n<=0) return;
-		for (int i=start;i<=9;i++)
+		if (n <= 0)
+			return;
+		for (int i = start; i <= 9; i++)
 		{
-			stack[sp]=i;
-			dfs(sp+1,i+1,n-i);
+			stack[sp] = i;
+			dfs(sp + 1, i + 1, n - i);
 		}
 	}
+
 	public List<List<Integer>> combinationSum3(int k, int n)
 	{
-		stack=new int[k];
-		dfs(0,1,n);
+		stack = new int[k];
+		dfs(0, 1, n);
 		return ans;
 	}
 }
@@ -415,13 +421,13 @@ public class LC211_220
 	public static void main(String[] args)
 	{
 		String[] words =
-			{ "oath", "pea", "eat", "rain" };
+		{ "oath", "pea", "eat", "rain" };
 		char[][] board =
-			{
-					{ 'o', 'a', 'a', 'n' },
-					{ 'e', 't', 'a', 'e' },
-					{ 'i', 'h', 'k', 'r' },
-					{ 'i', 'f', 'l', 'v' } };
+		{
+				{ 'o', 'a', 'a', 'n' },
+				{ 'e', 't', 'a', 'e' },
+				{ 'i', 'h', 'k', 'r' },
+				{ 'i', 'f', 'l', 'v' } };
 		System.out.println(new Solution212_2().findWords(board, words));
 
 		System.out.println("a" + 'b');

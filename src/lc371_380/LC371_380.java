@@ -50,25 +50,26 @@ class Solution372
 //373. Find K Pairs with Smallest Sums
 //Runtime: 6 ms, faster than 77.07% of Java online submissions for Find K Pairs with Smallest Sums.
 //Memory Usage: 40.9 MB, less than 47.58% of Java online submissions for Find K Pairs with Smallest Sums.
-class MP implements Comparable<MP>
-{
-	int x1, x2;
-
-	MP(int _1, int _2)
-	{
-		x1 = _1;
-		x2 = _2;
-	}
-
-	@Override
-	public int compareTo(MP o)
-	{
-		return o.x1 + o.x2 - x1 - x2;
-	}
-}
 
 class Solution373
 {
+	private static class MP implements Comparable<MP>
+	{
+		int x1, x2;
+
+		MP(int _1, int _2)
+		{
+			x1 = _1;
+			x2 = _2;
+		}
+
+		@Override
+		public int compareTo(MP o)
+		{
+			return o.x1 + o.x2 - x1 - x2;
+		}
+	}
+
 	public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k)
 	{
 		List<int[]> ans = new ArrayList<int[]>();
@@ -103,7 +104,7 @@ class Solution373
 		{
 			MP p = queue.poll();
 			ans.add(new int[]
-					{ p.x1, p.x2 });
+			{ p.x1, p.x2 });
 		}
 		Collections.reverse(ans);
 		return ans;
@@ -349,18 +350,18 @@ class Solution377_2
 
 }
 
-
 //Runtime: 1 ms, faster than 88.44% of Java online submissions for Combination Sum IV.
 //Memory Usage: 33 MB, less than 73.78% of Java online submissions for Combination Sum IV.
 class Solution377_3
 {
 	public int combinationSum4(int[] nums, int target)
 	{
-		int[] d=new int[target+1];
-		d[0]=1;
-		for (int i=1;i<=target;i++)
-			for (int j=0;j<nums.length;j++)
-				if (i>=nums[j]) d[i]+=d[i-nums[j]];
+		int[] d = new int[target + 1];
+		d[0] = 1;
+		for (int i = 1; i <= target; i++)
+			for (int j = 0; j < nums.length; j++)
+				if (i >= nums[j])
+					d[i] += d[i - nums[j]];
 		return d[target];
 	}
 }
@@ -380,8 +381,6 @@ class Solution378
 		return d[k - 1];
 	}
 }
-
-
 
 //380. Insert Delete GetRandom O(1)
 
@@ -474,11 +473,11 @@ public class LC371_380
 			int target = Integer.parseInt(inLine);
 
 			int ans = new Solution377_3().combinationSum4(nums, target);
-			//Solution377_1, Solution377_2: time limit exceeded
-			
+			// Solution377_1, Solution377_2: time limit exceeded
+
 			bfw.write("" + ans);
 			bfw.newLine();
-			
+
 			System.out.println(ans);
 		}
 

@@ -9,7 +9,7 @@ import java.util.Map;
 //t41.First Missing Positive    
 //t=6ms, o=26MB
 //t:0.6356, o:0.1543
-class Solu41
+class Solution41
 {
 	public static void swap(int[] nums, int a, int b)
 	{
@@ -177,53 +177,50 @@ class Solution45_2
 //46. Permutations
 //t=2ms, o=27MB
 //t:0.9989, o:1546
-class Solu46
+class Solution46
 {
-	class Solution
-	{
-		boolean[] used;
-		int[] stack;
-		ArrayList<List<Integer>> data;
-		int[] num;
+	boolean[] used;
+	int[] stack;
+	ArrayList<List<Integer>> data;
+	int[] num;
 
-		public void search(int p, int m)
+	public void search(int p, int m)
+	{
+		if (p == m)
 		{
-			if (p == m)
-			{
-				ArrayList<Integer> l = new ArrayList<Integer>();
-				for (int i = 0; i < m; i++)
-				{
-					l.add(num[stack[i]]);
-				}
-				data.add(l);
-				return;
-			}
+			ArrayList<Integer> l = new ArrayList<Integer>();
 			for (int i = 0; i < m; i++)
 			{
-				if (!used[i])
-				{
-					stack[p] = i;
-					used[i] = true;
-					search(p + 1, m);
-					used[i] = false;
-				}
+				l.add(num[stack[i]]);
 			}
+			data.add(l);
+			return;
 		}
-
-		public List<List<Integer>> permute(int[] nums)
+		for (int i = 0; i < m; i++)
 		{
-			int len = nums.length;
-			num = nums;
-			used = new boolean[len];
-			data = new ArrayList<List<Integer>>();
-			stack = new int[len];
-			for (int i = 0; i < len; i++)
+			if (!used[i])
 			{
+				stack[p] = i;
+				used[i] = true;
+				search(p + 1, m);
 				used[i] = false;
 			}
-			search(0, len);
-			return data;
 		}
+	}
+
+	public List<List<Integer>> permute(int[] nums)
+	{
+		int len = nums.length;
+		num = nums;
+		used = new boolean[len];
+		data = new ArrayList<List<Integer>>();
+		stack = new int[len];
+		for (int i = 0; i < len; i++)
+		{
+			used[i] = false;
+		}
+		search(0, len);
+		return data;
 	}
 }
 

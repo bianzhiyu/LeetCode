@@ -196,62 +196,58 @@ class Solution725
 /////726. Number of Atoms
 //Runtime: 6 ms, faster than 66.95% of Java online submissions for Number of Atoms.
 //Memory Usage: 37.1 MB, less than 15.00% of Java online submissions for Number of Atoms.
-class Token
-{
-	HashMap<String, Integer> ct = new HashMap<String, Integer>();
-	int type = 0;
-
-	// 0:'('
-	// 1:container
-	Token()
-	{
-	}
-
-	Token(int t)
-	{
-		type = t;
-	}
-
-	void merge(Token o)
-	{
-		for (String key : o.ct.keySet())
-			if (ct.containsKey(key))
-			{
-				ct.put(key, ct.get(key) + o.ct.get(key));
-			} else
-			{
-				ct.put(key, o.ct.get(key));
-			}
-	}
-
-	void mul(int m)
-	{
-		for (String key : ct.keySet())
-			ct.put(key, ct.get(key) * m);
-	}
-
-}
-
-class MP implements Comparable<MP>
-{
-	String str;
-	int ct;
-
-	MP(String _s, int _ct)
-	{
-		str = _s;
-		ct = _ct;
-	}
-
-	@Override
-	public int compareTo(MP o)
-	{
-		return str.compareTo(o.str);
-	}
-}
-
 class Solution726
 {
+	private static class Token
+	{
+		HashMap<String, Integer> ct = new HashMap<String, Integer>();
+		int type = 0;
+
+		// 0:'('
+		// 1:container
+		Token(int t)
+		{
+			type = t;
+		}
+
+		void merge(Token o)
+		{
+			for (String key : o.ct.keySet())
+				if (ct.containsKey(key))
+				{
+					ct.put(key, ct.get(key) + o.ct.get(key));
+				} else
+				{
+					ct.put(key, o.ct.get(key));
+				}
+		}
+
+		void mul(int m)
+		{
+			for (String key : ct.keySet())
+				ct.put(key, ct.get(key) * m);
+		}
+
+	}
+
+	private static class MP implements Comparable<MP>
+	{
+		String str;
+		int ct;
+
+		MP(String _s, int _ct)
+		{
+			str = _s;
+			ct = _ct;
+		}
+
+		@Override
+		public int compareTo(MP o)
+		{
+			return str.compareTo(o.str);
+		}
+	}
+
 	boolean isLowerCase(char c)
 	{
 		return c >= 'a' && c <= 'z';

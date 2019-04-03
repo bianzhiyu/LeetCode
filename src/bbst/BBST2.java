@@ -14,8 +14,7 @@ import treeCodec.TreeCodec;
  * 
  * @author bianz
  *
- * @param <T>
- * test:911,TopVotedCandidate_3
+ * @param <T> test:911,TopVotedCandidate_3
  */
 @SuppressWarnings("unchecked")
 public class BBST2<T> implements BinaryTree<T>
@@ -449,11 +448,11 @@ public class BBST2<T> implements BinaryTree<T>
 			return left.getDataByComparator(d, cmp);
 	}
 
-	/** This method can change the node.
-	 *	Be careful not to change the order.
-	 *  This method replace the dataLink, dataLink.compareTo(x)==0,
-	 *  contained in some node.
-	 *  If no such node exists, the method will do nothing.*/
+	/**
+	 * This method can change the node. Be careful not to change the order. This
+	 * method replace the dataLink, dataLink.compareTo(x)==0, contained in some
+	 * node. If no such node exists, the method will do nothing.
+	 */
 	public void replaceDataComparable(T d)
 	{
 		Comparable<T> key = (Comparable<T>) d;
@@ -475,7 +474,6 @@ public class BBST2<T> implements BinaryTree<T>
 			left.replaceDataComparable(d);
 	}
 
-	
 	public void replaceDataByComparator(T d, Comparator<T> cmp)
 	{
 		if (cmp.compare(d, dataLink) == 0)
@@ -494,6 +492,170 @@ public class BBST2<T> implements BinaryTree<T>
 			return;
 		else
 			left.replaceDataByComparator(d, cmp);
+	}
+
+	// 1
+	public T getNoLargerThanAndMaxComparable(T k)
+	{
+		Comparable<T> key = (Comparable<T>) k;
+		if (key.compareTo(dataLink) < 0)
+		{
+			if (left == null)
+				return null;
+			return left.getNoLargerThanAndMaxComparable(k);
+		} else
+		{
+			if (right == null)
+				return dataLink;
+			T n = right.getNoLargerThanAndMaxComparable(k);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 1
+	public T getNoLargerThanAndMaxByComparator(T k, Comparator<T> cmp)
+	{
+		if (cmp.compare(k, dataLink) < 0)
+		{
+			if (left == null)
+				return null;
+			return left.getNoLargerThanAndMaxByComparator(k, cmp);
+		} else
+		{
+			if (right == null)
+				return dataLink;
+			T n = right.getNoLargerThanAndMaxByComparator(k, cmp);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 2
+	public T getLessThanAndMaxComparable(T k)
+	{
+		Comparable<T> key = (Comparable<T>) k;
+		if (key.compareTo(dataLink) <= 0)
+		{
+			if (left == null)
+				return null;
+			return left.getLessThanAndMaxComparable(k);
+		} else
+		{
+			if (right == null)
+				return dataLink;
+			T n = right.getLessThanAndMaxComparable(k);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 2
+	public T getLessThanAndMaxByComparator(T k, Comparator<T> cmp)
+	{
+		if (cmp.compare(k, dataLink) <= 0)
+		{
+			if (left == null)
+				return null;
+			return left.getLessThanAndMaxByComparator(k, cmp);
+		} else
+		{
+			if (right == null)
+				return dataLink;
+			T n = right.getLessThanAndMaxByComparator(k, cmp);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 3
+	public T getNoLessThanAndMinComparable(T k)
+	{
+		Comparable<T> key = (Comparable<T>) k;
+		if (key.compareTo(dataLink) > 0)
+		{
+			if (right == null)
+				return null;
+			return right.getNoLessThanAndMinComparable(k);
+		} else
+		{
+			if (left == null)
+				return dataLink;
+			T n = left.getNoLessThanAndMinComparable(k);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 3
+	public T getNoLessThanAndMinByComparator(T k, Comparator<T> cmp)
+	{
+		if (cmp.compare(k, dataLink) > 0)
+		{
+			if (right == null)
+				return null;
+			return right.getNoLessThanAndMinByComparator(k, cmp);
+		} else
+		{
+			if (left == null)
+				return dataLink;
+			T n = left.getNoLessThanAndMinByComparator(k, cmp);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 4
+	public T getLargerThanAndMinComparable(T k)
+	{
+		Comparable<T> key = (Comparable<T>) k;
+		if (key.compareTo(dataLink) >= 0)
+		{
+			if (right == null)
+				return null;
+			return right.getLargerThanAndMinComparable(k);
+		} else
+		{
+			if (left == null)
+				return dataLink;
+			T n = left.getLargerThanAndMinComparable(k);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
+	}
+
+	// 4
+	public T getLargerThanAndMinByComparator(T k, Comparator<T> cmp)
+	{
+		if (cmp.compare(k, dataLink) >= 0)
+		{
+			if (right == null)
+				return null;
+			return right.getLargerThanAndMinByComparator(k, cmp);
+		} else
+		{
+			if (left == null)
+				return dataLink;
+			T n = left.getLargerThanAndMinByComparator(k, cmp);
+			if (n != null)
+				return n;
+			else
+				return dataLink;
+		}
 	}
 
 	/**

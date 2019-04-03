@@ -2,7 +2,7 @@ set curpath=%cd%
 set outpath=%curpath%\bin
 set cpath="%classpath%;%curpath%\src\;%outpath%"
 
-rem:goto:EndPause
+rem:goto:since1
 
 :sinceownlib
 javac -d  %outpath% -classpath %cpath% %curpath%\src\bbst\BBST.java
@@ -37,7 +37,6 @@ rem:goto:EndPause
 :since1
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc1_10\LC1_10.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc11_20\LC11_20.java
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc21_30\BackGround21_30.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc21_30\LC21_30.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc31_40\LC31_40.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc41_50\LC41_50.java
@@ -46,6 +45,8 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc61_70\LC61_70.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc71_80\LC71_80.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc81_90\LC81_90.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc91_100\LC91_100.java
+
+rem:goto:EndPause
 
 :since101
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\BBST.java
@@ -62,7 +63,6 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc191_200\LC191_200.java
 
 
 :since201
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc201_210\OutClasses.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc201_210\StrTrie.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc201_210\LC201_210.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc211_220\LC211_220.java
@@ -156,6 +156,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc941_950\LC941_950.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc951_960\LC951_960.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc961_970\LC961_970.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc971_980\LC971_980.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc981_990\LC981_990.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc991_1000\LC991_1000.java
 
 :since1001

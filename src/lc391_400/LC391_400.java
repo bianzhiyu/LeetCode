@@ -64,33 +64,33 @@ class Solution392_2
 //394. Decode String
 //Runtime: 2 ms, faster than 82.37% of Java online submissions for Decode String.
 //Memory Usage: 37 MB, less than 13.68% of Java online submissions for Decode String.
-class Token394
-{
-	int type;
-	// 0: num, 1: str, 2:[
-	int num;
-	String str;
-
-	Token394(int _t, int _n, String _s)
-	{
-		type = _t;
-		num = _n;
-		str = _s;
-	}
-
-	public String toString()
-	{
-		if (type == 0)
-			return "" + num;
-		else if (type == 1)
-			return str;
-		else
-			return "[";
-	}
-}
-
 class Solution394
 {
+	private static class Token394
+	{
+		int type;
+		// 0: num, 1: str, 2:[
+		int num;
+		String str;
+
+		Token394(int _t, int _n, String _s)
+		{
+			type = _t;
+			num = _n;
+			str = _s;
+		}
+
+		public String toString()
+		{
+			if (type == 0)
+				return "" + num;
+			else if (type == 1)
+				return str;
+			else
+				return "[";
+		}
+	}
+
 	boolean isnum(char c)
 	{
 		return '0' <= c && c <= '9';
@@ -259,45 +259,46 @@ class Solution398
 
 //Runtime: 165 ms, faster than 15.42% of Java online submissions for Random Pick Index.
 //Memory Usage: 57.3 MB, less than 29.05% of Java online submissions for Random Pick Index.
-class Mp implements Comparable<Mp>
-{
-	int val, ind;
-
-	Mp(int _v, int _i)
-	{
-		val = _v;
-		ind = _i;
-	}
-
-	@Override
-	public int compareTo(Mp o)
-	{
-		if (val < o.val)
-			return -1;
-		if (val > o.val)
-			return 1;
-		return 0;
-	}
-
-	int compareTo(int x)
-	{
-		if (val < x)
-			return -1;
-		if (val > x)
-			return 1;
-		return 0;
-	}
-
-	public String toString()
-	{
-		return val + "";
-	}
-}
 
 class Solution398_2
 {
 	Random rand;
 	List<Mp> in;
+
+	private static class Mp implements Comparable<Mp>
+	{
+		int val, ind;
+
+		Mp(int _v, int _i)
+		{
+			val = _v;
+			ind = _i;
+		}
+
+		@Override
+		public int compareTo(Mp o)
+		{
+			if (val < o.val)
+				return -1;
+			if (val > o.val)
+				return 1;
+			return 0;
+		}
+
+		int compareTo(int x)
+		{
+			if (val < x)
+				return -1;
+			if (val > x)
+				return 1;
+			return 0;
+		}
+
+		public String toString()
+		{
+			return val + "";
+		}
+	}
 
 	public Solution398_2(int[] nums)
 	{
@@ -366,6 +367,41 @@ class Solution398_2
 
 class Solution398_3
 {
+	private static class Mp implements Comparable<Mp>
+	{
+		int val, ind;
+
+		Mp(int _v, int _i)
+		{
+			val = _v;
+			ind = _i;
+		}
+
+		@Override
+		public int compareTo(Mp o)
+		{
+			if (val < o.val)
+				return -1;
+			if (val > o.val)
+				return 1;
+			return 0;
+		}
+
+		int compareTo(int x)
+		{
+			if (val < x)
+				return -1;
+			if (val > x)
+				return 1;
+			return 0;
+		}
+
+		public String toString()
+		{
+			return val + "";
+		}
+	}
+
 	Random rand;
 	List<Mp> in;
 
@@ -443,6 +479,41 @@ class Solution398_4
 {
 	Random rand;
 	List<Mp> in;
+
+	private static class Mp implements Comparable<Mp>
+	{
+		int val, ind;
+
+		Mp(int _v, int _i)
+		{
+			val = _v;
+			ind = _i;
+		}
+
+		@Override
+		public int compareTo(Mp o)
+		{
+			if (val < o.val)
+				return -1;
+			if (val > o.val)
+				return 1;
+			return 0;
+		}
+
+		int compareTo(int x)
+		{
+			if (val < x)
+				return -1;
+			if (val > x)
+				return 1;
+			return 0;
+		}
+
+		public String toString()
+		{
+			return val + "";
+		}
+	}
 
 	public Solution398_4(int[] nums)
 	{

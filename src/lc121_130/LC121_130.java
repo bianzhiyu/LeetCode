@@ -3,18 +3,7 @@ package lc121_130;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-class TreeNode
-{
-	int val;
-	TreeNode left;
-	TreeNode right;
-
-	TreeNode(int x)
-	{
-		val = x;
-	}
-}
+import treeCodec.*;
 
 //t121
 //t=1ms, m=39MB
@@ -207,13 +196,14 @@ class Solution123_2
  * Definition for a binary tree node. public class TreeNode { int val; TreeNode
  * left; TreeNode right; TreeNode(int x) { val = x; } }
  */
-class RST124
-{
-	int FinMaxPath, LinkMaxPath;
-}
 
 class Solution124
 {
+	private static class RST124
+	{
+		int FinMaxPath, LinkMaxPath;
+	}
+
 	public RST124 travel(TreeNode root)
 	{
 		RST124 r = new RST124();
@@ -287,11 +277,11 @@ class Solution125
 //t:0.1834, m:1
 class Solution126
 {
-	List<List<Integer>> LL;
-	List<String> AWL;
-	List<List<String>> ans;
-	int[] stack, q, dist, prelen;
-	int[][] pre;
+	private List<List<Integer>> LL;
+	private List<String> AWL;
+	private List<List<String>> ans;
+	private int[] stack, q, dist, prelen;
+	private int[][] pre;
 
 	private boolean conn(String s1, String s2)
 	{

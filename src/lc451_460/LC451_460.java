@@ -20,27 +20,28 @@ import bbst.BBST;
 //451. Sort Characters By Frequency
 //Runtime: 17 ms, faster than 88.61% of Java online submissions for Sort Characters By Frequency.
 //Memory Usage: 39 MB, less than 89.94% of Java online submissions for Sort Characters By Frequency.
-class MPair implements Comparable<MPair>
-{
-	char key;
-	int ct;
-
-	MPair(char _key, int _ct)
-	{
-		key = _key;
-		ct = _ct;
-	}
-
-	@Override
-	public int compareTo(MPair o)
-	{
-		return key - o.key;
-	}
-
-}
 
 class Solution451
 {
+	private static class MPair implements Comparable<MPair>
+	{
+		char key;
+		int ct;
+
+		MPair(char _key, int _ct)
+		{
+			key = _key;
+			ct = _ct;
+		}
+
+		@Override
+		public int compareTo(MPair o)
+		{
+			return key - o.key;
+		}
+
+	}
+
 	public String frequencySort(String s)
 	{
 		if (s.length() == 0)
@@ -436,7 +437,7 @@ public class LC451_460
 
 	public static void main(String[] args)
 	{
-		//		test454();
+		// test454();
 		test457();
 	}
 

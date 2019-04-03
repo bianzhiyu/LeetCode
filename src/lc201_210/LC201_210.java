@@ -3,6 +3,17 @@ package lc201_210;
 import java.util.HashSet;
 import java.util.Set;
 
+class ListNode
+{
+	int val;
+	ListNode next;
+
+	ListNode(int x)
+	{
+		val = x;
+	}
+}
+
 //201. Bitwise AND of Numbers Range
 //Runtime: 5 ms, faster than 100.00% of Java online submissions for Bitwise AND of Numbers Range.
 //Memory Usage: 36.9 MB, less than 40.00% of Java online submissions for Bitwise AND of Numbers Range.

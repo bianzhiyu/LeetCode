@@ -12,36 +12,34 @@ class Solution81
 			if (nums[i] == target)
 				return true;
 		return false;
-
 	}
 }
 
 //82. Remove Duplicates from Sorted List II
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Remove Duplicates from Sorted List II.
 //Memory Usage: 37.4 MB, less than 70.29% of Java online submissions for Remove Duplicates from Sorted List II.
-class Solution82 
+class Solution82
 {
-    public ListNode deleteDuplicates(ListNode head) 
-    {
-    	ListNode fakeHead=new ListNode(0);
-    	fakeHead.next=head;
-    	ListNode p=fakeHead;
-    	while (p!=null && p.next!=null)
-    	{
-    		ListNode q=p.next;
-    		if (q.next==null || q.next.val!=q.val)
-    		{
-    			p=q;
-    		}
-    		else
-    		{
-    			while (q.next!=null && q.next.val==p.next.val)
-    				q=q.next;
-    			p.next=q.next;
-    		}
-    	}
-    	return fakeHead.next;
-    }
+	public ListNode deleteDuplicates(ListNode head)
+	{
+		ListNode fakeHead = new ListNode(0);
+		fakeHead.next = head;
+		ListNode p = fakeHead;
+		while (p != null && p.next != null)
+		{
+			ListNode q = p.next;
+			if (q.next == null || q.next.val != q.val)
+			{
+				p = q;
+			} else
+			{
+				while (q.next != null && q.next.val == p.next.val)
+					q = q.next;
+				p.next = q.next;
+			}
+		}
+		return fakeHead.next;
+	}
 }
 
 class ListNode

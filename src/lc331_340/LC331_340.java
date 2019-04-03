@@ -91,7 +91,6 @@ class Solution336
 //From leetcode's fast posts
 class Solution336_2
 {
-
 	private static class TrieNode
 	{
 		TrieNode[] next;
@@ -190,7 +189,7 @@ class Solution336_3
 	private static class TrieNode
 	{
 		TrieNode[] son = new TrieNode[26];
-		int index = -1;	// -1: to here is not a word; >=0: is a word, refer to its index
+		int index = -1; // -1: to here is not a word; >=0: is a word, refer to its index
 		List<Integer> list = new ArrayList<Integer>();
 	}
 
@@ -198,24 +197,26 @@ class Solution336_3
 	{
 		List<List<Integer>> ans = new ArrayList<List<Integer>>();
 		TrieNode revTreeRt = new TrieNode();
-		for (int i=0;i<words.length;i++)
+		for (int i = 0; i < words.length; i++)
 		{
-			TrieNode tn=revTreeRt;
-			for (int j=words[i].length()-1;j>=0;j--)
+			TrieNode tn = revTreeRt;
+			for (int j = words[i].length() - 1; j >= 0; j--)
 			{
-				if (isPld(words,i,0,j)) tn.list.add(i);
-				int c=words[i].charAt(j)-'a';
-				if (tn.son[c]==null) tn.son[c]=new TrieNode();
-				tn=tn.son[c];	
+				if (isPld(words, i, 0, j))
+					tn.list.add(i);
+				int c = words[i].charAt(j) - 'a';
+				if (tn.son[c] == null)
+					tn.son[c] = new TrieNode();
+				tn = tn.son[c];
 			}
 			tn.list.add(i);
-			tn.index=i;
+			tn.index = i;
 		}
 
 		for (int i = 0; i < words.length; i++)
 		{
 			TrieNode tn = revTreeRt;
-			boolean getEnd=true;
+			boolean getEnd = true;
 			for (int j = 0; j < words[i].length(); j++)
 			{
 				if (tn.index >= 0 && tn.index != i && isPld(words, i, j, words[i].length() - 1))
@@ -223,12 +224,13 @@ class Solution336_3
 				int c = words[i].charAt(j) - 'a';
 				if (tn.son[c] == null)
 				{
-					getEnd=false;
+					getEnd = false;
 					break;
 				}
 				tn = tn.son[c];
 			}
-			if (!getEnd) continue;
+			if (!getEnd)
+				continue;
 			for (int j = 0; j < tn.list.size(); j++)
 				if (i != tn.list.get(j))
 					ans.add(Arrays.asList(i, tn.list.get(j)));
@@ -238,9 +240,9 @@ class Solution336_3
 
 	private boolean isPld(String[] w, int sind, int stpos, int endpos)
 	{
-		while (stpos<endpos)
+		while (stpos < endpos)
 		{
-			if (w[sind].charAt(stpos)!=w[sind].charAt(endpos))
+			if (w[sind].charAt(stpos) != w[sind].charAt(endpos))
 				return false;
 			stpos++;
 			endpos--;
@@ -274,7 +276,7 @@ public class LC331_340
 		str = "9,#,#,1";
 		System.out.println(s.isValidSerialization(str));
 	}
-	
+
 	public static void test336()
 	{
 		try
@@ -286,20 +288,20 @@ public class LC331_340
 			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
 
 			String inLine;
-			
-			Solution336_3 s=new Solution336_3();
-			
+
+			Solution336_3 s = new Solution336_3();
+
 			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
 			{
 				String[] data = inLine.substring(1, inLine.length() - 1).split(",");
 				String[] wds = new String[data.length];
 				for (int i = 0; i < data.length; i++)
-					wds[i] = data[i].substring(1,data[i].length()-1);
+					wds[i] = data[i].substring(1, data[i].length() - 1);
 
-				List<List<Integer>> ans=s.palindromePairs(wds);
+				List<List<Integer>> ans = s.palindromePairs(wds);
 
 				System.out.println(ans);
-				bfw.write("" +ans);
+				bfw.write("" + ans);
 				bfw.newLine();
 			}
 

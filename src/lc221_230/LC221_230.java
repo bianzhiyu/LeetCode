@@ -9,18 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-
-class TreeNode
-{
-	int val;
-	TreeNode left;
-	TreeNode right;
-
-	TreeNode(int x)
-	{
-		val = x;
-	}
-}
+import treeCodec.*;
 
 //221. Maximal Square
 //Runtime: 7 ms, faster than 97.80% of Java online submissions for Maximal Square.

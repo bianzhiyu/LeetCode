@@ -10,51 +10,55 @@ import heap.Heap;
 import treeCodec.*;
 
 //971. Flip Binary Tree To Match Preorder Traversal
-//still wrong
+//Runtime: 1 ms, faster than 94.76% of Java online submissions for Flip Binary Tree To Match Preorder Traversal.
+//Memory Usage: 38.7 MB, less than 5.09% of Java online submissions for Flip Binary Tree To Match Preorder Traversal.
 class Solution971
 {
-	private List<Integer> ans=new ArrayList<Integer>();
+	private List<Integer> ans = new ArrayList<Integer>();
+
 	private static class State
 	{
-		int end=0;
+		private int rpos = 0;
 	}
+
 	private void flip(TreeNode rt)
 	{
-		TreeNode t=rt.left;
-		rt.left=rt.right;
-		rt.right=t;
+		TreeNode t = rt.left;
+		rt.left = rt.right;
+		rt.right = t;
 		ans.add(rt.val);
 	}
-	private boolean trav(TreeNode rt,int[] v,int start,State stat)
+
+	private boolean trav(TreeNode rt, int[] v, State stat)
 	{
-		if (rt==null) return true;
-		if (start>=v.length) return false;
-		if (rt.val!=v[start]) return false;
-		stat.end++;
-		start++;
-		if (rt.left!=null)
+		if (rt == null)
+			return true;
+		int p = stat.rpos;
+		if (p >= v.length)
+			return false;
+		if (rt.val != v[p])
+			return false;
+		stat.rpos++;
+		p++;
+		if (rt.left != null)
 		{
-			if (start>=v.length) return false;
-			if (v[start]!=rt.left.val) flip(rt);
-			if (rt.left==null || v[start]!=rt.left.val) return false;
-			if (!trav(rt.left,v,start,stat)) return false;
+			if (p >= v.length)
+				return false;
+			if (rt.left.val != v[p])
+				flip(rt);
 		}
-//		else {}
-		if (rt.right!=null)
-		{
-			start=stat.end;
-			if (start+1>=v.length) return false;
-			if (v[start+1]!=rt.left.val) return false;
-			if (!trav(rt.left,v,start+1,stat)) return false;
-		}
-//		else {}
+		if (!trav(rt.left, v, stat))
+			return false;
+		if (!trav(rt.right, v, stat))
+			return false;
 		return true;
 	}
+
 	public List<Integer> flipMatchVoyage(TreeNode root, int[] voyage)
 	{
-		if (!trav(root,voyage,0,new State()))
+		if (!trav(root, voyage, new State()))
 		{
-			ans=new ArrayList<Integer>();
+			ans = new ArrayList<Integer>();
 			ans.add(-1);
 			return ans;
 		}
@@ -65,25 +69,25 @@ class Solution971
 //973. K Closest Points to Origin
 //Runtime: 58 ms, faster than 41.04% of Java online submissions for K Closest Points to Origin.
 //Memory Usage: 65.8 MB, less than 7.84% of Java online submissions for K Closest Points to Origin.
-class Point implements Comparable<Point>
-{
-	int x, y;
-
-	Point(int _x, int _y)
-	{
-		x = _x;
-		y = _y;
-	}
-
-	@Override
-	public int compareTo(Point o)
-	{
-		return x * x + y * y - o.x * o.x - o.y * o.y;
-	}
-}
-
 class Solution973
 {
+	private static class Point implements Comparable<Point>
+	{
+		int x, y;
+
+		Point(int _x, int _y)
+		{
+			x = _x;
+			y = _y;
+		}
+
+		@Override
+		public int compareTo(Point o)
+		{
+			return x * x + y * y - o.x * o.x - o.y * o.y;
+		}
+	}
+
 	public int[][] kClosest(int[][] points, int K)
 	{
 		BBST<Point> rt = new BBST<Point>(new Point(points[0][0], points[0][1]));
@@ -105,6 +109,23 @@ class Solution973
 //Memory Usage: 62.9 MB, less than 23.87% of Java online submissions for K Closest Points to Origin.
 class Solution973_2
 {
+	private static class Point implements Comparable<Point>
+	{
+		int x, y;
+
+		Point(int _x, int _y)
+		{
+			x = _x;
+			y = _y;
+		}
+
+		@Override
+		public int compareTo(Point o)
+		{
+			return x * x + y * y - o.x * o.x - o.y * o.y;
+		}
+	}
+
 	public int[][] kClosest(int[][] points, int K)
 	{
 		BBST<Point> rt = new BBST<Point>(new Point(points[0][0], points[0][1]));
@@ -282,16 +303,86 @@ class Solution974_2
 	}
 }
 
+//978. Longest Turbulent Subarray
+//Runtime: 5 ms, faster than 98.64% of Java online submissions for Longest Turbulent Subarray.
+//Memory Usage: 47.5 MB, less than 6.17% of Java online submissions for Longest Turbulent Subarray.
+class Solution978
+{
+	public int maxTurbulenceSize(int[] A)
+	{
+		int len = A.length;
+		int[] leftUp = new int[len];
+		int[] leftDn = new int[len];
+		leftUp[0] = 1;
+		leftDn[0] = 1;
+		int max = 1;
+		for (int i = 1; i < len; i++)
+		{
+			if (A[i - 1] == A[i])
+			{
+				leftUp[i] = 1;
+				leftDn[i] = 1;
+			} else if (A[i - 1] > A[i])
+			{
+				leftUp[i] = leftDn[i - 1] + 1;
+				leftDn[i] = 1;
+			} else// A[i-1]<A[i]
+			{
+				leftUp[i] = 1;
+				leftDn[i] = leftUp[i - 1] + 1;
+			}
+			if (leftUp[i] > max)
+				max = leftUp[i];
+			if (leftDn[i] > max)
+				max = leftDn[i];
+		}
+		return max;
+	}
+}
+
+//979. Distribute Coins in Binary Tree
+//Runtime: 1 ms, faster than 91.76% of Java online submissions for Distribute Coins in Binary Tree.
+//Memory Usage: 38.8 MB, less than 6.67% of Java online submissions for Distribute Coins in Binary Tree.
+class Solution979
+{
+	private static class Rt
+	{
+		private int amount, rem, times;
+
+		public Rt(int a, int d, int t)
+		{
+			amount = a;
+			rem = d;
+			times = t;
+		}
+	}
+
+	private Rt trav(TreeNode rt)
+	{
+		if (rt == null)
+			return new Rt(0, 0, 0);
+		Rt l = trav(rt.left), r = trav(rt.right);
+		Rt t = new Rt(l.amount + r.amount + 1, l.rem + r.rem + rt.val - 1, 0);
+		t.times = l.times + r.times + Math.abs(l.rem) + Math.abs(r.rem);
+		return t;
+	}
+
+	public int distributeCoins(TreeNode root)
+	{
+		return trav(root).times;
+	}
+}
+
 //980. Unique Paths III
 //Runtime: 2 ms, faster than 100.00% of Java online submissions for Unique Paths III.
 //Memory Usage: 36.7 MB, less than 90.83% of Java online submissions for Unique Paths III.
 class Solution980
 {
-	int[] start = new int[2];
-	int[] end = new int[2];
-	int m, n, num = 0, zeros = 0;
-	boolean[][] used;
-	int[][] map;
+	private int[] start = new int[2];
+	private int[] end = new int[2];
+	private int m, n, num = 0, zeros = 0;
+	private boolean[][] used;
+	private int[][] map;
 	final static int[][] di = new int[][]
 	{
 			{ 1, 0 },
@@ -347,7 +438,7 @@ class Solution980
 
 public class LC971_980
 {
-	public static void main(String[] args)
+	public static void test980()
 	{
 		int[][] g = new int[][]
 		{
@@ -355,5 +446,10 @@ public class LC971_980
 				{ 0, 0, 0, 0 },
 				{ 0, 0, 2, -1 } };
 		System.out.println(new Solution980().uniquePathsIII(g));
+	}
+
+	public static void main(String[] args)
+	{
+
 	}
 }

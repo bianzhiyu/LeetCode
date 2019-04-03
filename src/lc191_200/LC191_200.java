@@ -6,18 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-class TreeNode
-{
-	int val;
-	TreeNode left;
-	TreeNode right;
-
-	TreeNode(int x)
-	{
-		val = x;
-	}
-}
+import treeCodec.*;
 
 class Solution195
 {

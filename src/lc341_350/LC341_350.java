@@ -36,26 +36,26 @@ class Solution343
 //347. Top K Frequent Elements
 //Runtime: 18 ms, faster than 60.95% of Java online submissions for Top K Frequent Elements.
 //Memory Usage: 40.4 MB, less than 71.25% of Java online submissions for Top K Frequent Elements.
-class MPair implements Comparable<MPair>
-{
-	int key, ct;
-
-	MPair(int _key, int _ct)
-	{
-		key = _key;
-		ct = _ct;
-	}
-
-	@Override
-	public int compareTo(MPair o)
-	{
-		return key - o.key;
-	}
-
-}
-
 class Solution347
 {
+	private static class MPair implements Comparable<MPair>
+	{
+		int key, ct;
+
+		MPair(int _key, int _ct)
+		{
+			key = _key;
+			ct = _ct;
+		}
+
+		@Override
+		public int compareTo(MPair o)
+		{
+			return key - o.key;
+		}
+
+	}
+
 	public List<Integer> topKFrequent(int[] nums, int k)
 	{
 		BBST<MPair> rt = new BBST<MPair>(new MPair(nums[0], 1));
@@ -97,6 +97,17 @@ class Solution347
 //Memory Usage: 40.3 MB, less than 71.75% of Java online submissions for Top K Frequent Elements.
 class Solution347_2
 {
+	private static class MPair
+	{
+		int key, ct;
+
+		MPair(int _key, int _ct)
+		{
+			key = _key;
+			ct = _ct;
+		}
+	}
+
 	public List<Integer> topKFrequent(int[] nums, int k)
 	{
 		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
@@ -122,8 +133,6 @@ class Solution347_2
 		return ans;
 	}
 }
-
-
 
 //349. Intersection of Two Arrays
 //Runtime: 2 ms, faster than 98.71% of Java online submissions for Intersection of Two Arrays.

@@ -1,15 +1,17 @@
 package lc421_430;
 
 //421. Maximum XOR of Two Numbers in an Array
+
 //Runtime: 32 ms, faster than 83.67% of Java online submissions for Maximum XOR of Two Numbers in an Array.
 //Memory Usage: 49.8 MB, less than 30.12% of Java online submissions for Maximum XOR of Two Numbers in an Array.
-class BT
-{
-	BT[] s = new BT[2];
-}
 
 class Solution421
 {
+	private static class BT
+	{
+		BT[] s = new BT[2];
+	}
+
 	final static int MAXL = 31;
 	int[] s = new int[MAXL];
 
@@ -130,7 +132,7 @@ public class LC421_430
 	{
 		Solution421 s = new Solution421();
 		int[] a = new int[]
-				{ 3, 10, 5, 25, 2, 8 };
+		{ 3, 10, 5, 25, 2, 8 };
 		System.out.println(s.findMaximumXOR(a));
 	}
 }

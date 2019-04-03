@@ -364,20 +364,21 @@ class Solution109
 //110. Balanced Binary Tree
 //Runtime: 1 ms, faster than 93.45% of Java online submissions for Balanced Binary Tree.
 //Memory Usage: 41.6 MB, less than 100.00% of Java online submissions for Balanced Binary Tree.
-class R110
-{
-	int height;
-	boolean balanced;
-
-	public R110(int h, boolean b)
-	{
-		height = h;
-		balanced = b;
-	}
-}
 
 class Solution110
 {
+	private static class R110
+	{
+		int height;
+		boolean balanced;
+
+		public R110(int h, boolean b)
+		{
+			height = h;
+			balanced = b;
+		}
+	}
+
 	R110 check(TreeNode r)
 	{
 		if (r == null)
@@ -681,7 +682,5 @@ public class LC101_110
 	public static void main(String[] args) throws IOException
 	{
 		MainClass108.main(args);
-
 	}
-
 }

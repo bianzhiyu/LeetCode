@@ -261,11 +261,11 @@ class Solution777
 //Using BFS and relaxing thoughts.
 class Solution778
 {
-	int m, n, xs, ys;
-	int[][] f, g, q;
-	boolean frozen;
-	boolean[][] used;
-	final static int[][] di =
+	private int m, n, xs, ys;
+	private int[][] f, g, q;
+	private boolean frozen;
+	private boolean[][] used;
+	private final static int[][] di =
 	{
 			{ 1, 0 },
 			{ 0, 1 },
@@ -359,11 +359,11 @@ class Solution778
 //it is removed from the queue.
 class Solution778_2
 {
-	int m, n, xs, ys;
-	int[][] f, g, q;
-	boolean frozen;
-	boolean[][] used;
-	final static int[][] di =
+	private int m, n, xs, ys;
+	private int[][] f, g, q;
+	private boolean frozen;
+	private boolean[][] used;
+	private final static int[][] di =
 	{
 			{ 1, 0 },
 			{ 0, 1 },

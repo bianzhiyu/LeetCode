@@ -3,7 +3,7 @@ package lc231_240;
 import java.util.Stack;
 
 import bbst.BBST;
-
+import treeCodec.*;
 
 class ListNode
 {
@@ -15,20 +15,6 @@ class ListNode
 		val = x;
 	}
 }
-
-class TreeNode
-{
-	int val;
-	TreeNode left;
-	TreeNode right;
-
-	TreeNode(int x)
-	{
-		val = x;
-	}
-}
-
-
 
 //232. Implement Queue using Stacks
 //Runtime: 47 ms, faster than 100.00% of Java online submissions for Implement Queue using Stacks.
@@ -174,17 +160,17 @@ class Solution238
 {
 	public int[] productExceptSelf(int[] nums)
 	{
-		int len=nums.length;
-		int[] lm=new int[len],rm=new int[len];
-		lm[0]=1;
-		for (int i=1;i<len;i++)
-			lm[i]=nums[i-1]*lm[i-1];
-		rm[len-1]=1;
-		for (int i=len-2;i>=0;i--)
-			rm[i]=rm[i+1]*nums[i+1];
-		int[] ans=new int[len];
-		for (int i=0;i<len;i++)
-			ans[i]=lm[i]*rm[i];
+		int len = nums.length;
+		int[] lm = new int[len], rm = new int[len];
+		lm[0] = 1;
+		for (int i = 1; i < len; i++)
+			lm[i] = nums[i - 1] * lm[i - 1];
+		rm[len - 1] = 1;
+		for (int i = len - 2; i >= 0; i--)
+			rm[i] = rm[i + 1] * nums[i + 1];
+		int[] ans = new int[len];
+		for (int i = 0; i < len; i++)
+			ans[i] = lm[i] * rm[i];
 		return ans;
 	}
 }
