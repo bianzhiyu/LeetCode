@@ -48,9 +48,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc81_90\LC81_90.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc91_100\LC91_100.java
 
 :since101
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\OuterClasses.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\BBST.java
-javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\BackGround101_110.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\LC101_110.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc111_120\LC111_120.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc121_130\LC121_130.java
