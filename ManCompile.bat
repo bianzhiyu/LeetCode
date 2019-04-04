@@ -160,6 +160,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc981_990\LC981_990.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc991_1000\LC991_1000.java
 
 :since1001
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc1001_1010\LC1001_1010.java
 
 :sincetest
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\FileIOTest.java
