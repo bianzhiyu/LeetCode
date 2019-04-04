@@ -38,9 +38,9 @@ class Solution1017
 			normalD = !normalD;
 		}
 		StringBuilder sb = new StringBuilder();
-		int len=ans.size();
-		for (int i=0;i<ans.size();i++)
-			sb.append(ans.get(len-1-i));
+		int len = ans.size();
+		for (int i = 0; i < ans.size(); i++)
+			sb.append(ans.get(len - 1 - i));
 		return sb.toString();
 	}
 }
@@ -49,9 +49,10 @@ public class LC1011_1020
 {
 	public static void test1017()
 	{
-		Solution1017 s=new Solution1017();
-		s.baseNeg2(N)
+		Solution1017 s = new Solution1017();
+		s.baseNeg2(4);
 	}
+
 	public static void main(String[] args)
 	{
 
