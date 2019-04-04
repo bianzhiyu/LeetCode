@@ -8,9 +8,7 @@ import java.util.List;
 //Memory Usage: 35.9 MB, less than 100.00% of Java online submissions for Convert to Base -2.
 class Solution1017
 {
-	public int a = 2;// base
-
-	public String baseNeg2(int N)
+	public static String expNegBase(int a, int N)
 	{
 		if (N == 0)
 			return "0";
@@ -20,20 +18,71 @@ class Solution1017
 		{
 			if (normalD)
 			{
-				ans.add(N % a);
-				N = N / a;
+				int nd = N % a;
+				if (nd < 0)
+					nd += a;
+				ans.add(nd);
+				N = (N - nd) / a;
 			} else
 			{
-				if (N % a == 0)
-				{
-					ans.add(0);
-					N = N / a;
-				} else
-				{
-					int d = a - N % a;
-					ans.add(d);
-					N = (N + d) / a;
-				}
+				int nd = (a - N % a) % a;
+				if (nd < 0)
+					nd += a;
+				ans.add(nd);
+				N = (N + nd) / a;
+			}
+			normalD = !normalD;
+		}
+		StringBuilder sb = new StringBuilder();
+		int len = ans.size();
+		for (int i = 0; i < ans.size(); i++)
+			sb.append(ans.get(len - 1 - i));
+		return sb.toString();
+	}
+
+	public static String baseNeg2(int N)
+	{
+		return expNegBase(2, N);
+	}
+
+	public static int toNum(int a, String str)
+	{
+		int x = 1, s = 0;
+		for (int i = str.length() - 1; i >= 0; i--)
+		{
+			s = s + x * (str.charAt(i) - '0');
+			x *= a;
+		}
+		return s;
+	}
+}
+
+//original
+class Solution1017_2
+{
+	public String baseNeg2(int N)
+	{
+		if (N == 0)
+			return "0";
+		int a = 2;
+		List<Integer> ans = new ArrayList<Integer>();
+		boolean normalD = true;
+		while (N != 0)
+		{
+			if (normalD)
+			{
+				int nd = N % a;
+				if (nd < 0)
+					nd += a;
+				ans.add(nd);
+				N = (N - nd) / a;
+			} else
+			{
+				int nd = (a - N % a) % a;
+				if (nd < 0)
+					nd += a;
+				ans.add(nd);
+				N = (N + nd) / a;
 			}
 			normalD = !normalD;
 		}
@@ -49,12 +98,15 @@ public class LC1011_1020
 {
 	public static void test1017()
 	{
-		Solution1017 s = new Solution1017();
-		s.baseNeg2(4);
+		for (int i=-100;i<100;i++)
+		{
+			String str = Solution1017.expNegBase(3,i);
+			System.out.println(i+": "+str+" "+Solution1017.toNum(-3, str));
+		}
 	}
 
 	public static void main(String[] args)
 	{
-
+		test1017();
 	}
 }
