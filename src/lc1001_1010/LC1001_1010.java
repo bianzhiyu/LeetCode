@@ -254,6 +254,19 @@ class Solution1008
 	}
 }
 
+//1009. Complement of Base 10 Integer
+// Runtime: 0 ms, faster than 100.00% of Java online submissions for Complement of Base 10 Integer.
+// Memory Usage: 31.8 MB, less than 100.00% of Java online submissions for Complement of Base 10 Integer.
+class Solution1009 
+{
+	public int bitwiseComplement(int N) 
+	{
+        int x=1;
+        while (x<N) x=1+(x<<1);
+        return x-N;    
+    }
+}
+
 public class LC1001_1010
 {
 	public static void test1004()
