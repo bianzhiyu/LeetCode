@@ -2,9 +2,11 @@ package lc211_220;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 //211. Add and Search Word - Data structure design
@@ -373,6 +375,87 @@ class Solution217
 			else
 				a.add(nums[i]);
 		return false;
+	}
+}
+
+//218. The Skyline Problem
+//https://leetcode.com/problems/the-skyline-problem/discuss/61358/Java-AC-solution-with-comments
+//I totally don't know how to do this.
+//Runtime: 16 ms, faster than 88.74% of Java online submissions for The Skyline Problem.
+//Memory Usage: 44.7 MB, less than 75.96% of Java online submissions for The Skyline Problem.
+class Solution218
+{
+	private static class Wall implements Comparable<Wall>
+	{
+		private int x, y, type, ind;
+
+		// type=0:left, type=1:right.
+		public Wall(int _x, int _y, int _t, int _i)
+		{
+			x = _x;
+			y = _y;
+			type = _t;
+			ind = _i;
+		}
+
+		public int compareTo(Wall o)
+		{
+			if (x != o.x)
+				return x < o.x ? -1 : 1;
+			if (y != o.y)
+				return y < o.y ? 1 : -1;
+			if (type != o.type)
+				return type == 0 ? -1 : 1;
+			return ind - o.ind;
+		}
+	}
+
+	public List<int[]> getSkyline(int[][] buildings)
+	{
+		List<int[]> ans = new ArrayList<int[]>();
+		int i = 0;
+		Wall[] arr = new Wall[buildings.length * 2];
+		for (int[] b : buildings)
+		{
+			arr[i << 1] = new Wall(b[0], b[2], 0, i);
+			arr[1 + (i << 1)] = new Wall(b[1], b[2], 1, i);
+			i++;
+		}
+		Arrays.parallelSort(arr);
+
+		PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+		for (Wall w : arr)
+		{
+			if (w.type == 0)
+			{
+				pq.offer(w.y);
+				if (w.y == pq.peek())
+				{
+					if (ans.isEmpty())
+						ans.add(new int[]
+						{ w.x, w.y });
+					else if (w.y != ans.get(ans.size() - 1)[1])
+						ans.add(new int[]
+						{ w.x, w.y });
+				}
+			} else
+			{
+				pq.remove(w.y);
+				if (pq.isEmpty())
+				{
+					while (ans.get(ans.size() - 1)[0] == w.x)
+						ans.remove(ans.size() - 1);
+					ans.add(new int[]
+					{ w.x, 0 });
+				} else if (pq.peek() != ans.get(ans.size() - 1)[1])
+				{
+					ans.add(new int[]
+					{ w.x, pq.peek() });
+				}
+			}
+		}
+		return ans;
 	}
 }
 

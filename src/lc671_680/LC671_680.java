@@ -7,8 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 //672. Bulb Switcher II
 //Runtime: 4 ms, faster than 28.96% of Java online submissions for Bulb Switcher II.
@@ -85,6 +89,165 @@ class Solution673
 			i = j;
 		}
 		return max;
+	}
+}
+
+//675. Cut Off Trees for Golf Event
+//Runtime: 548 ms, faster than 8.97% of Java online submissions for Cut Off Trees for Golf Event.
+//Memory Usage: 46.4 MB, less than 69.89% of Java online submissions for Cut Off Trees for Golf Event.
+class Solution675
+{
+	private final static int[][] di = new int[][]
+	{
+			{ 0, 1 },
+			{ 1, 0 },
+			{ 0, -1 },
+			{ -1, 0 } };
+
+	private static class Pos implements Comparable<Pos>
+	{
+		private int x, y, h;
+
+		public Pos(int _x, int _y, int _h)
+		{
+			x = _x;
+			y = _y;
+			h = _h;
+		}
+
+		public int compareTo(Pos o)
+		{
+			return h - o.h;
+		}
+	}
+
+	private int bfs(List<List<Integer>> forest, Pos start, Pos end)
+	{
+		int row = forest.size(), col = forest.get(0).size();
+		Queue<Pos> q = new LinkedList<Pos>();
+		HashMap<Integer, Integer> steps = new HashMap<Integer, Integer>();
+		q.add(start);
+		steps.put(start.x * 51 + start.y, 0);
+		while (!q.isEmpty())
+		{
+			Pos h = q.remove();
+			int sp = steps.get(h.x * 51 + h.y);
+			if (h.x == end.x && h.y == end.y)
+				return sp;
+			for (int i = 0; i < 4; i++)
+			{
+				int nx = h.x + di[i][0];
+				int ny = h.y + di[i][1];
+				int ns = nx * 51 + ny;
+				if (nx >= 0 && ny >= 0 && nx < row && ny < col && forest.get(nx).get(ny) > 0 && !steps.containsKey(ns))
+				{
+					q.add(new Pos(nx, ny, 0));
+					steps.put(ns, sp + 1);
+					if (nx==end.x && ny==end.y) return sp+1;
+				}
+			}
+		}
+		return -1;
+	}
+
+	public int cutOffTree(List<List<Integer>> forest)
+	{
+		int row = forest.size(), col = forest.get(0).size();
+		List<Pos> tars = new ArrayList<Pos>();
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < col; j++)
+				if (forest.get(i).get(j) > 1)
+					tars.add(new Pos(i, j, forest.get(i).get(j)));
+		Collections.sort(tars);
+		Pos start = new Pos(0, 0, 1);
+		int ct = 0;
+		for (int i = 0; i < tars.size(); i++)
+		{
+			int step = bfs(forest, start, tars.get(i));
+			if (step == -1)
+				return -1;
+			start = tars.get(i);
+			ct += step;
+		}
+		return ct;
+	}
+}
+
+//TLE
+//But it should not get a TLE.
+class Solution675_2
+{
+	private final static int[][] di = new int[][]
+	{
+			{ 0, 1 },
+			{ 1, 0 },
+			{ 0, -1 },
+			{ -1, 0 } };
+
+	private static class Pos implements Comparable<Pos>
+	{
+		private int x, y, h;
+
+		public Pos(int _x, int _y, int _h)
+		{
+			x = _x;
+			y = _y;
+			h = _h;
+		}
+
+		public int compareTo(Pos o)
+		{
+			return h-o.h;
+		}
+		
+		public String toString()
+		{
+			return "["+x+","+y+","+h+"]";
+		}
+	}
+
+	private HashMap<Integer, Integer> rec = new HashMap<Integer, Integer>();
+
+	private void dfs(List<List<Integer>> forest, Pos start, Pos end, int row, int col,int minStep)
+	{
+		int Key=start.x * 51 * 51 * 51 + start.y * 51 * 51 + end.x * 51 + end.y;
+		if (!rec.containsKey(Key) || rec.get(Key)>minStep)
+			rec.put(Key,minStep);
+		else return;
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = end.x + di[i][0];
+			int ny = end.y + di[i][1];
+//			int nKey=start.x * 51 * 51 * 51 + start.y * 51 * 51 + nx * 51 + ny;
+			if (nx >= 0 && ny >= 0 && nx < row && ny < col && forest.get(nx).get(ny) > 0)
+//					&&	(!rec.containsKey(nKey) || (rec.get(nKey)>minStep+1)))
+			{
+				dfs(forest,start,new Pos(nx,ny,0),row,col,minStep+1);
+			}
+		}
+	}
+
+	public int cutOffTree(List<List<Integer>> forest)
+	{
+		int row = forest.size(), col = forest.get(0).size();
+		List<Pos> tars = new ArrayList<Pos>();
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < col; j++)
+				if (forest.get(i).get(j) > 1)
+					tars.add(new Pos(i, j, forest.get(i).get(j)));
+		Collections.sort(tars);
+		Pos start = new Pos(0, 0, 1);
+		int ct = 0;
+		for (int i = 0; i < tars.size(); i++)
+		{
+			int key=start.x * 51 * 51 * 51 + start.y * 51 * 51 + tars.get(i).x * 51 + tars.get(i).y;
+			dfs(forest, start, start, row, col,0);
+			if (!rec.containsKey(key))
+				return -1;
+			start = tars.get(i);
+			ct += rec.get(key);
+		}
+		return ct;
 	}
 }
 
@@ -447,9 +610,41 @@ public class LC671_680
 
 	}
 
+	public static void test675()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input675.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output675.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				List<List<Integer>> g=test.Test.parse2DIntList(inLine);
+
+				Solution675 s=new Solution675();
+				
+				int ans=s.cutOffTree(g);
+				
+				System.out.println(ans);
+				bfw.write(ans+"");
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+	
 	public static void main(String[] args)
 	{
-		test679();
-		;
+		test675();
 	}
 }
