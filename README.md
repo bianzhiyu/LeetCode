@@ -21,7 +21,8 @@ For each question, I may give more than one solutions, specified as
 class  Solution101, Solution101_2, Solution101_3 and so on.
 
 Some of them may be wrong. 
-And I will point it out before the class definition in the source files.
+And I will point it out before the class definition in the source files, 
+which are some remarks.
 For the accepted solution, 
 before the class definition are time and space performance.
 

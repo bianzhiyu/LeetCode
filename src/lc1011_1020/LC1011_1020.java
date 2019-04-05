@@ -179,12 +179,16 @@ public class LC1011_1020
 		for (int i = -100; i < 100; i++)
 		{
 			String str = Solution1017.expNegBase(3, i);
-			System.out.println(i + ": " + str + " " + Solution1017.toNum(-3, str));
+			String nstr=""+Solution1017.toNum(-3, str);
+			System.out.println(i + ": " + 
+				str + " " + 
+				Solution1017.toNum(-3, str)
+				+ "  cmp="+nstr.compareTo(""+i));
 		}
 	}
 
 	public static void main(String[] args)
 	{
-		test1011();
+		test1017();
 	}
 }

@@ -16,6 +16,23 @@ class ListNode
 	}
 }
 
+//231. Power of Two
+// Runtime: 1 ms, 90.66%
+// Memory Usage: 32.5 MB
+class Solution231 
+{
+	public boolean isPowerOfTwo(int n) 
+	{
+        if (n<=0) return false;
+        while (n>2)
+        {
+            if (n%2!=0) return false;
+            n/=2;
+        }
+        return true;
+    }
+}
+
 //232. Implement Queue using Stacks
 //Runtime: 47 ms, faster than 100.00% of Java online submissions for Implement Queue using Stacks.
 //Memory Usage: 36.6 MB, less than 87.66% of Java online submissions for Implement Queue using Stacks.

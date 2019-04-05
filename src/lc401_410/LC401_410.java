@@ -1,5 +1,11 @@
 package lc401_410;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 //402. Remove K Digits
 //Runtime: 3 ms, faster than 98.22% of Java online submissions for Remove K Digits.
@@ -238,11 +244,159 @@ class Solution406_2
 	}
 }
 
+//410. Split Array Largest Sum
+//Time Limit Exceeded
+class Solution410 
+{
+	private int min=Integer.MAX_VALUE;
+	private int[] sumUntil;
+	private void dfs(int[] A,int b,int st,int max)
+	{
+		if (b==0)
+		{
+			int lastSum=sumUntil[A.length-1]-sumUntil[st-1];
+			if (lastSum>max) max=lastSum;
+			if (max<min) min=max;
+			return;
+		}
+		int tmp=0;
+		for (int i=st;i+b<A.length;i++)
+		{
+			tmp+=A[i];
+			if (tmp>min) break;
+			dfs(A,b-1,i+1,max>tmp?max:tmp);
+		}
+	}
+	public int splitArray(int[] nums, int m) 
+	{
+		sumUntil=new int[nums.length];
+		sumUntil[0]=nums[0];
+		for (int i=1;i<nums.length;i++)
+			sumUntil[i]=sumUntil[i-1]+nums[i];
+		if (m==1) return sumUntil[nums.length-1];
+		dfs(nums,m-1,0,0);
+		return min;
+    }
+}
+
+// Runtime: 26 ms, faster than 21.33% of Java online submissions for Split Array Largest Sum.
+// Memory Usage: 36.2 MB, less than 94.44% of Java online submissions for Split Array Largest Sum.
+class Solution410_2
+{
+	private int[] sumUntil;
+	private int partSum(int l,int r)
+	{
+		if (l==0) return sumUntil[r];
+		return sumUntil[r]-sumUntil[l-1];
+	}
+	public int splitArray(int[] nums, int m) 
+	{
+		int len=nums.length;
+		sumUntil=new int[len];
+		sumUntil[0]=nums[0];
+		for (int i=1;i<len;i++)
+			sumUntil[i]=sumUntil[i-1]+nums[i];
+		int[][] d=new int[m][len];
+		for (int i=0;i<len;i++)
+			d[0][i]=partSum(0,i);
+		for (int i=1;i<m;i++)
+			for (int j=0;j<len;j++)
+			{
+				d[i][j]=Integer.MAX_VALUE;
+				for (int k=i-1;k<j;k++)
+					d[i][j]=Math.min(d[i][j],
+						Math.max(d[i-1][k],partSum(k+1,j)));
+			}
+		return d[m-1][len-1];
+    }
+}
+
+//Same as 1011
+// Runtime: 0 ms, faster than 100.00% of Java online submissions for Split Array Largest Sum.
+// Memory Usage: 35.8 MB, less than 94.44% of Java online submissions for Split Array Largest Sum.
+class Solution410_3
+{
+	private boolean judge(int[] A,int Lt,int grps)
+	{
+		int rem=0,used=0;
+		for (int i=0;i<A.length;i++)
+		{
+			if (rem>=A[i]) rem-=A[i];
+			else
+			{
+				rem=Lt-A[i];
+				used++;
+			}
+			if (used>grps) return false;
+		}
+		return true;
+	}
+	public int splitArray(int[] nums, int m) 
+	{
+		int L=0,R=0;
+		for (int i=0;i<nums.length;i++)
+		{
+			R+=nums[i];
+			if (nums[i]>L) L=nums[i];
+		}
+		while (L<R)
+		{
+			if (R==L+1)
+			{
+				if (judge(nums,L,m)) return L;
+				else return R;
+			}
+			else
+			{
+				int mid=(L+R)/2;
+				if (judge(nums,mid,m)) R=mid;
+				else L=mid+1;
+			}
+		}
+		return L;
+    }
+}
+
 public class LC401_410
 {
+	public static void test410()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input410.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output410.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[] nums = test.Test.parseIntArr(inLine);
+
+				int m = Integer.parseInt(bfr.readLine());
+
+				Solution410_2 s=new Solution410_2();
+
+				int ans=s.splitArray(nums, m);
+
+				System.out.println("Ans="+ans);
+				System.out.println("Ans="+new Solution410_3().splitArray(nums, m));
+
+				bfw.write("" + ans);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
 	public static void main(String[] args)
 	{
-
+		test410();
 	}
-
 }
