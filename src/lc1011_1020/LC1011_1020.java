@@ -54,6 +54,9 @@ class Solution1011
 	}
 }
 
+//1014. Best Sightseeing Pair
+// Runtime: 2 ms, faster than 100.00% of Java online submissions for Best Sightseeing Pair.
+// Memory Usage: 54.2 MB, less than 100.00% of Java online submissions for Best Sightseeing Pair.
 class Solution1014 
 {
 	public int maxScoreSightseeingPair(int[] A) 
