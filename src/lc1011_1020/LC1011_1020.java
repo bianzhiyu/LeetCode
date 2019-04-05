@@ -54,6 +54,21 @@ class Solution1011
 	}
 }
 
+class Solution1014 
+{
+	public int maxScoreSightseeingPair(int[] A) 
+	{
+        int len=A.length,cur=A[len-1]-len+1,max=0;
+        for (int i=len-2;i>=0;i--)
+        {
+            if (A[i]+i+cur>max)
+                max=A[i]+i+cur;
+            if (A[i]-i>cur) cur=A[i]-i;
+        }
+        return max;
+    }
+}
+
 //1017. Convert to Base -2
 //Runtime: 1 ms, faster than 97.42% of Java online submissions for Convert to Base -2.
 //Memory Usage: 35.9 MB, less than 100.00% of Java online submissions for Convert to Base -2.
