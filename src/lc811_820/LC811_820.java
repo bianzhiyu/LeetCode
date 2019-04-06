@@ -1,9 +1,11 @@
 package lc811_820;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -63,6 +65,175 @@ class Solution814
 			return null;
 		else
 			return root;
+	}
+}
+
+//815. Bus Routes
+//Runtime: 222 ms, faster than 27.32% of Java online submissions for Bus Routes.
+//Memory Usage: 61.7 MB, less than 83.13% of Java online submissions for Bus Routes.
+//This is as efficient as the official solution given by awice.
+class Solution815
+{
+	public int numBusesToDestination(int[][] routes, int S, int T)
+	{
+		if (S == T)
+			return 0;
+		List<HashSet<Integer>> bs = new ArrayList<HashSet<Integer>>();
+		for (int[] b : routes)
+		{
+			HashSet<Integer> n = new HashSet<Integer>();
+			for (int i = 0; i < b.length; i++)
+				n.add(b[i]);
+			bs.add(n);
+		}
+		Queue<Integer> q = new LinkedList<Integer>();
+		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		HashSet<Integer> dest = new HashSet<Integer>();
+		List<HashSet<Integer>> canTransfer = new ArrayList<HashSet<Integer>>(bs.size());
+		for (int i = 0; i < bs.size(); i++)
+			canTransfer.add(new HashSet<Integer>());
+		for (int i = 0; i < bs.size(); i++)
+		{
+			for (int stop : bs.get(i))
+			{
+				for (int j = i + 1; j < bs.size(); j++)
+					if (bs.get(j).contains(stop))
+					{
+						canTransfer.get(i).add(j);
+						canTransfer.get(j).add(i);
+					}
+			}
+		}
+		for (int i = 0; i < bs.size(); i++)
+		{
+			if (bs.get(i).contains(T))
+				dest.add(i);
+			if (bs.get(i).contains(S))
+			{
+				q.add(i);
+				hm.put(i, 1);
+			}
+			if (bs.get(i).contains(T) && bs.get(i).contains(S))
+				return 1;
+		}
+
+		while (!q.isEmpty())
+		{
+			int bInd = q.remove();
+			int step = hm.get(bInd);
+			HashSet<Integer> tran = canTransfer.get(bInd);
+			if (dest.contains(bInd))
+				return step;
+			for (int i = 0; i < bs.size(); i++)
+				if (!hm.containsKey(i) && tran.contains(i))
+				{
+					hm.put(i, step + 1);
+					q.add(i);
+					if (dest.contains(i))
+						return step + 1;
+				}
+		}
+		return -1;
+	}
+}
+
+//Runtime: 420 ms, faster than 13.81% of Java online submissions for Bus Routes.
+//Memory Usage: 67.8 MB, less than 68.75% of Java online submissions for Bus Routes.
+class Solution815_3
+{
+	public int numBusesToDestination(int[][] routes, int S, int T)
+	{
+		if (S == T)
+			return 0;
+		List<HashSet<Integer>> bs = new ArrayList<HashSet<Integer>>();
+		int remBusNum = routes.length;
+		for (int[] b : routes)
+		{
+			HashSet<Integer> n = new HashSet<Integer>();
+			for (int i = 0; i < b.length; i++)
+				n.add(b[i]);
+			bs.add(n);
+		}
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(S);
+		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		hm.put(S, 0);
+		while (!q.isEmpty())
+		{
+			int stop = q.remove();
+			int step = hm.get(stop);
+			int k = 0;
+			while (k < remBusNum)
+			{
+				HashSet<Integer> b = bs.get(k);
+				if (b.contains(stop))
+				{
+					for (int i : b)
+					{
+						if (i == T)
+							return step + 1;
+						if (!hm.containsKey(i))
+						{
+							hm.put(i, step + 1);
+							q.add(i);
+						}
+					}
+
+					if (k == remBusNum - 1)
+						remBusNum--;
+					else
+					{
+						bs.set(k, bs.get(remBusNum - 1));
+						remBusNum--;
+					}
+				} else
+					k++;
+			}
+		}
+		return -1;
+	}
+}
+
+//Runtime: 741 ms, faster than 5.09% of Java online submissions for Bus Routes.
+//Memory Usage: 59.4 MB, less than 88.13% of Java online submissions for Bus Routes.
+class Solution815_2
+{
+	public int numBusesToDestination(int[][] routes, int S, int T)
+	{
+		if (S == T)
+			return 0;
+		List<HashSet<Integer>> bs = new ArrayList<HashSet<Integer>>();
+		for (int[] b : routes)
+		{
+			HashSet<Integer> n = new HashSet<Integer>();
+			for (int i = 0; i < b.length; i++)
+				n.add(b[i]);
+			bs.add(n);
+		}
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(S);
+		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		hm.put(S, 0);
+		while (!q.isEmpty())
+		{
+			int stop = q.remove();
+			int step = hm.get(stop);
+			for (HashSet<Integer> b : bs)
+				if (b.contains(stop))
+				{
+					for (int i : b)
+					{
+						if (i == T)
+							return step + 1;
+						if (!hm.containsKey(i))
+						{
+							hm.put(i, step + 1);
+							q.add(i);
+						}
+					}
+				}
+		}
+		return -1;
 	}
 }
 

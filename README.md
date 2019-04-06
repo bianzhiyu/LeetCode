@@ -36,7 +36,7 @@ I do all things as simple as the way can be.
 It contains all packages and source files (.java files).
 
 ### input
-It contains input text filess.
+It contains input text files.
 
 ### output:
 It contains output text files.

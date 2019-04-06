@@ -1,5 +1,11 @@
 package lc211_220;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -459,6 +465,225 @@ class Solution218
 	}
 }
 
+//https://leetcode.com/articles/skyline-problem/
+
+//Runtime: 7 ms, faster than 92.57% of Java online submissions for The Skyline Problem.
+//Memory Usage: 43 MB, less than 88.46% of Java online submissions for The Skyline Problem.
+class Solution218_2
+{
+	/**
+	 * Divide-and-conquer algorithm to solve skyline problem, which is similar with
+	 * the merge sort algorithm.
+	 */
+	public List<int[]> getSkyline(int[][] buildings)
+	{
+		int n = buildings.length;
+		List<int[]> output = new ArrayList<int[]>();
+
+		// The base cases
+		if (n == 0)
+			return output;
+		if (n == 1)
+		{
+			int xStart = buildings[0][0];
+			int xEnd = buildings[0][1];
+			int y = buildings[0][2];
+
+			output.add(new int[]
+			{ xStart, y });
+			output.add(new int[]
+			{ xEnd, 0 });
+			return output;
+		}
+
+		// If there is more than one building,
+		// recursively divide the input into two subproblems.
+		List<int[]> leftSkyline, rightSkyline;
+		leftSkyline = getSkyline(Arrays.copyOfRange(buildings, 0, n / 2));
+		rightSkyline = getSkyline(Arrays.copyOfRange(buildings, n / 2, n));
+
+		// Merge the results of subproblem together.
+		return mergeSkylines(leftSkyline, rightSkyline);
+	}
+
+	/**
+	 * Merge two skylines together.
+	 */
+	public List<int[]> mergeSkylines(List<int[]> left, List<int[]> right)
+	{
+		int nL = left.size(), nR = right.size();
+		int pL = 0, pR = 0;
+		int currY = 0, leftY = 0, rightY = 0;
+		int x, maxY;
+		List<int[]> output = new ArrayList<int[]>();
+
+		// while we're in the region where both skylines are present
+		while ((pL < nL) && (pR < nR))
+		{
+			int[] pointL = left.get(pL);
+			int[] pointR = right.get(pR);
+			// pick up the smallest x
+			if (pointL[0] < pointR[0])
+			{
+				x = pointL[0];
+				leftY = pointL[1];
+				pL++;
+			} else
+			{
+				x = pointR[0];
+				rightY = pointR[1];
+				pR++;
+			}
+			// max height (i.e. y) between both skylines
+			maxY = Math.max(leftY, rightY);
+			// update output if there is a skyline change
+			if (currY != maxY)
+			{
+				updateOutput(output, x, maxY);
+				currY = maxY;
+			}
+		}
+
+		// there is only left skyline
+		currY = appendSkyline(output, left, pL, nL, currY);
+
+		// there is only right skyline
+		currY = appendSkyline(output, right, pR, nR, currY);
+
+		return output;
+	}
+
+	/**
+	 * Update the final output with the new element.
+	 */
+	public void updateOutput(List<int[]> output, int x, int y)
+	{
+		// if skyline change is not vertical -
+		// add the new point
+		if (output.isEmpty() || output.get(output.size() - 1)[0] != x)
+			output.add(new int[]
+			{ x, y });
+		// if skyline change is vertical -
+		// update the last point
+		else
+		{
+			output.get(output.size() - 1)[1] = y;
+		}
+	}
+
+	/**
+	 * Append the rest of the skyline elements with indice (p, n) to the final
+	 * output.
+	 */
+	public int appendSkyline(List<int[]> output, List<int[]> skyline, int p, int n, int currY)
+	{
+		while (p < n)
+		{
+			int[] point = skyline.get(p);
+			int x = point[0];
+			int y = point[1];
+			p++;
+
+			// update output
+			// if there is a skyline change
+			if (currY != y)
+			{
+				updateOutput(output, x, y);
+				currY = y;
+			}
+		}
+		return currY;
+	}
+}
+
+//mimic the solution_2.
+//Runtime: 4 ms, faster than 98.98% of Java online submissions for The Skyline Problem.
+//Memory Usage: 43.2 MB, less than 88.46% of Java online submissions for The Skyline Problem.
+class Solution218_3
+{
+	public List<int[]> getSkyline(int[][] buildings)
+	{
+		return dNc(buildings, 0, buildings.length);
+	}
+
+	/** divive and conquer */
+	private List<int[]> dNc(int[][] B, int L, int R)
+	{
+		List<int[]> ans = new ArrayList<int[]>();
+		if (L >= R)
+			return ans;
+		if (R == L + 1)
+		{
+			ans.add(new int[]
+			{ B[L][0], B[L][2] });
+			ans.add(new int[]
+			{ B[L][1], 0 });
+			return ans;
+		}
+		List<int[]> leftCont = dNc(B, L, L + (R - L) / 2);
+		List<int[]> rightCont = dNc(B, L + (R - L) / 2, R);
+		ans = merge(leftCont, rightCont);
+		return ans;
+	}
+
+	private List<int[]> merge(List<int[]> left, List<int[]> right)
+	{
+		List<int[]> ans = new ArrayList<int[]>();
+		int lLen = left.size(), rLen = right.size();
+		int lp = 0, rp = 0, leftHeight = 0, rightHeight = 0, curHeight = 0;
+		while (lp < lLen && rp < rLen)
+		{
+			int[] lb = left.get(lp), rb = right.get(rp);
+			int x;
+			if (lb[0] < rb[0])
+			{
+				x = lb[0];
+				leftHeight = lb[1];
+				lp++;
+			} else
+			{
+				x = rb[0];
+				rightHeight = rb[1];
+				rp++;
+			}
+			int nH = leftHeight > rightHeight ? leftHeight : rightHeight;
+			if (nH != curHeight)
+			{
+				append(ans, x, nH);
+				curHeight = nH;
+			}
+		}
+		while (lp < lLen)
+		{
+			int[] b = left.get(lp++);
+			if (b[1] != curHeight)
+			{
+				append(ans, b[0], b[1]);
+				curHeight = b[1];
+			}
+		}
+		while (rp < rLen)
+		{
+			int[] b = right.get(rp++);
+			if (b[1] != curHeight)
+			{
+				append(ans, b[0], b[1]);
+				curHeight = b[1];
+			}
+		}
+		return ans;
+	}
+
+	private void append(List<int[]> ans, int nx, int nh)
+	{
+		if (ans.size() == 0 || ans.get(ans.size() - 1)[0] != nx)
+			ans.add(new int[]
+			{ nx, nh });
+		else
+			ans.get(ans.size() - 1)[1] = nh;
+	}
+}
+
 //219. Contains Duplicate II
 //Runtime: 17 ms, faster than 35.00% of Java online submissions for Contains Duplicate II.
 //Memory Usage: 44.1 MB, less than 29.34% of Java online submissions for Contains Duplicate II.
@@ -501,7 +726,7 @@ class Solution220
 
 public class LC211_220
 {
-	public static void main(String[] args)
+	public static void test212()
 	{
 		String[] words =
 		{ "oath", "pea", "eat", "rain" };
@@ -516,4 +741,45 @@ public class LC211_220
 		System.out.println("a" + 'b');
 	}
 
+	public static void test218()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input218.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output218.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[][] g = test.Test.parse2DIntArr(inLine);
+
+				Solution218_3 s = new Solution218_3();
+
+				List<int[]> ans = s.getSkyline(g);
+
+				String out = "[";
+				for (int[] p : ans)
+					out = out + "[" + p[0] + ", " + p[1] + "] ";
+				out = out + "]";
+				System.out.println(out);
+				bfw.write(out);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
+	public static void main(String[] args)
+	{
+		test218();
+	}
 }

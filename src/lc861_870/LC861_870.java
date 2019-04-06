@@ -167,6 +167,33 @@ class Solution865
 	}
 }
 
+//868. Binary Gap
+// Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Gap.
+// Memory Usage: 32.1 MB, less than 100.00% of Java online submissions for Binary Gap.
+class Solution868 
+{
+	public int binaryGap(int N) 
+	{
+        int max=0,befD=-1,curD=0;
+        while (N>0)
+        {
+            int d=N%2;
+            N/=2;
+            if (d==1)
+            {
+                if (befD==-1) befD=curD;
+                else
+                {
+                    if (curD-befD>max) max=curD-befD;
+                    befD=curD;
+                }
+            }
+            curD++;
+        }
+        return max;
+    }
+}
+
 //869. Reordered Power of 2
 //Runtime: 1 ms, faster than 100.00% of Java online submissions for Reordered Power of 2.
 //Memory Usage: 32 MB, less than 100.00% of Java online submissions for Reordered Power of 2.
