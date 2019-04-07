@@ -15,10 +15,10 @@ It also gives a feasible compile order.
 Unfortunately, these codes are organized for the convenience of writing them, but not using or reading them.
 But these words can help.
 
-Like lc101_110/LC101_110.java,
+Like ```lc101_110/LC101_110.java```,
 it should contain all solutions to questions from 101 to 110.
 For each question, I may give more than one solutions, specified as  
-class  Solution101, Solution101_2, Solution101_3 and so on.
+class  ```Solution101```, ```Solution101_2```, ```Solution101_3``` and so on.
 
 Some of them may be wrong. 
 And I will point it out before the class definition in the source files, 
@@ -26,7 +26,7 @@ which are some remarks.
 For the accepted solution, 
 before the class definition are time and space performance.
 
-Of course these information can be placed in a better place.
+Of course this information can be placed in a better place.
 But for my first try on Leet Code, 
 I do all things as simple as the way can be. 
 
