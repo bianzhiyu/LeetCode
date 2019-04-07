@@ -523,7 +523,7 @@ public class LC101_110
 		{
 //	        BufferedReader in = new BufferedReader(
 //	    	new InputStreamReader(System.in));
-			BufferedReader in = new BufferedReader(new FileReader(new File("in101_110.txt")));
+			BufferedReader in = new BufferedReader(new FileReader(new File("input105.txt")));
 			String line;
 			while ((line = in.readLine()) != null && line.length() > 0)
 			{
@@ -663,7 +663,7 @@ public class LC101_110
 		{
 //	        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			BufferedReader in = new BufferedReader(
-					new FileReader(new File("input" + File.separator + "in101_110.txt")));
+					new FileReader(new File("input" + File.separator + "input108.txt")));
 			String line;
 			while ((line = in.readLine()) != null && line.length() > 0)
 			{

@@ -22,8 +22,21 @@ public class EulerianPath
 		}
 	}
 	
-	/**
-	 * @param N
+	private static int findStart(int N,List<List<Integer>> graph)
+	{
+		int[] ind=new int[N],outd=new int[N];
+		for (int i=0;i<graph.size();i++)
+		{
+			outd[i]=graph.get(i).size();
+			for (int j:graph.get(i))
+				ind[j]++;
+		}
+		for (int i=0;i<N;i++)
+			if (outd[i]>ind[i]) return i;
+		return 0;
+	}
+	
+	/** @param N
 	 * Total node numbers, which are index from 0 to N-1.
 	 * @param graph
 	 * Graph is a directed graph.
@@ -36,6 +49,11 @@ public class EulerianPath
 	 * indicated as travel between nodes in order.
 	 * The graph inputed should guarantee this path exits.
 	 * Otherwise what this function returns can not be expected.
+	 * 
+	 * As far s I can say, the graph should satisfy:
+	 * out-degree and in-degree of each node should be the same.
+	 * Otherwise, there should be exactly one node with out-degree=in-degree+1 
+	 * and exactly one other node with with out-degree=in-degree -1.
 	 */
 	public static LinkedList<Integer> getPathDirectedGraph(int N,List<List<Integer>> graph)
 	{
@@ -43,8 +61,9 @@ public class EulerianPath
 		for (int i=0;i<N;i++)
 			remEdgeNums.add(graph.get(i).size());
 		LinkedList<Integer> path=new LinkedList<Integer>();
-		dfsDirected(path,N,graph,remEdgeNums,0);
-		path.addFirst(0);
+		int start=findStart(N,graph);
+		dfsDirected(path,N,graph,remEdgeNums,start);
+		path.addFirst(start);
 		return path;
 	}
 	

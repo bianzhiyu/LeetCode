@@ -13,7 +13,6 @@ public class TestEulerianPath
 {
 	public static void testDirected()
 	{
-		//
 		try
 		{
 			File inFile = new File("input" + File.separator + "Input_EulerianPathDircect.txt");
@@ -88,6 +87,6 @@ public class TestEulerianPath
 	public static void main(String[]args)
 	{
 		testDirected();
-		testUndirected();
+//		testUndirected();
 	}
 }
