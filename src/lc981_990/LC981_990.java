@@ -69,6 +69,26 @@ class TimeMap
  * obj.get(key,timestamp);
  */
 
+//982. Triples with Bitwise AND Equal To Zero
+//Runtime: 175 ms, faster than 72.04% of Java online submissions for Triples with Bitwise AND Equal To Zero.
+//Memory Usage: 43.2 MB, less than 14.28% of Java online submissions for Triples with Bitwise AND Equal To Zero.
+class Solution982
+{
+	public int countTriplets(int[] A)
+	{
+		HashMap<Integer,Integer> f=new HashMap<Integer,Integer>();
+		int len=A.length;
+		for (int i=0;i<len;i++)
+			for (int j=0;j<len;j++)
+				f.put(A[i]&A[j],f.getOrDefault(A[i]&A[j], 0)+1);
+		int ct=0;
+		for (int d:f.keySet())
+			for (int i=0;i<len;i++)
+				if ((A[i]&d)==0) ct+=f.get(d);
+		return ct;
+	}
+}
+
 //983. Minimum Cost For Tickets
 //Runtime: 9 ms, faster than 10.77% of Java online submissions for Minimum Cost For Tickets.
 //Memory Usage: 41.4 MB, less than 5.24% of Java online submissions for Minimum Cost For Tickets.

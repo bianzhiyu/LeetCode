@@ -28,6 +28,9 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\treeCodec\TreeCodec.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\Heap.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\TestHeap.java
 
+javac -d  %outpath% -classpath %cpath% %curpath%\src\eulerianpath\TestEulerianPath.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\eulerianpath\EulerianPath.java
+
 javac -d  %outpath% -classpath %cpath% %curpath%\src\mineSweep\MineSweeper.java
 
 rem:goto:EndPause

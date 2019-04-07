@@ -37,23 +37,26 @@ public class EulerianPath
 	}
 	
 	/** @param N
-	 * Total node numbers, which are index from 0 to N-1.
+	 * Type: int. Total node numbers. Nodes are index from 0 to N-1.
 	 * @param graph
+	 * Type: List<List<Integer>>.
 	 * Graph is a directed graph.
 	 * An edge like i-> j can appear more than once.
-	 * Link table:
+	 * The graph is designated by a link table:
 	 * For List<Integer> l=graph.get(i),
 	 * each integer x in l means there is an edge i->x.
 	 * @return
+	 * Type: LinkedList<Integer>.
 	 * A path, travel all edge once,
 	 * indicated as travel between nodes in order.
-	 * The graph inputed should guarantee this path exits.
+	 * The graph inputed should guarantee such path exits.
 	 * Otherwise what this function returns can not be expected.
 	 * 
-	 * As far s I can say, the graph should satisfy:
+	 * As far as I can say, the graph should satisfy:
 	 * out-degree and in-degree of each node should be the same.
 	 * Otherwise, there should be exactly one node with out-degree=in-degree+1 
-	 * and exactly one other node with with out-degree=in-degree -1.
+	 * and exactly one other node with out-degree=in-degree -1.
+	 * And any other node has out-degree = in-degree.
 	 */
 	public static LinkedList<Integer> getPathDirectedGraph(int N,List<List<Integer>> graph)
 	{
@@ -102,21 +105,25 @@ public class EulerianPath
 	
 	/**
 	 * @param N
-	 * Total node numbers, which are index from 0 to N-1.
+	 * Type: int.
+	 * Total node numbers. Nodes are index from 0 to N-1.
 	 * @param edges
-	 * The graph is a undirected graph.
-	 * All its edges are contained in edges
-	 * Edge number= edges.length,
+	 * Type: int[][].
+	 * The graph is an undirected graph.
+	 * All its edges are contained in edges.
+	 * Edge number = edges.length.
 	 * edges[i] is of type int[2].
+	 * edges[i][0] - edges[i][0] is an edge.
 	 * An edge like i - j can appear more than once.
 	 * One can go from i to j through edge i - j, 
 	 * or from j to i through the same edge.
 	 * But both way will consume this edge.
-	 * And one edge can be only used once.
+	 * And one edge can only be used once.
 	 * @return
+	 * Type: LinkedList<Integer>.
 	 * A path, travel all edge once,
 	 * indicated as travel between nodes in order.
-	 * The graph inputed should guarantee this path exits.
+	 * The graph inputed should guarantee such path exits.
 	 * Otherwise what this function returns can not be expected.
 	 * The graph should only contain 0 or 2 odd degree nodes.
 	 */

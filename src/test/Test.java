@@ -112,7 +112,7 @@ public class Test {
 	}
 	public static String intArrToString(int[] arr)
 	{
-		if (arr==null) return "[]";
+		if (arr==null || arr.length==0) return "[]";
 		StringBuilder sb=new StringBuilder();
 		sb.append('[');
 		for (int i=0;i<arr.length-1;i++)
