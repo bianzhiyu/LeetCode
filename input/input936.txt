@@ -1,0 +1,8 @@
+"abca"
+"ababcaca"
+
+"abca"
+"aabcaca"
+
+"abc"
+"ababc"

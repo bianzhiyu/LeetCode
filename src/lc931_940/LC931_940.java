@@ -1,10 +1,21 @@
 package lc931_940;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import treeCodec.TreeNode;
@@ -220,6 +231,359 @@ class Solution935
 	}
 }
 
+//936. Stamping The Sequence
+//136 / 262 test cases passed.
+//Wrong Answer
+class Solution936
+{
+	public int[] movesToStamp(String stamp, String target)
+	{
+		char[] stp = stamp.toCharArray(), tar = target.toCharArray();
+		int len = tar.length;
+		int[] pre = new int[len + 1];
+		Queue<Integer> q = new LinkedList<Integer>();
+		boolean[] used = new boolean[len + 1];
+		q.add(0);
+		used[0] = true;
+		while (!q.isEmpty())
+		{
+			int h = q.remove();
+			if (h + stp.length > len)
+				continue;
+			for (int i = 0; i < stp.length && h + i < len; i++)
+			{
+				if (tar[h + i] == stp[i])
+				{
+					if (!used[h + i + 1])
+					{
+						used[h + i + 1] = true;
+						pre[h + i + 1] = h;
+						q.add(h + i + 1);
+					}
+				} else
+					break;
+			}
+		}
+		if (!used[len])
+			return new int[0];
+		LinkedList<Integer> l = new LinkedList<Integer>();
+		int p = len, ct = 0;
+		while (p != 0)
+		{
+			l.addLast(pre[p]);
+			p = pre[p];
+			ct++;
+		}
+		int[] ans = new int[ct];
+		p = 0;
+		for (int i : l)
+			ans[ct - (++p)] = i;
+		return ans;
+	}
+}
+
+//https://leetcode.com/problems/stamping-the-sequence/solution/
+//awice
+//Runtime: 53 ms, faster than 31.56% of Java online submissions for Stamping The Sequence.
+//Memory Usage: 42.8 MB, less than 8.00% of Java online submissions for Stamping The Sequence.
+class Solution936_2
+{
+	private static class Node
+	{
+		private Set<Integer> made, todo;
+
+		private Node(Set<Integer> m, Set<Integer> t)
+		{
+			made = m;
+			todo = t;
+		}
+	}
+
+	public int[] movesToStamp(String stamp, String target)
+	{
+		int M = stamp.length(), N = target.length();
+		Queue<Integer> queue = new ArrayDeque<Integer>();
+		boolean[] done = new boolean[N];
+		Stack<Integer> ans = new Stack<Integer>();
+		List<Node> A = new ArrayList<Node>();
+
+		for (int i = 0; i <= N - M; ++i)
+		{
+			// For each window [i, i+M), A[i] will contain
+			// info on what needs to change before we can
+			// reverse stamp at this window.
+
+			Set<Integer> made = new HashSet<Integer>();
+			Set<Integer> todo = new HashSet<Integer>();
+			for (int j = 0; j < M; ++j)
+			{
+				if (target.charAt(i + j) == stamp.charAt(j))
+					made.add(i + j);
+				else
+					todo.add(i + j);
+			}
+
+			A.add(new Node(made, todo));
+
+			// If we can reverse stamp at i immediately,
+			// enqueue letters from this window.
+			if (todo.isEmpty())
+			{
+				ans.push(i);
+				for (int j = i; j < i + M; ++j)
+					if (!done[j])
+					{
+						queue.add(j);
+						done[j] = true;
+					}
+			}
+		}
+
+		// For each enqueued letter (position),
+		while (!queue.isEmpty())
+		{
+			int i = queue.poll();
+
+			// For each window that is potentially affected,
+			// j: start of window
+			for (int j = Math.max(0, i - M + 1); j <= Math.min(N - M, i); ++j)
+			{
+				if (A.get(j).todo.contains(i))
+				{ // This window is affected
+					A.get(j).todo.remove(i);
+					if (A.get(j).todo.isEmpty())
+					{
+						ans.push(j);
+						for (int m : A.get(j).made)
+							if (!done[m])
+							{
+								queue.add(m);
+								done[m] = true;
+							}
+					}
+				}
+			}
+		}
+
+		for (boolean b : done)
+			if (!b)
+				return new int[0];
+
+		int[] ret = new int[ans.size()];
+		int t = 0;
+		while (!ans.isEmpty())
+			ret[t++] = ans.pop();
+
+		return ret;
+	}
+}
+
+//state_0: target, 
+// for state_i
+//find a window: window set as stamp can match state_0
+// push its start to ans
+// state_i+1 is the new state
+// loop for i+1
+
+//Runtime: 36 ms, faster than 40.00% of Java online submissions for Stamping The Sequence.
+//Memory Usage: 38.1 MB, less than 100.00% of Java online submissions for Stamping The Sequence.
+
+//I find this solution by myself, and it is inspired from awice's solution.
+//My solution is more simpler.
+//However, my solution is faster than awice's by the leet code judger.
+//This is weird.
+
+//In addition, the correctness of both awice's and my solutions are not proved.
+class Solution936_3
+{
+	public int[] movesToStamp(String stamp, String target)
+	{
+		char[] state = target.toCharArray();
+		char[] stp = stamp.toCharArray();
+		int len = state.length, stplen = stp.length;
+		int ct = 0;
+		Stack<Integer> s = new Stack<Integer>();
+		while (true)
+		{
+			int windst = -1;
+			for (int i = 0; i <= len - stplen; i++)
+			{
+				int tmp = 0;
+				boolean canmatch = true;
+				for (int j = i; j < i + stplen; j++)
+				{
+					if (state[j] != '?')
+					{
+						if (state[j] == stp[j - i])
+						{
+							tmp++;
+						} else
+						{
+							canmatch = false;
+							break;
+						}
+					}
+				}
+				if (canmatch && tmp > 0)
+				{
+					windst = i;
+					break;
+				}
+			}
+			if (windst == -1)
+				return new int[0];
+			else
+			{
+				s.push(windst);
+				for (int j = windst; j < windst + stplen; j++)
+					if (state[j] != '?')
+					{
+						state[j] = '?';
+						ct++;
+					}
+				if (ct == len)
+					break;
+			}
+		}
+
+		int[] ans = new int[s.size()];
+		for (int i = 0; i < ans.length; i++)
+			ans[i] = s.pop();
+		return ans;
+	}
+}
+
+//the fastest, other's
+class Solution936_4
+{
+	public int[] movesToStamp(String stamp, String target)
+	{
+		char[] S = stamp.toCharArray();
+		char[] T = target.toCharArray();
+		List<Integer> list = new ArrayList<>();
+		boolean[] visited = new boolean[T.length];
+		int starCnt = 0;
+		while (starCnt < T.length)
+		{
+			boolean findReplace = false;
+			for (int i = 0; i <= T.length - S.length; i++)
+			{
+				if (!visited[i] && canReplace(S, T, i))
+				{
+					visited[i] = true;
+					findReplace = true;
+					starCnt = replace(T, i, S.length, starCnt);
+					list.add(i);
+				}
+				if (starCnt == T.length)
+					break;
+			}
+			if (!findReplace)
+				return new int[0];
+		}
+		int[] res = new int[list.size()];
+		int i = 0, j = list.size() - 1;
+		while (j >= 0)
+		{
+			res[i++] = list.get(j--);
+		}
+		return res;
+	}
+
+	private boolean canReplace(char[] S, char[] T, int offset)
+	{
+		for (int i = 0; i < S.length; i++)
+		{
+			if (T[i + offset] != S[i] && T[i + offset] != '*')
+				return false;
+		}
+		return true;
+	}
+
+	private int replace(char[] T, int offset, int len, int starCnt)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if (T[i + offset] != '*')
+			{
+				T[i + offset] = '*';
+				starCnt++;
+			}
+		}
+		return starCnt;
+	}
+}
+
+//speed my own solution_3
+//Runtime: 12 ms, faster than 75.11% of Java online submissions for Stamping The Sequence.
+//Memory Usage: 38.4 MB, less than 100.00% of Java online submissions for Stamping The Sequence.
+class Solution936_5
+{
+	public int[] movesToStamp(String stamp, String target)
+	{
+		char[] state = target.toCharArray();
+		char[] stp = stamp.toCharArray();
+		int len = state.length, stplen = stp.length;
+		boolean[] skip = new boolean[len];
+		int ct = 0;
+		Stack<Integer> s = new Stack<Integer>();
+		while (true)
+		{
+			int windst = -1;
+			for (int i = 0; i <= len - stplen; i++)
+			{
+				if (skip[i])
+					continue;
+				int tmp = 0;
+				boolean canmatch = true;
+				for (int j = i; j < i + stplen; j++)
+				{
+
+					if (state[j] != '?')
+					{
+						if (state[j] == stp[j - i])
+							tmp++;
+						else
+						{
+							canmatch = false;
+							break;
+						}
+					}
+				}
+
+				if (canmatch)
+				{
+					if (tmp > 0)
+					{
+						windst = i;
+						break;
+					} else
+						skip[i] = true;
+				}
+			}
+			if (windst == -1)
+				return new int[0];
+			else
+			{
+				s.push(windst);
+				for (int j = windst; j < windst + stplen; j++)
+					if (state[j] != '?')
+					{
+						state[j] = '?';
+						ct++;
+					}
+				if (ct == len)
+					break;
+			}
+		}
+
+		int[] ans = new int[s.size()];
+		for (int i = 0; i < ans.length; i++)
+			ans[i] = s.pop();
+		return ans;
+	}
+}
+
 //938. Range Sum of BST
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Range Sum of BST.
 //Memory Usage: 48.7 MB, less than 5.13% of Java online submissions for Range Sum of BST.
@@ -271,8 +635,46 @@ class Solution939
 
 public class LC931_940
 {
+	public static void test936()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input936.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output936.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				String stamp = inLine.substring(1, inLine.length() - 1);
+				inLine = bfr.readLine();
+				String target = inLine.substring(1, inLine.length() - 1);
+
+				Solution936_3 s = new Solution936_3();
+
+				int[] ans = s.movesToStamp(stamp, target);
+
+				String out = test.Test.intArrToString(ans);
+
+				System.out.println(out);
+
+				bfw.write(out);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-
+		test936();
 	}
 }
