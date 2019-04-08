@@ -12,8 +12,8 @@ It also gives a feasible compile order.
 
 ## How to use/read these codes?
 
-Unfortunately, these codes are organized for the convenience of writing them, but not using or reading them.
-But these words can help.
+These codes are organized for the convenience of writing them.
+These words can help.
 
 Like ```lc101_110/LC101_110.java```,
 it should contain all solutions to questions from 101 to 110.
