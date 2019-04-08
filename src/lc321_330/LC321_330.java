@@ -361,6 +361,69 @@ class Solution329
 	}
 }
 
+//330. Patching Array
+//mle:  
+// n=2100000000
+class Solution330
+{
+	public int minPatches(int[] nums, int n)
+	{
+		int ad=0;
+		boolean [] r=new boolean[n+1];
+		r[0]=true;
+		for (int i=0;i<nums.length;i++) 
+		for (int j=n;j>=nums[i];j--)
+			r[j]=r[j]||r[j-nums[i]];
+		for (int i=1;i<=n;i++)
+		{
+			if (!r[i])
+			{
+				ad++;
+				for (int j=n;j>=i;j--)
+					r[j]=r[j]||r[j-i];
+			}
+		}
+		return ad;
+	}
+}
+
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Patching Array.
+//Memory Usage: 39.1 MB, less than 64.00% of Java online submissions for Patching Array.
+class Solution330_2
+{
+	public int minPatches(int[] nums, int n)
+	{
+		long r=0;
+		int ct=0;
+		for (int i=0;i<nums.length;)
+		{
+			if (nums[i]>n) break;
+			if (nums[i]==r+1)
+			{
+				r=nums[i]+r;
+				i++;
+			}
+			else if (nums[i]>r+1)
+			{
+				ct++;
+				r+=(r+1);
+			}
+			else //nums[i]<=r
+			{
+				r+=nums[i];
+				i++;
+			}
+			if (r>=n) break;
+		}
+		while (r<n)
+		{
+			r+=r+1;
+			ct++;
+		}
+		return ct;
+	}
+}
+
 public class LC321_330
 {
 	public static void test321()
@@ -400,9 +463,42 @@ public class LC321_330
 			System.out.println(e.toString());
 		}
 	}
+	public static void test330()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input330.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
 
+			File outFile = new File("output" + File.separator + "output330.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[] n1 = test.Test.parseIntArr(inLine);
+				int k = Integer.parseInt(bfr.readLine());
+
+				Solution330_2 s = new Solution330_2();
+
+				int ans = s.minPatches(n1, k);
+
+				System.out.println(ans);
+
+				bfw.write(ans+"");
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
 	public static void main(String[] args)
 	{
-		test321();
+		test330();
 	}
 }
