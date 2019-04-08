@@ -378,6 +378,9 @@ class Solution936_2
 	}
 }
 
+
+//Algorithm for my solution_3:
+
 //state_0: target, 
 // for state_i
 //find a window: window set as stamp can match state_0

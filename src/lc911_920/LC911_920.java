@@ -220,7 +220,7 @@ class TopVotedCandidate_3
 		@Override
 		public int compareTo(Data o)
 		{
-			return person-o.person;
+			return person - o.person;
 		}
 	}
 
@@ -288,6 +288,32 @@ class TopVotedCandidate_3
 			}
 		}
 		return top[l];
+	}
+}
+
+//914. X of a Kind in a Deck of Cards
+//Runtime: 9 ms, faster than 70.77% of Java online submissions for X of a Kind in a Deck of Cards.
+//Memory Usage: 40.2 MB, less than 72.22% of Java online submissions for X of a Kind in a Deck of Cards.
+class Solution914
+{
+	private int gcd(int a, int b)
+	{
+		if (b == 0)
+			return a;
+		return gcd(b, a % b);
+	}
+
+	public boolean hasGroupsSizeX(int[] deck)
+	{
+		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+		for (int i = 0; i < deck.length; i++)
+			hm.put(deck[i], hm.getOrDefault(deck[i], 0) + 1);
+		int ct = -1;
+		for (int x : hm.keySet())
+			ct = ct == -1 ? hm.get(x) : gcd(ct, hm.get(x));
+		if (ct == 1)
+			return false;
+		return true;
 	}
 }
 
@@ -396,44 +422,52 @@ class CBTInserter
 {
 	private int totLayer;
 	private TreeNode root;
+
 	public CBTInserter(TreeNode root)
 	{
-		this.root=root;
-		TreeNode t=root;
-		totLayer=1;
-		while (t.left!=null)
+		this.root = root;
+		TreeNode t = root;
+		totLayer = 1;
+		while (t.left != null)
 		{
 			totLayer++;
-			t=t.left;
+			t = t.left;
 		}
 	}
-	private boolean isFull(TreeNode rt,int l,int tl)
+
+	private boolean isFull(TreeNode rt, int l, int tl)
 	{
-		if (l==tl) return true;
-		else if (rt.right==null) return false;
-		else return isFull(rt.right,l+1,tl);
+		if (l == tl)
+			return true;
+		else if (rt.right == null)
+			return false;
+		else
+			return isFull(rt.right, l + 1, tl);
 	}
+
 	public int insert(int v)
 	{
-		if (isFull(root,1,totLayer))
+		if (isFull(root, 1, totLayer))
 		{
-			TreeNode t=root;
-			for (int i=2;i<=totLayer;i++)
-				t=t.left;
-			t.left=new TreeNode(v);
+			TreeNode t = root;
+			for (int i = 2; i <= totLayer; i++)
+				t = t.left;
+			t.left = new TreeNode(v);
 			totLayer++;
 			return t.val;
 		}
-		TreeNode t=root;
-		for (int i=1;i<totLayer-1;i++)
+		TreeNode t = root;
+		for (int i = 1; i < totLayer - 1; i++)
 		{
-			if (isFull(t.left,i+1,totLayer))
-				t=t.right;
-			else t=t.left;
+			if (isFull(t.left, i + 1, totLayer))
+				t = t.right;
+			else
+				t = t.left;
 		}
-		if (t.left==null)
-			t.left=new TreeNode(v);
-		else t.right=new TreeNode(v);
+		if (t.left == null)
+			t.left = new TreeNode(v);
+		else
+			t.right = new TreeNode(v);
 		return t.val;
 	}
 
