@@ -48,6 +48,101 @@ class Solution881
 	}
 }
 
+//882. Reachable Nodes In Subdivided Graph
+//Runtime: 184 ms, faster than 38.89% of Java online submissions for Reachable Nodes In Subdivided Graph.
+//Memory Usage: 59 MB, less than 100.00% of Java online submissions for Reachable Nodes In Subdivided Graph.
+class Solution882
+{
+	private static class Edge
+	{
+		private int node1Ind, node2Ind, num, stepFrom1, stepFrom2;
+
+		private Edge(int i1, int i2, int n)
+		{
+			node1Ind = i1;
+			node2Ind = i2;
+			num = n;
+			stepFrom1 = 0;
+			stepFrom2 = 0;
+		}
+
+		private int wgt()
+		{
+			return num + 1;
+		}
+
+		private int oppo(int i)
+		{
+			if (i == node1Ind)
+				return node2Ind;
+			return node1Ind;
+		}
+
+		private void update(int from, int sp)
+		{
+			if (from == node1Ind && sp > stepFrom1)
+				stepFrom1 = sp;
+			if (from == node2Ind && sp > stepFrom2)
+				stepFrom2 = sp;
+		}
+
+		private int canReach()
+		{
+			if (stepFrom1 > num)
+				stepFrom1 = num;
+			if (stepFrom2 > num)
+				stepFrom2 = num;
+			int x = stepFrom1 + stepFrom2;
+			if (x > num)
+				return num;
+			return x;
+		}
+	}
+
+	public int reachableNodes(int[][] edges, int M, int N)
+	{
+		List<List<Edge>> ll = new ArrayList<List<Edge>>();
+		for (int i = 0; i < N; i++)
+			ll.add(new ArrayList<Edge>());
+		for (int i = 0; i < edges.length; i++)
+		{
+			Edge e = new Edge(edges[i][0], edges[i][1], edges[i][2]);
+			ll.get(edges[i][0]).add(e);
+			ll.get(edges[i][1]).add(e);
+		}
+		int[] dist = new int[N];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		dist[0] = 0;
+		boolean[] used = new boolean[N];
+		for (int i = 0; i < N - 1; i++)
+		{
+			int minind = -1;
+			for (int j = 0; j < N; j++)
+				if (!used[j] && (minind == -1 || dist[j] < dist[minind]))
+					minind = j;
+			if (dist[minind] == Integer.MAX_VALUE)
+				break;
+			used[minind] = true;
+			for (Edge e : ll.get(minind))
+				if (dist[minind] + e.wgt() < dist[e.oppo(minind)])
+					dist[e.oppo(minind)] = dist[minind] + e.wgt();
+		}
+		for (int i = 0; i < N; i++)
+			for (Edge e : ll.get(i))
+				if (M > dist[i])
+					e.update(i, M - dist[i]);
+		int ct1 = 0, ct2 = 0;
+		for (int i = 0; i < N; i++)
+		{
+			if (dist[i] <= M)
+				ct1++;
+			for (Edge e : ll.get(i))
+				ct2 += e.canReach();
+		}
+		return ct1 + ct2 / 2;
+	}
+}
+
 //885. Spiral Matrix III
 //Runtime: 3 ms, faster than 99.48% of Java online submissions for Spiral Matrix III.
 //Memory Usage: 37 MB, less than 100.00% of Java online submissions for Spiral Matrix III.

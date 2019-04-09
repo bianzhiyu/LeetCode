@@ -11,7 +11,110 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
+
 import treeCodec.*;
+
+//502. IPO
+//Runtime: 29 ms, faster than 88.47% of Java online submissions for IPO.
+//Memory Usage: 47.7 MB, less than 12.12% of Java online submissions for IPO.
+class Solution502
+{
+	private static class Task implements Comparable<Task>
+	{
+		private int cap, prf;
+
+		public Task(int c, int p)
+		{
+			cap = c;
+			prf = p;
+		}
+
+		public int compareTo(Task o)
+		{
+			return o.prf - prf;
+		}
+	}
+
+	private static class cmpTask implements Comparator<Task>
+	{
+		public int compare(Task o1, Task o2)
+		{
+			return o1.cap - o2.cap;
+		}
+	}
+
+	public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital)
+	{
+		PriorityQueue<Task> pool = new PriorityQueue<Task>(new cmpTask());
+		int len = Profits.length;
+		for (int i = 0; i < len; i++)
+			pool.offer(new Task(Capital[i], Profits[i]));
+		PriorityQueue<Task> canUse = new PriorityQueue<Task>();
+		for (int i = 0; i < k; i++)
+		{
+			while (!pool.isEmpty() && pool.peek().cap <= W)
+				canUse.offer(pool.poll());
+			if (canUse.isEmpty())
+				break;
+			W += canUse.poll().prf;
+		}
+		return W;
+	}
+}
+
+//Runtime: 23 ms, faster than 95.10% of Java online submissions for IPO.
+//Memory Usage: 46 MB, less than 75.76% of Java online submissions for IPO.
+class Solution502_2
+{
+	private static class cmpTaskByCap implements Comparator<Integer>
+	{
+		private int[] cap;
+
+		private cmpTaskByCap(int[] c)
+		{
+			cap = c;
+		}
+
+		public int compare(Integer o1, Integer o2)
+		{
+			return cap[o1] - cap[o2];
+		}
+	}
+
+	private static class cmpTaskByPft implements Comparator<Integer>
+	{
+		private int[] pft;
+
+		private cmpTaskByPft(int[] p)
+		{
+			pft = p;
+		}
+
+		public int compare(Integer o1, Integer o2)
+		{
+			return pft[o2] - pft[o1];
+		}
+	}
+
+	public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital)
+	{
+		PriorityQueue<Integer> pool = new PriorityQueue<Integer>(new cmpTaskByCap(Capital));
+		int len = Profits.length;
+		for (int i = 0; i < len; i++)
+			pool.offer(i);
+		PriorityQueue<Integer> canUse = new PriorityQueue<Integer>(new cmpTaskByPft(Profits));
+		for (int i = 0; i < k; i++)
+		{
+			while (!pool.isEmpty() && Capital[pool.peek()] <= W)
+				canUse.offer(pool.poll());
+			if (canUse.isEmpty())
+				break;
+			W += Profits[canUse.poll()];
+		}
+		return W;
+	}
+}
 
 //503. Next Greater Element II
 //Runtime: 8 ms, faster than 100.00% of Java online submissions for Next Greater Element II.
@@ -109,7 +212,6 @@ class Solution507
 	}
 }
 
-
 //508. Most Frequent Subtree Sum
 //Runtime: 9 ms, faster than 48.46% of Java online submissions for Most Frequent Subtree Sum.
 //Memory Usage: 41.5 MB, less than 14.71% of Java online submissions for Most Frequent Subtree Sum.
@@ -117,52 +219,62 @@ class Solution508
 {
 	private void accumulate(TreeNode rt)
 	{
-		if (rt==null) return;
-		int s=rt.val;
-		if (rt.left!=null)
+		if (rt == null)
+			return;
+		int s = rt.val;
+		if (rt.left != null)
 		{
 			accumulate(rt.left);
-			s+=rt.left.val;
+			s += rt.left.val;
 		}
-		if (rt.right!=null)
+		if (rt.right != null)
 		{
 			accumulate(rt.right);
-			s+=rt.right.val;
+			s += rt.right.val;
 		}
-		rt.val=s;
+		rt.val = s;
 	}
-	private void travel(TreeNode rt,HashMap<Integer,Integer> freq)
+
+	private void travel(TreeNode rt, HashMap<Integer, Integer> freq)
 	{
-		if (rt==null) return;
+		if (rt == null)
+			return;
 		if (freq.containsKey(rt.val))
-			freq.put(rt.val,freq.get(rt.val)+1);
-		else freq.put(rt.val,1);
-		travel(rt.left,freq);
-		travel(rt.right,freq);
+			freq.put(rt.val, freq.get(rt.val) + 1);
+		else
+			freq.put(rt.val, 1);
+		travel(rt.left, freq);
+		travel(rt.right, freq);
 	}
+
 	public int[] findFrequentTreeSum(TreeNode root)
 	{
-		if (root==null) return new int[0];
+		if (root == null)
+			return new int[0];
 		accumulate(root);
-		HashMap<Integer,Integer> freq=new HashMap<Integer,Integer>();
-		travel(root,freq);
-		List<int[]> l=new ArrayList<int[]>();
-		for (int key:freq.keySet())
-			l.add(new int[] {key,freq.get(key)});
-		Collections.sort(l,new Comparator<int[]>()
-				{
-					public int compare(int[] o1, int[] o2)
-					{
-						if (o1[1]<o2[1]) return 1;
-						if (o1[1]==o2[1]) return 0;
-						return -1;
-					}
-				});
-		int j=1;
-		while (j<l.size() && l.get(j)[1]==l.get(0)[1]) j++;
-		int[] ans=new int[j];
-		for (int i=0;i<j;i++)
-			ans[i]=l.get(i)[0];
+		HashMap<Integer, Integer> freq = new HashMap<Integer, Integer>();
+		travel(root, freq);
+		List<int[]> l = new ArrayList<int[]>();
+		for (int key : freq.keySet())
+			l.add(new int[]
+			{ key, freq.get(key) });
+		Collections.sort(l, new Comparator<int[]>()
+		{
+			public int compare(int[] o1, int[] o2)
+			{
+				if (o1[1] < o2[1])
+					return 1;
+				if (o1[1] == o2[1])
+					return 0;
+				return -1;
+			}
+		});
+		int j = 1;
+		while (j < l.size() && l.get(j)[1] == l.get(0)[1])
+			j++;
+		int[] ans = new int[j];
+		for (int i = 0; i < j; i++)
+			ans[i] = l.get(i)[0];
 		return ans;
 	}
 }
@@ -171,67 +283,78 @@ class Solution508_2
 {
 	private void accumulate(TreeNode rt)
 	{
-		if (rt==null) return;
-		int s=rt.val;
-		if (rt.left!=null)
+		if (rt == null)
+			return;
+		int s = rt.val;
+		if (rt.left != null)
 		{
 			accumulate(rt.left);
-			s+=rt.left.val;
+			s += rt.left.val;
 		}
-		if (rt.right!=null)
+		if (rt.right != null)
 		{
 			accumulate(rt.right);
-			s+=rt.right.val;
+			s += rt.right.val;
 		}
-		rt.val=s;
+		rt.val = s;
 	}
-	private void travel(TreeNode rt,HashMap<Integer,Integer> freq)
+
+	private void travel(TreeNode rt, HashMap<Integer, Integer> freq)
 	{
-		if (rt==null) return;
+		if (rt == null)
+			return;
 		if (freq.containsKey(rt.val))
-			freq.put(rt.val,freq.get(rt.val)+1);
-		else freq.put(rt.val,1);
-		travel(rt.left,freq);
-		travel(rt.right,freq);
+			freq.put(rt.val, freq.get(rt.val) + 1);
+		else
+			freq.put(rt.val, 1);
+		travel(rt.left, freq);
+		travel(rt.right, freq);
 	}
-	private void copy(TreeNode originalRt,TreeNode newRt)
+
+	private void copy(TreeNode originalRt, TreeNode newRt)
 	{
-		if (originalRt.left!=null)
+		if (originalRt.left != null)
 		{
-			newRt.left=new TreeNode(originalRt.left.val);
-			copy(originalRt.left,newRt.left);
+			newRt.left = new TreeNode(originalRt.left.val);
+			copy(originalRt.left, newRt.left);
 		}
-		if (originalRt.right!=null)
+		if (originalRt.right != null)
 		{
-			newRt.right=new TreeNode(originalRt.right.val);
-			copy(originalRt.right,newRt.right);
+			newRt.right = new TreeNode(originalRt.right.val);
+			copy(originalRt.right, newRt.right);
 		}
 	}
+
 	public int[] findFrequentTreeSum(TreeNode root)
 	{
-		if (root==null) return new int[0];
-		TreeNode copyrt=new TreeNode(root.val);
-		copy(root,copyrt);
+		if (root == null)
+			return new int[0];
+		TreeNode copyrt = new TreeNode(root.val);
+		copy(root, copyrt);
 		accumulate(copyrt);
-		HashMap<Integer,Integer> freq=new HashMap<Integer,Integer>();
-		travel(copyrt,freq);
-		List<int[]> l=new ArrayList<int[]>();
-		for (int key:freq.keySet())
-			l.add(new int[] {key,freq.get(key)});
-		Collections.sort(l,new Comparator<int[]>()
-				{
-					public int compare(int[] o1, int[] o2)
-					{
-						if (o1[1]<o2[1]) return 1;
-						if (o1[1]==o2[1]) return 0;
-						return -1;
-					}
-				});
-		int j=1;
-		while (j<l.size() && l.get(j)[1]==l.get(0)[1]) j++;
-		int[] ans=new int[j];
-		for (int i=0;i<j;i++)
-			ans[i]=l.get(i)[0];
+		HashMap<Integer, Integer> freq = new HashMap<Integer, Integer>();
+		travel(copyrt, freq);
+		List<int[]> l = new ArrayList<int[]>();
+		for (int key : freq.keySet())
+			l.add(new int[]
+			{ key, freq.get(key) });
+		Collections.sort(l, new Comparator<int[]>()
+		{
+			public int compare(int[] o1, int[] o2)
+			{
+				if (o1[1] < o2[1])
+					return 1;
+				if (o1[1] == o2[1])
+					return 0;
+				return -1;
+			}
+		});
+		int j = 1;
+		while (j < l.size() && l.get(j)[1] == l.get(0)[1])
+			j++;
+		int[] ans = new int[j];
+		for (int i = 0; i < j; i++)
+			ans[i] = l.get(i)[0];
 		return ans;
 	}
 }
@@ -289,6 +412,7 @@ public class LC501_510
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void test508()
 	{
 		try
@@ -302,14 +426,14 @@ public class LC501_510
 			String inLine;
 			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
 			{
-				TreeNode rt=TreeCodec.deserialize(inLine);
+				TreeNode rt = TreeCodec.deserialize(inLine);
 
-				Solution508 solver=new Solution508();
-				
-				int[] ans=solver.findFrequentTreeSum(rt);
-				
-				String out=test.Test.intArrToString(ans);
-				
+				Solution508 solver = new Solution508();
+
+				int[] ans = solver.findFrequentTreeSum(rt);
+
+				String out = test.Test.intArrToString(ans);
+
 				System.out.println(out);
 
 				bfw.write(out);
@@ -324,6 +448,7 @@ public class LC501_510
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void main(String[] args)
 	{
 		test508();
