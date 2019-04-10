@@ -66,6 +66,121 @@ class Solution971
 	}
 }
 
+//972. Equal Rational Numbers
+//Runtime: 2 ms, faster than 97.39% of Java online submissions for Equal Rational Numbers.
+//Memory Usage: 35.5 MB, less than 87.50% of Java online submissions for Equal Rational Numbers.
+class Solution972
+{
+	public static class Token
+	{
+		private int i, u, d;
+
+		public Token(int _i, int _u, int _d)
+		{
+			i = _i;
+			u = _u;
+			d = _d;
+		}
+
+		public void simp()
+		{
+			int x = gcd(u, d);
+			u /= x;
+			d /= x;
+		}
+
+		public Token add(Token an)
+		{
+			Token ans = new Token(0, 0, 1);
+			ans.i = i + an.i;
+			int m = d / gcd(d, an.d) * an.d;
+			ans.d = m;
+			ans.u = u * (m / d) + an.u * (m / an.d);
+			ans.simp();
+			while (ans.u >= ans.d)
+			{
+				ans.i++;
+				ans.u -= ans.d;
+			}
+			return ans;
+		}
+
+		public boolean equal(Token an)
+		{
+			if (i != an.i)
+				return false;
+			int m = d / gcd(d, an.d) * an.d;
+			return u * (m / d) == an.u * (m / an.d);
+		}
+
+		public String toString()
+		{
+			return "" + i + ("(" + u + "/" + d + ")");
+		}
+	}
+
+	public static int gcd(int a, int b)
+	{
+		return b == 0 ? a : gcd(b, a % b);
+	}
+
+	public static Token parse(String s)
+	{
+		if (s.indexOf('.') == -1)
+			return new Token(Integer.parseInt(s), 0, 1);
+		if (s.indexOf('.') == s.length() - 1)
+			return new Token(Integer.parseInt(s.substring(0, s.length() - 1)), 0, 1);
+		String[] d = s.split("\\.");
+		Token a = new Token(Integer.parseInt(d[0]), 0, 1);
+		if (d[1].indexOf('(') == -1)
+		{
+			a.u = Integer.parseInt(d[1]);
+			a.d = 1;
+			for (int i = 1; i <= d[1].length(); i++)
+				a.d *= 10;
+			a.simp();
+			return a;
+		} else
+		{
+			int p = d[1].indexOf('(');
+			Token part1 = new Token(0, 0, 1), part2 = new Token(0, 0, 1);
+			if (p == -1)
+			{
+				part1.u = Integer.parseInt(d[1]);
+				for (int i = 1; i <= d[1].length(); i++)
+					part1.d *= 10;
+				part1.simp();
+				return a.add(part1);
+			} else
+			{
+				String l = d[1].substring(p + 1, d[1].length() - 1);
+				part2.u = Integer.parseInt(l);
+				part2.d = 0;
+				for (int i = 1; i <= l.length(); i++)
+					part2.d = part2.d * 10 + 9;
+				for (int i = 0; i < p; i++)
+					part2.d *= 10;
+				l = d[1].substring(0, p);
+				if (p != 0)
+				{
+					part1.u = Integer.parseInt(l);
+					part1.d = 1;
+					for (int i = 1; i <= l.length(); i++)
+						part1.d *= 10;
+					part1.simp();
+				}
+				part2.simp();
+				return part1.add(part2).add(a);
+			}
+		}
+	}
+
+	public boolean isRationalEqual(String S, String T)
+	{
+		return parse(S).equal(parse(T));
+	}
+}
+
 //973. K Closest Points to Origin
 //Runtime: 58 ms, faster than 41.04% of Java online submissions for K Closest Points to Origin.
 //Memory Usage: 65.8 MB, less than 7.84% of Java online submissions for K Closest Points to Origin.
@@ -448,8 +563,18 @@ public class LC971_980
 		System.out.println(new Solution980().uniquePathsIII(g));
 	}
 
+	public static void test972()
+	{
+		String s1 = "0.(52)";
+		String s2 = "0.5(25)";
+		System.out.println(Solution972.parse(s1));
+		System.out.println(Solution972.parse(s2));
+		Solution972 sl = new Solution972();
+		System.out.println(sl.isRationalEqual(s1, s2));
+	}
+
 	public static void main(String[] args)
 	{
-
+		test972();
 	}
 }
