@@ -264,6 +264,26 @@ class Solution322
 	}
 }
 
+//326. Power of Three
+//Runtime: 10 ms, faster than 99.80% of Java online submissions for Power of Three.
+//Memory Usage: 34.5 MB, less than 100.00% of Java online submissions for Power of Three.
+class Solution326
+{
+	public boolean isPowerOfThree(int n)
+	{
+		if (n <= 0)
+			return false;
+		if (n == 1)
+			return true;
+		if (n % 3 != 0)
+			return false;
+		return isPowerOfThree(n / 3);
+	}
+}
+
+//328. Odd Even Linked List
+//Runtime: 3 ms, faster than 73.77% of Java online submissions for Odd Even Linked List.
+//Memory Usage: 37.8 MB, less than 23.71% of Java online submissions for Odd Even Linked List.
 class ListNode
 {
 	int val;
@@ -275,9 +295,6 @@ class ListNode
 	}
 }
 
-//328. Odd Even Linked List
-//Runtime: 3 ms, faster than 73.77% of Java online submissions for Odd Even Linked List.
-//Memory Usage: 37.8 MB, less than 23.71% of Java online submissions for Odd Even Linked List.
 class Solution328
 {
 	public ListNode oddEvenList(ListNode head)
@@ -368,19 +385,19 @@ class Solution330
 {
 	public int minPatches(int[] nums, int n)
 	{
-		int ad=0;
-		boolean [] r=new boolean[n+1];
-		r[0]=true;
-		for (int i=0;i<nums.length;i++) 
-		for (int j=n;j>=nums[i];j--)
-			r[j]=r[j]||r[j-nums[i]];
-		for (int i=1;i<=n;i++)
+		int ad = 0;
+		boolean[] r = new boolean[n + 1];
+		r[0] = true;
+		for (int i = 0; i < nums.length; i++)
+			for (int j = n; j >= nums[i]; j--)
+				r[j] = r[j] || r[j - nums[i]];
+		for (int i = 1; i <= n; i++)
 		{
 			if (!r[i])
 			{
 				ad++;
-				for (int j=n;j>=i;j--)
-					r[j]=r[j]||r[j-i];
+				for (int j = n; j >= i; j--)
+					r[j] = r[j] || r[j - i];
 			}
 		}
 		return ad;
@@ -393,31 +410,31 @@ class Solution330_2
 {
 	public int minPatches(int[] nums, int n)
 	{
-		long r=0;
-		int ct=0;
-		for (int i=0;i<nums.length;)
+		long r = 0;
+		int ct = 0;
+		for (int i = 0; i < nums.length;)
 		{
-			if (nums[i]>n) break;
-			if (nums[i]==r+1)
+			if (nums[i] > n)
+				break;
+			if (nums[i] == r + 1)
 			{
-				r=nums[i]+r;
+				r = nums[i] + r;
 				i++;
-			}
-			else if (nums[i]>r+1)
+			} else if (nums[i] > r + 1)
 			{
 				ct++;
-				r+=(r+1);
-			}
-			else //nums[i]<=r
+				r += (r + 1);
+			} else // nums[i]<=r
 			{
-				r+=nums[i];
+				r += nums[i];
 				i++;
 			}
-			if (r>=n) break;
+			if (r >= n)
+				break;
 		}
-		while (r<n)
+		while (r < n)
 		{
-			r+=r+1;
+			r += r + 1;
 			ct++;
 		}
 		return ct;
@@ -463,6 +480,7 @@ public class LC321_330
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void test330()
 	{
 		try
@@ -485,7 +503,7 @@ public class LC321_330
 
 				System.out.println(ans);
 
-				bfw.write(ans+"");
+				bfw.write(ans + "");
 				bfw.newLine();
 			}
 
@@ -497,6 +515,7 @@ public class LC321_330
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void main(String[] args)
 	{
 		test330();

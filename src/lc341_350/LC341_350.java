@@ -10,6 +10,21 @@ import java.util.List;
 import java.util.Set;
 import bbst.BBST;
 
+//342. Power of Four
+class Solution342
+{
+	public boolean isPowerOfFour(int num)
+	{
+		if (num <= 0)
+			return false;
+		if (num == 1)
+			return true;
+		if (num % 4 != 0)
+			return false;
+		return isPowerOfFour(num / 4);
+	}
+}
+
 //343. Integer Break
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Integer Break.
 //Memory Usage: 34.4 MB, less than 68.15% of Java online submissions for Integer Break.
@@ -30,6 +45,59 @@ class Solution343
 			n -= 3;
 		}
 		return prod * n;
+	}
+}
+
+//344. Reverse String
+//Runtime: 1 ms, faster than 100.00% of Java online submissions for Reverse String.
+//Memory Usage: 50.9 MB, less than 5.01% of Java online submissions for Reverse String.
+class Solution344
+{
+	public void reverseString(char[] s)
+	{
+		int l = 0, r = s.length - 1;
+		char t;
+		while (l < r)
+		{
+			t = s[l];
+			s[l] = s[r];
+			s[r] = t;
+			l++;
+			r--;
+		}
+	}
+}
+
+//345. Reverse Vowels of a String
+//Runtime: 2 ms, faster than 99.15% of Java online submissions for Reverse Vowels of a String.
+//Memory Usage: 40.2 MB, less than 28.16% of Java online submissions for Reverse Vowels of a String.
+class Solution345
+{
+	public String reverseVowels(String s)
+	{
+		char[] sa = s.toCharArray();
+		int l = 0, r = s.length() - 1;
+		while (l < r)
+		{
+			while (!isV(sa[l]) && l < r)
+				l++;
+			if (l == r)
+				break;
+			while (!isV(sa[r]) && l < r)
+				r--;
+			char t = sa[l];
+			sa[l] = sa[r];
+			sa[r] = t;
+			l++;
+			r--;
+		}
+		return new String(sa);
+	}
+
+	private boolean isV(char c)
+	{
+		return c == 'a' || c == 'A' || c == 'e' || c == 'E' || c == 'i' || c == 'I' || c == 'o' || c == 'O' || c == 'u'
+				|| c == 'U';
 	}
 }
 
@@ -202,5 +270,4 @@ public class LC341_350
 	{
 
 	}
-
 }
