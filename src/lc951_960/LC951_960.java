@@ -253,6 +253,86 @@ class Solution956_4
 	}
 }
 
+//Runtime: 29 ms, faster than 62.88% of Java online submissions for Tallest Billboard.
+//Memory Usage: 38.2 MB, less than 58.82% of Java online submissions for Tallest Billboard.
+class Solution956_5
+{
+	private int[][] rec;
+	private boolean[][] checked;
+	private int ZEROPOINT, callct = 0, BOUND = 0;
+
+	private int dfs(int[] r, int st, int sum)
+	{
+		callct++;
+		if (st == r.length)
+			return sum == 0 ? 0 : -1;
+		if (sum > BOUND || sum < -BOUND)
+			return -1;
+		if (checked[st][ZEROPOINT + sum])
+			return rec[st][ZEROPOINT + sum];
+		int a = dfs(r, st + 1, sum), t;
+		t = dfs(r, st + 1, sum + r[st]);
+		if (t != -1 && t > a)
+			a = t;
+		t = dfs(r, st + 1, sum - r[st]);
+		if (t != -1 && t + r[st] > a)
+			a = t + r[st];
+		checked[st][ZEROPOINT + sum] = true;
+		rec[st][ZEROPOINT + sum] = a;
+		return a;
+	}
+
+	public int tallestBillboard(int[] rods)
+	{
+		int s = 0;
+		for (int i = 0; i < rods.length; i++)
+			s += rods[i];
+		ZEROPOINT = s / 2 + 8;
+		BOUND = s / 2;
+		rec = new int[rods.length][s + 20];
+		checked = new boolean[rods.length][s + 20];
+		int ans = dfs(rods, 0, 0);
+		System.out.println("Call times after cut off =" + callct);
+		return ans;
+	}
+}
+
+class Solution956_6
+{
+	private int[][] rec;
+	private boolean[][] checked;
+	private final static int ZEROPOINT = 5005;
+	private int ct=0;
+
+	private int dfs(int[] r, int st, int sum)
+	{
+		ct++;
+		if (st == r.length)
+			return sum == 0 ? 0 : -1;
+		if (checked[st][ZEROPOINT + sum])
+			return rec[st][ZEROPOINT + sum];
+		int a = dfs(r, st + 1, sum), t;
+		t = dfs(r, st + 1, sum + r[st]);
+		if (t != -1 && t > a)
+			a = t;
+		t = dfs(r, st + 1, sum - r[st]);
+		if (t != -1 && t + r[st] > a)
+			a = t + r[st];
+		checked[st][ZEROPOINT + sum] = true;
+		rec[st][ZEROPOINT + sum] = a;
+		return a;
+	}
+
+	public int tallestBillboard(int[] rods)
+	{
+		rec = new int[rods.length][10010];
+		checked = new boolean[rods.length][10010];
+		int ans=dfs(rods, 0, 0);
+		System.out.println("Original Call Times = "+ct);
+		return ans;
+	}
+}
+
 //957. Prison Cells After N Days
 //Runtime: 2 ms, faster than 94.89% of Java online submissions for Prison Cells After N Days.
 //Memory Usage: 37.7 MB, less than 89.04% of Java online submissions for Prison Cells After N Days.
@@ -487,15 +567,19 @@ public class LC951_960
 			String inLine;
 			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
 			{
+				System.out.println("Test:  ");
 				int[] nums = test.Test.parseIntArr(inLine);
 
-				Solution956_3 s = new Solution956_3();
+				Solution956_2 s = new Solution956_2();
 
-				System.out.println(new Solution956_4().tallestBillboard(nums));
+				System.out.println(new Solution956_5().tallestBillboard(nums));
+				
+				new Solution956_6().tallestBillboard(nums);
 
 				int ans = s.tallestBillboard(nums);
 
 				System.out.println("std ans=" + ans);
+				
 				bfw.write("" + ans);
 				bfw.newLine();
 			}

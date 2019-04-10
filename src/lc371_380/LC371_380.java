@@ -14,6 +14,15 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 
+//371. Sum of Two Integers
+class Solution371
+{
+	public int getSum(int a, int b)
+	{
+		return b == 0 ? a : getSum((a ^ b), (a & b) << 1);
+	}
+}
+
 //372. Super Pow
 //Runtime: 3 ms, faster than 88.71% of Java online submissions for Super Pow.
 //Memory Usage: 37.7 MB, less than 65.52% of Java online submissions for Super Pow.
@@ -488,6 +497,7 @@ public class LC371_380
 
 	public static void main(String[] args) throws IOException
 	{
-		test377();
+		int a=-1,b=1;
+		System.out.println((a^b)+" "+((a&b)<<1));
 	}
 }
