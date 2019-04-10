@@ -1,5 +1,6 @@
 package lc231_240;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 import bbst.BBST;
@@ -19,18 +20,20 @@ class ListNode
 //231. Power of Two
 // Runtime: 1 ms, 90.66%
 // Memory Usage: 32.5 MB
-class Solution231 
+class Solution231
 {
-	public boolean isPowerOfTwo(int n) 
+	public boolean isPowerOfTwo(int n)
 	{
-        if (n<=0) return false;
-        while (n>2)
-        {
-            if (n%2!=0) return false;
-            n/=2;
-        }
-        return true;
-    }
+		if (n <= 0)
+			return false;
+		while (n > 2)
+		{
+			if (n % 2 != 0)
+				return false;
+			n /= 2;
+		}
+		return true;
+	}
 }
 
 //232. Implement Queue using Stacks
@@ -105,9 +108,102 @@ class Solution223
 	}
 }
 
+//234. Palindrome Linked List
+//Runtime: 3 ms, 21.16%
+//Memory Usage: 42.4 MB
+class Solution234
+{
+	public boolean isPalindrome(ListNode head)
+	{
+		LinkedList<Integer> ino = new LinkedList<Integer>();
+		LinkedList<Integer> rvo = new LinkedList<Integer>();
+		while (head != null)
+		{
+			ino.addLast(head.val);
+			rvo.addFirst(head.val);
+			head = head.next;
+		}
+		while (!ino.isEmpty())
+			if (((int)ino.removeFirst()) != ((int)rvo.removeFirst()))
+//			if (ino.removeFirst() != rvo.removeFirst())
+				// This is not right, because it will return an object of type Integer.
+				return false;
+		return true;
+	}
+}
+
+//Runtime: 3 ms, faster than 21.16% of Java online submissions for Palindrome Linked List.
+//Memory Usage: 42.4 MB, less than 42.13% of Java online submissions for Palindrome Linked List.
+class Solution234_2
+{
+	public boolean isPalindrome(ListNode head)
+	{
+		LinkedList<Integer> ino = new LinkedList<Integer>();
+		while (head != null)
+		{
+			ino.addLast(head.val);
+			head = head.next;
+		}
+		int t;
+		while (!ino.isEmpty())
+		{
+			t=ino.removeFirst();
+			if (!ino.isEmpty() && ((int)ino.removeLast())!=t)
+				return false;
+		}
+		return true;
+	}
+}
+
+//235. Lowest Common Ancestor of a Binary Search Tree
+//Runtime: 6 ms, faster than 9.47% of Java online submissions for Lowest Common Ancestor of a Binary Search Tree.
+//Memory Usage: 35.3 MB, less than 18.25% of Java online submissions for Lowest Common Ancestor of a Binary Search Tree.
+class Solution235
+{
+	private static class R
+	{
+		boolean a1, a2;
+		TreeNode tn;
+
+		public R(boolean b1, boolean b2, TreeNode t)
+		{
+			a1 = b1;
+			a2 = b2;
+			tn = t;
+		}
+	}
+
+	private R trav(TreeNode root, TreeNode p, TreeNode q)
+	{
+		if (root == null)
+			return new R(false, false, null);
+		R l = trav(root.left, p, q), r = trav(root.right, p, q);
+		R c = new R(l.a1 || r.a1, l.a2 || r.a2, null);
+		if (l.tn != null)
+			return l;
+		if (r.tn != null)
+			return r;
+		if (root == p)
+			c.a1 = true;
+		if (root == q)
+			c.a2 = true;
+		if (c.a1 && c.a2)
+			c.tn = root;
+		return c;
+	}
+
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+	{
+		return trav(root, p, q).tn;
+	}
+}
+
+//236. Lowest Common Ancestor of a Binary Tree
+//Runtime: 8 ms, 27%
+//Memory Usage: 33.3 MB
 class Solution236
 {
-	boolean findpath(TreeNode r, TreeNode p, int[] path)
+	private boolean findpath(TreeNode r, TreeNode p, int[] path)
 	{
 		if (r == null)
 			return false;

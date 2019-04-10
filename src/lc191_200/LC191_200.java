@@ -20,6 +20,34 @@ class Solution195
 	}
 }
 
+//198. House Robber
+//Runtime: 0 ms, 100%
+//Memory Usage: 35.3 MB
+class Solution198
+{
+	public int rob(int[] nums)
+	{
+		if (nums == null || nums.length == 0)
+			return 0;
+		int len = nums.length;
+		int c1 = nums[0], c2 = 0;
+		// c1: max number when to choose current, c2: max number when not to choose
+		// current,
+		int max = 0;
+		for (int i = 1; i < len; i++)
+		{
+			if (max < c1)
+				max = c1;
+			if (max < c2)
+				max = c2;
+			int d1 = c2 + nums[i], d2 = Math.max(c1, c2);
+			c1 = d1;
+			c2 = d2;
+		}
+		return Math.max(c1, c2);
+	}
+}
+
 //199. Binary Tree Right Side View
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Right Side View.
 //Memory Usage: 37.2 MB, less than 100.00% of Java online submissions for Binary Tree Right Side View.
