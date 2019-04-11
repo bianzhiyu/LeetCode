@@ -6,6 +6,58 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+//401. Binary Watch
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Watch.
+//Memory Usage: 37.1 MB, less than 97.96% of Java online submissions for Binary Watch.
+class Solution401
+{
+	private void dfs(List<String> ans, int st, int[] stack, int num, int t)
+	{
+		if (st == 10)
+		{
+			if (t != num)
+				return;
+			int h = (stack[0] << 3) + (stack[1] << 2) + (stack[2] << 1) + stack[3];
+			int m = (stack[4] << 5) + (stack[5] << 4) + (stack[6] << 3) + (stack[7] << 2) + (stack[8] << 1)
+					+ (stack[9]);
+			if (h > 11)
+				return;
+			if (m > 59)
+				return;
+			String s = Integer.toString(h);
+			if (m < 10)
+				s = s + ":0" + m;
+			else
+				s = s + ":" + m;
+			ans.add(s);
+			return;
+		}
+		if (t == num)
+		{
+			stack[st] = 0;
+			dfs(ans, st + 1, stack, num, t);
+		} else
+		{
+			if (9 - st >= num - t)
+			{
+				stack[st] = 0;
+				dfs(ans, st + 1, stack, num, t);
+			}
+			stack[st] = 1;
+			dfs(ans, st + 1, stack, num, t + 1);
+		}
+	}
+
+	public List<String> readBinaryWatch(int num)
+	{
+		List<String> ans = new ArrayList<String>();
+		dfs(ans, 0, new int[10], num, 0);
+		return ans;
+	}
+}
 
 //402. Remove K Digits
 //Runtime: 3 ms, faster than 98.22% of Java online submissions for Remove K Digits.
@@ -18,30 +70,32 @@ class Solution402
 {
 	public String removeKdigits(String num, int k)
 	{
-		char[] stack=new char[10003];
-		int sp=0,rp=0,slen=num.length();
-		while (rp<slen)
+		char[] stack = new char[10003];
+		int sp = 0, rp = 0, slen = num.length();
+		while (rp < slen)
 		{
-			if (sp==0)
+			if (sp == 0)
 			{
-				stack[sp++]=num.charAt(rp++);
-			}
-			else
+				stack[sp++] = num.charAt(rp++);
+			} else
 			{
-				while (k>0 && sp>0 && num.charAt(rp)<stack[sp-1])
+				while (k > 0 && sp > 0 && num.charAt(rp) < stack[sp - 1])
 				{
 					k--;
 					sp--;
 				}
-				stack[sp++]=num.charAt(rp++);
+				stack[sp++] = num.charAt(rp++);
 			}
 		}
-		StringBuilder s=new StringBuilder();
-		sp-=k;
-		int i=0;
-		while (i<sp && stack[i]=='0') i++;
-		if (i==sp) return "0";
-		while (i<sp) s.append(stack[i++]);
+		StringBuilder s = new StringBuilder();
+		sp -= k;
+		int i = 0;
+		while (i < sp && stack[i] == '0')
+			i++;
+		if (i == sp)
+			return "0";
+		while (i < sp)
+			s.append(stack[i++]);
 		return s.toString();
 	}
 }
@@ -108,7 +162,7 @@ class Solution406
 			return;
 		int pivotInd = l;
 		int[] pivot = new int[]
-				{ a[pivotInd][0], a[pivotInd][1] };
+		{ a[pivotInd][0], a[pivotInd][1] };
 		swap(a, pivotInd, r - 1);
 		int storeInd = l;
 		for (int i = l; i < r - 1; i++)
@@ -186,7 +240,7 @@ class Solution406_2
 			return;
 		int pivotInd = l;
 		int[] pivot = new int[]
-				{ a[pivotInd][0], a[pivotInd][1] };
+		{ a[pivotInd][0], a[pivotInd][1] };
 		swap(a, pivotInd, r - 1);
 		int storeInd = l;
 		for (int i = l; i < r - 1; i++)
@@ -246,37 +300,43 @@ class Solution406_2
 
 //410. Split Array Largest Sum
 //Time Limit Exceeded
-class Solution410 
+class Solution410
 {
-	private int min=Integer.MAX_VALUE;
+	private int min = Integer.MAX_VALUE;
 	private int[] sumUntil;
-	private void dfs(int[] A,int b,int st,int max)
+
+	private void dfs(int[] A, int b, int st, int max)
 	{
-		if (b==0)
+		if (b == 0)
 		{
-			int lastSum=sumUntil[A.length-1]-sumUntil[st-1];
-			if (lastSum>max) max=lastSum;
-			if (max<min) min=max;
+			int lastSum = sumUntil[A.length - 1] - sumUntil[st - 1];
+			if (lastSum > max)
+				max = lastSum;
+			if (max < min)
+				min = max;
 			return;
 		}
-		int tmp=0;
-		for (int i=st;i+b<A.length;i++)
+		int tmp = 0;
+		for (int i = st; i + b < A.length; i++)
 		{
-			tmp+=A[i];
-			if (tmp>min) break;
-			dfs(A,b-1,i+1,max>tmp?max:tmp);
+			tmp += A[i];
+			if (tmp > min)
+				break;
+			dfs(A, b - 1, i + 1, max > tmp ? max : tmp);
 		}
 	}
-	public int splitArray(int[] nums, int m) 
+
+	public int splitArray(int[] nums, int m)
 	{
-		sumUntil=new int[nums.length];
-		sumUntil[0]=nums[0];
-		for (int i=1;i<nums.length;i++)
-			sumUntil[i]=sumUntil[i-1]+nums[i];
-		if (m==1) return sumUntil[nums.length-1];
-		dfs(nums,m-1,0,0);
+		sumUntil = new int[nums.length];
+		sumUntil[0] = nums[0];
+		for (int i = 1; i < nums.length; i++)
+			sumUntil[i] = sumUntil[i - 1] + nums[i];
+		if (m == 1)
+			return sumUntil[nums.length - 1];
+		dfs(nums, m - 1, 0, 0);
 		return min;
-    }
+	}
 }
 
 // Runtime: 26 ms, faster than 21.33% of Java online submissions for Split Array Largest Sum.
@@ -284,31 +344,33 @@ class Solution410
 class Solution410_2
 {
 	private int[] sumUntil;
-	private int partSum(int l,int r)
+
+	private int partSum(int l, int r)
 	{
-		if (l==0) return sumUntil[r];
-		return sumUntil[r]-sumUntil[l-1];
+		if (l == 0)
+			return sumUntil[r];
+		return sumUntil[r] - sumUntil[l - 1];
 	}
-	public int splitArray(int[] nums, int m) 
+
+	public int splitArray(int[] nums, int m)
 	{
-		int len=nums.length;
-		sumUntil=new int[len];
-		sumUntil[0]=nums[0];
-		for (int i=1;i<len;i++)
-			sumUntil[i]=sumUntil[i-1]+nums[i];
-		int[][] d=new int[m][len];
-		for (int i=0;i<len;i++)
-			d[0][i]=partSum(0,i);
-		for (int i=1;i<m;i++)
-			for (int j=0;j<len;j++)
+		int len = nums.length;
+		sumUntil = new int[len];
+		sumUntil[0] = nums[0];
+		for (int i = 1; i < len; i++)
+			sumUntil[i] = sumUntil[i - 1] + nums[i];
+		int[][] d = new int[m][len];
+		for (int i = 0; i < len; i++)
+			d[0][i] = partSum(0, i);
+		for (int i = 1; i < m; i++)
+			for (int j = 0; j < len; j++)
 			{
-				d[i][j]=Integer.MAX_VALUE;
-				for (int k=i-1;k<j;k++)
-					d[i][j]=Math.min(d[i][j],
-						Math.max(d[i-1][k],partSum(k+1,j)));
+				d[i][j] = Integer.MAX_VALUE;
+				for (int k = i - 1; k < j; k++)
+					d[i][j] = Math.min(d[i][j], Math.max(d[i - 1][k], partSum(k + 1, j)));
 			}
-		return d[m-1][len-1];
-    }
+		return d[m - 1][len - 1];
+	}
 }
 
 //Same as 1011
@@ -316,45 +378,52 @@ class Solution410_2
 // Memory Usage: 35.8 MB, less than 94.44% of Java online submissions for Split Array Largest Sum.
 class Solution410_3
 {
-	private boolean judge(int[] A,int Lt,int grps)
+	private boolean judge(int[] A, int Lt, int grps)
 	{
-		int rem=0,used=0;
-		for (int i=0;i<A.length;i++)
+		int rem = 0, used = 0;
+		for (int i = 0; i < A.length; i++)
 		{
-			if (rem>=A[i]) rem-=A[i];
+			if (rem >= A[i])
+				rem -= A[i];
 			else
 			{
-				rem=Lt-A[i];
+				rem = Lt - A[i];
 				used++;
 			}
-			if (used>grps) return false;
+			if (used > grps)
+				return false;
 		}
 		return true;
 	}
-	public int splitArray(int[] nums, int m) 
+
+	public int splitArray(int[] nums, int m)
 	{
-		int L=0,R=0;
-		for (int i=0;i<nums.length;i++)
+		int L = 0, R = 0;
+		for (int i = 0; i < nums.length; i++)
 		{
-			R+=nums[i];
-			if (nums[i]>L) L=nums[i];
+			R += nums[i];
+			if (nums[i] > L)
+				L = nums[i];
 		}
-		while (L<R)
+		while (L < R)
 		{
-			if (R==L+1)
+			if (R == L + 1)
 			{
-				if (judge(nums,L,m)) return L;
-				else return R;
-			}
-			else
+				if (judge(nums, L, m))
+					return L;
+				else
+					return R;
+			} else
 			{
-				int mid=(L+R)/2;
-				if (judge(nums,mid,m)) R=mid;
-				else L=mid+1;
+				int mid = (L + R) / 2;
+				if (judge(nums, mid, m))
+					R = mid;
+				else
+					L = mid + 1;
 			}
 		}
 		return L;
-    }
+	}
 }
 
 public class LC401_410
@@ -376,12 +445,12 @@ public class LC401_410
 
 				int m = Integer.parseInt(bfr.readLine());
 
-				Solution410_2 s=new Solution410_2();
+				Solution410_2 s = new Solution410_2();
 
-				int ans=s.splitArray(nums, m);
+				int ans = s.splitArray(nums, m);
 
-				System.out.println("Ans="+ans);
-				System.out.println("Ans="+new Solution410_3().splitArray(nums, m));
+				System.out.println("Ans=" + ans);
+				System.out.println("Ans=" + new Solution410_3().splitArray(nums, m));
 
 				bfw.write("" + ans);
 				bfw.newLine();
@@ -395,6 +464,7 @@ public class LC401_410
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void main(String[] args)
 	{
 		test410();

@@ -33,6 +33,31 @@ class Solution413
 	}
 }
 
+//414. Third Maximum Number
+//Runtime: 1 ms, faster than 98.08% of Java online submissions for Third Maximum Number.
+//Memory Usage: 39.5 MB, less than 8.55% of Java online submissions for Third Maximum Number.
+class Solution414
+{
+	public int thirdMax(int[] nums)
+	{
+		long[] t = new long[]
+		{ Long.MIN_VALUE, Long.MIN_VALUE, Long.MIN_VALUE };
+		for (int i = 0; i < nums.length; i++)
+			if (nums[i] > t[0])
+			{
+				t[2] = t[1];
+				t[1] = t[0];
+				t[0] = nums[i];
+			} else if (t[0] > nums[i] && nums[i] > t[1])
+			{
+				t[2] = t[1];
+				t[1] = nums[i];
+			} else if (t[1] > nums[i] && nums[i] > t[2])
+				t[2] = nums[i];
+		return (int) (t[2] == Long.MIN_VALUE ? t[0] : t[2]);
+	}
+}
+
 //416. Partition Equal Subset Sum
 //Runtime: 15 ms, faster than 69.92% of Java online submissions for Partition Equal Subset Sum.
 //Memory Usage: 40.3 MB, less than 6.31% of Java online submissions for Partition Equal Subset Sum.
@@ -145,49 +170,59 @@ class Solution417
 
 class Solution419
 {
-	final static int[][] di=new int[][] {{1,0},{0,1},{-1,0},{0,-1}};
+	final static int[][] di = new int[][]
+	{
+			{ 1, 0 },
+			{ 0, 1 },
+			{ -1, 0 },
+			{ 0, -1 } };
+
 	public int countBattleships(char[][] board)
 	{
-		if (board.length==0 || board[0].length==0) return 0;
-		int m=board.length,n=board[0].length;
-		int[][]q=new int[m*n+1][2];
-		int f,r,ct=0;
-		boolean[][] checked=new boolean[m][n];
-		for (int i=0;i<m;i++)
-			for (int j=0;j<n;j++)
-				if (!checked[i][j] && board[i][j]=='X')
+		if (board.length == 0 || board[0].length == 0)
+			return 0;
+		int m = board.length, n = board[0].length;
+		int[][] q = new int[m * n + 1][2];
+		int f, r, ct = 0;
+		boolean[][] checked = new boolean[m][n];
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++)
+				if (!checked[i][j] && board[i][j] == 'X')
 				{
-					f=0;
-					r=1;
-					q[0][0]=i;
-					q[0][1]=j;
-					while(f<r)
+					f = 0;
+					r = 1;
+					q[0][0] = i;
+					q[0][1] = j;
+					while (f < r)
 					{
-						for (int k=0;k<4;k++)
+						for (int k = 0; k < 4; k++)
 						{
-							int nx=q[f][0]+di[k][0];
-							int ny=q[f][1]+di[k][1];
-							if (nx>=0 && ny>=0 && nx<m && ny<n && !checked[nx][ny] 
-									&& board[nx][ny]=='X')
+							int nx = q[f][0] + di[k][0];
+							int ny = q[f][1] + di[k][1];
+							if (nx >= 0 && ny >= 0 && nx < m && ny < n && !checked[nx][ny] && board[nx][ny] == 'X')
 							{
-								q[r][0]=nx;
-								q[r][1]=ny;
-								checked[nx][ny]=true;
+								q[r][0] = nx;
+								q[r][1] = ny;
+								checked[nx][ny] = true;
 								r++;
 							}
 						}
 						f++;
 					}
-					if (r==1) ct++;
+					if (r == 1)
+						ct++;
 					else
 					{
-						int diffKind0=0,diffKind1=0;
-						for (int k=1;k<r;k++)
+						int diffKind0 = 0, diffKind1 = 0;
+						for (int k = 1; k < r; k++)
 						{
-							if (q[k][0]-q[0][0]!=0) diffKind0=1;
-							if (q[k][1]-q[0][1]!=0) diffKind1=1;
+							if (q[k][0] - q[0][0] != 0)
+								diffKind0 = 1;
+							if (q[k][1] - q[0][1] != 0)
+								diffKind1 = 1;
 						}
-						if (diffKind0==0 || diffKind1==0) ct++;
+						if (diffKind0 == 0 || diffKind1 == 0)
+							ct++;
 					}
 				}
 		return ct;
