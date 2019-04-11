@@ -51,6 +51,59 @@ class StockSpanner
 	}
 }
 
+//902. Numbers At Most N Given Digit Set
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Numbers At Most N Given Digit Set.
+//Memory Usage: 35.8 MB, less than 100.00% of Java online submissions for Numbers At Most N Given Digit Set.
+class Solution902
+{
+	public static long number(int[] ds, int N)
+	{
+		int[] s = new int[40];
+		int b = ds.length;
+		int st = 0;
+		while (N != 0)
+		{
+			s[st++] = (N - 1) % b + 1;
+			N = (N - 1) / b;
+		}
+		long x = 0;
+		while (st > 0)
+			x = x * 10 + ds[s[--st] - 1];
+		return x;
+	}
+
+	public int atMostNGivenDigitSet(String[] D, int N)
+	{
+		int[] ds = new int[D.length];
+		for (int i = 0; i < D.length; i++)
+			ds[i] = D[i].charAt(0) - '0';
+		if (number(ds, 1) > N)
+			return 0;
+		if (number(ds, 1) == N)
+			return 1;
+
+		int l = 1, r = 1;
+		while (number(ds, r) < N)
+			r = r * 2;
+		while (l < r)
+		{
+			if (r == l + 1)
+			{
+				if (number(ds, r) > N)
+					return l;
+				else
+					return r;
+			}
+			int m = l + (r - l) / 2;
+			if (number(ds, m) >= N)
+				r = m;
+			else
+				l = m;
+		}
+		return r;
+	}
+}
+
 //904. Fruit Into Baskets
 //Runtime: 12 ms, faster than 77.82% of Java online submissions for Fruit Into Baskets.
 //Memory Usage: 51 MB, less than 45.11% of Java online submissions for Fruit Into Baskets.
@@ -338,9 +391,19 @@ public class LC901_910
 		}
 	}
 
+	public static void test902()
+	{
+		Solution902 s = new Solution902();
+		String[] D = new String[]
+		{ "1", "3", "5", "7" };
+		D = new String[]
+		{ "6" };
+		System.out.println(s.atMostNGivenDigitSet(D, 129218916));
+	}
+
 	public static void main(String[] args)
 	{
-		test909();
+		test902();
 	}
 
 }
