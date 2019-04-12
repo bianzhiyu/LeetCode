@@ -7,6 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
+class ListNode 
+{
+	int val;
+	ListNode next;
+	ListNode(int x) { val = x; }
+}
+
 //873. Length of Longest Fibonacci Subsequence
 //Runtime: 1519 ms, faster than 1.05% of Java online submissions for Length of Longest Fibonacci Subsequence.
 //Memory Usage: 49 MB, less than 100.00% of Java online submissions for Length of Longest Fibonacci Subsequence.
@@ -253,6 +261,34 @@ class Solution875
 		}
 		return l;
 	}
+}
+
+//876. Middle of the Linked List
+// Runtime: 0 ms, faster than 100.00% of Java online submissions for Middle of the Linked List.
+// Memory Usage: 35.4 MB, less than 88.01% of Java online submissions for Middle of the Linked List.
+class Solution876
+{
+    public ListNode middleNode(ListNode head) 
+    {
+        int L=1;
+        ListNode p=head;
+        while (p.next!=null)
+        {
+            L++;
+            p=p.next;
+        }
+        if (L%2==1)
+            L=(L-1)/2;
+        else
+            L/=2;
+        p=head;
+        while (L>0)
+        {
+            L--;
+            p=p.next;
+        }
+        return p;
+    }
 }
 
 //877. Stone Game

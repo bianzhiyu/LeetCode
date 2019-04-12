@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import treeCodec.TreeNode;
 
 //521. Longest Uncommon Subsequence I
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Longest Uncommon Subsequence I .
@@ -373,6 +374,30 @@ class Solution529
 
 		return board;
 	}
+}
+
+//530. Minimum Absolute Difference in BST
+// Runtime: 2 ms, faster than 88.68% of Java online submissions for Minimum Absolute Difference in BST.
+// Memory Usage: 42.4 MB, less than 11.89% of Java online submissions for Minimum Absolute Difference in BST.
+class Solution530 
+{
+    private void trav(TreeNode rt,List<Integer> l)
+    {
+        if (rt==null) return;
+        trav(rt.left,l);
+        l.add(rt.val);
+        trav(rt.right,l);
+    }
+    public int getMinimumDifference(TreeNode root) 
+    {
+        List<Integer> l=new ArrayList<Integer>();
+        trav(root,l);
+        int m=l.get(1)-l.get(0);
+        for (int i=1;i<l.size()-1;i++)
+            if (l.get(i+1)-l.get(i)<m)
+                m=l.get(i+1)-l.get(i);
+        return m;
+    }
 }
 
 public class LC521_530
