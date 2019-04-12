@@ -227,6 +227,40 @@ class Solution764_3
 	}
 }
 
+//766. Toeplitz Matrix
+//Runtime: 1 ms, faster than 100.00% of Java online submissions for Toeplitz Matrix.
+//Memory Usage: 44.3 MB, less than 22.91% of Java online submissions for Toeplitz Matrix.
+class Solution766
+{
+	public boolean isToeplitzMatrix(int[][] matrix)
+	{
+		int R = matrix.length, C = matrix[0].length;
+		for (int i = 0; i < R; i++)
+		{
+			// start from (i,0)
+			int j = i + 1;
+			while (j < R && j - i < C)
+			{
+				if (matrix[j][j - i] != matrix[i][0])
+					return false;
+				j++;
+			}
+		}
+		for (int i = 1; i < C; i++)
+		{
+			// start from (0,i)
+			int j = i + 1;
+			while (j < C && j - i < R)
+			{
+				if (matrix[j - i][j] != matrix[0][i])
+					return false;
+				j++;
+			}
+		}
+		return true;
+	}
+}
+
 //767. Reorganize String
 //Runtime: 2 ms, faster than 98.76% of Java online submissions for Reorganize String.
 //Memory Usage: 36.6 MB, less than 95.95% of Java online submissions for Reorganize String.
