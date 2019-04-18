@@ -1,14 +1,17 @@
 package lc171_180;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 //t174. Dungeon Game
 //t=5ms, m=38MB
 //t:0.4755, m:1
 class Solution174
 {
-	int[][] d;
-	int[][] map;
+	private int[][] d;
+	private int[][] map;
 
-	boolean feasible(int hp0)
+	private boolean feasible(int hp0)
 	{
 		d[0][0] = hp0 + map[0][0];
 		for (int j = 1; j < d[0].length; j++)
@@ -35,7 +38,7 @@ class Solution174
 		return d[d.length - 1][d[0].length - 1] > 0;
 	}
 
-	int search(int maxhp, int minhp)
+	private int search(int maxhp, int minhp)
 	{
 		if (maxhp == minhp + 1)
 			return maxhp;
@@ -70,7 +73,7 @@ class Solution174
 //t=4ms, t:0.7211
 class Solution174_2
 {
-	int[][] d;
+	private int[][] d;
 
 	public int calculateMinimumHP(int[][] dungeon)
 	{
@@ -92,41 +95,57 @@ class Solution174_2
 	}
 }
 
-//Wrong Answer
-//class Solution179 
-//{
-//    public String largestNumber(int[] nums)
-//    {
-//        int len=nums.length;
-//        String[] str=new String[len];
-//        for (int i=0;i<len;i++)
-//            str[i]=Integer.toString(nums[i]);
-//        for (int i=0;i<len;i++)
-//        	for (int j=i+1;j<len;j++)
-//        		if (str[i].compareTo(str[j])<0)
-//        		{
-//        			String t=str[j];
-//        			str[j]=str[i];
-//        			str[i]=t;
-//        		}
-//        String ans="";
-//        for (int i=0;i<len;i++)
-//        	ans=ans+str[i];
-//        return ans;
-//    }
-//}
-public class LC171_180
+//179. Largest Number
+//Runtime: 3 ms, faster than 99.94% of Java online submissions for Largest Number.
+//Memory Usage: 37.8 MB, less than 91.45% of Java online submissions for Largest Number.
+class Solution179
 {
-	public static void disp2d(int[][] a)
+	public static class numCmp implements Comparator<String>
 	{
-		for (int i = 0; i < a.length; i++)
+		public int compare(String s1, String s2)
 		{
-			for (int j = 0; j < a[i].length; j++)
-				System.out.print(a[i][j] + "  ");
-			System.out.println();
+			int p1 = 0, p2 = 0;
+			while (true)
+			{
+				if (p1 == s1.length() && p2 == s2.length())
+					return 0;
+				if (p1 == s1.length())
+					return compare(s1, s2.substring(p1));
+				if (p2 == s2.length())
+					return compare(s1.substring(p2), s2);
+				if (s1.charAt(p1) < s2.charAt(p2))
+					return -1;
+				if (s1.charAt(p1) > s2.charAt(p2))
+					return 1;
+				p1++;
+				p2++;
+			}
+		}
+
+		public int compare(Integer o1, Integer o2)
+		{
+			return compare(Integer.toString(o1), Integer.toString(o2));
 		}
 	}
 
+	public String largestNumber(int[] nums)
+	{
+		int len = nums.length;
+		String[] str = new String[len];
+		for (int i = 0; i < len; i++)
+			str[i] = Integer.toString(nums[i]);
+		Arrays.parallelSort(str, new numCmp());
+		String ans = "";
+		for (int i = len - 1; i >= 0; i--)
+			ans = ans + str[i];
+		while (ans.length() > 1 && ans.charAt(0) == '0')
+			ans = ans.substring(1);
+		return ans;
+	}
+}
+
+public class LC171_180
+{
 	public static void main(String[] args)
 	{
 		System.out.println(new Solution174().calculateMinimumHP(new int[][]

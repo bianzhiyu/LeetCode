@@ -1,5 +1,11 @@
 package lc841_850;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -233,28 +239,96 @@ class Solution848
 {
 	public String shiftingLetters(String S, int[] shifts)
 	{
-		int len=shifts.length;
-		shifts[len-1]%=26;
-		for (int i=len-2;i>=0;i--)
-			shifts[i]=(shifts[i]%26+shifts[i+1])%26;
-		StringBuilder sb=new StringBuilder();
-		for (int i=0;i<len;i++)
+		int len = shifts.length;
+		shifts[len - 1] %= 26;
+		for (int i = len - 2; i >= 0; i--)
+			shifts[i] = (shifts[i] % 26 + shifts[i + 1]) % 26;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < len; i++)
 		{
-			int c=S.charAt(i);
-			c=((c-'a')+shifts[i])%26+'a';
-			sb.append((char)c);
+			int c = S.charAt(i);
+			c = ((c - 'a') + shifts[i]) % 26 + 'a';
+			sb.append((char) c);
 		}
 		return sb.toString();
 	}
 }
 
+//849. Maximize Distance to Closest Person
+//Runtime: 2 ms, faster than 97.53% of Java online submissions for Maximize Distance to Closest Person.
+//Memory Usage: 40.1 MB, less than 57.83% of Java online submissions for Maximize Distance to Closest Person.
+class Solution849
+{
+	public int maxDistToClosest(int[] seats)
+	{
+		int len = seats.length;
+		int[] a1 = new int[len], a2 = new int[len];
+		a1[0] = seats[0] == 1 ? 0 : 1000000;
+		for (int i = 1; i < len; i++)
+			if (seats[i] == 1)
+				a1[i] = 0;
+			else
+				a1[i] = a1[i - 1] + 1;
+		a2[len - 1] = seats[len - 1] == 1 ? 0 : 1000000;
+		for (int i = len - 2; i >= 0; i--)
+			if (seats[i] == 1)
+				a2[i] = 0;
+			else
+				a2[i] = a2[i + 1] + 1;
+		int tarval = -1;
+		for (int i = 0; i < len; i++)
+			if (seats[i] == 0)
+			{
+				int t = a1[i] < a2[i] ? a1[i] : a2[i];
+				if (t > tarval)
+					tarval = t;
+			}
+		return tarval;
+	}
+}
+
 public class LC841_850
 {
+	public static void test845()
+	{
+		System.out.println(new Solution845().longestMountain(new int[]
+		{ 2, 1, 4, 7, 3, 2, 5 }));
+	}
+
+	public static void test849()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input849.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output849.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int[] seats = test.Test.parseIntArr(inLine);
+
+				int ans = new Solution849().maxDistToClosest(seats);
+
+				System.out.println(ans);
+
+				bfw.write("" + ans);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		// System.out.println(new Solution845().longestMountain(
-		// new int[] {2,1,4,7,3,2,5}
-		// ));
-
+		test849();
 	}
 }

@@ -17,7 +17,6 @@ class Solution771
 			if (s.contains(S.charAt(i)))
 				ct++;
 		return ct;
-
 	}
 }
 
