@@ -110,6 +110,24 @@ public class Test {
 			strarr[i]=strarr[i].substring(1,strarr[i].length()-1);
 		return strarr;
 	}
+	public static String int2DArrToString(int[][]arr)
+	{
+		StringBuilder sb=new StringBuilder();
+		sb.append("[");
+		for (int i=0;i<arr.length;i++)
+		{
+			sb.append("[");
+			for(int j=0;j<arr[i].length;j++)
+			{
+				sb.append(arr[i][j]);
+				if (j!=arr[i].length-1) sb.append(", ");
+			}
+			sb.append("]");
+			if (i!=arr.length-1) sb.append(", ");
+		}
+		sb.append("]");
+		return sb.toString();
+	}
 	public static String intArrToString(int[] arr)
 	{
 		if (arr==null || arr.length==0) return "[]";
