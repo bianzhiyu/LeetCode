@@ -1,5 +1,26 @@
 package lc771_780;
 
+import java.util.HashSet;
+
+//771. Jewels and Stones
+//Runtime: 1 ms, faster than 99.01% of Java online submissions for Jewels and Stones.
+//Memory Usage: 36.9 MB, less than 87.95% of Java online submissions for Jewels and Stones.
+class Solution771
+{
+	public int numJewelsInStones(String J, String S)
+	{
+		HashSet<Character> s = new HashSet<Character>();
+		for (int i = 0; i < J.length(); i++)
+			s.add(J.charAt(i));
+		int ct = 0;
+		for (int i = 0; i < S.length(); i++)
+			if (s.contains(S.charAt(i)))
+				ct++;
+		return ct;
+
+	}
+}
+
 //773. Sliding Puzzle
 //Runtime: 32 ms, faster than 15.94% of Java online submissions for Sliding Puzzle.
 //Memory Usage: 49.7 MB, less than 5.43% of Java online submissions for Sliding Puzzle.

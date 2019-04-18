@@ -8,8 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -160,20 +158,7 @@ class Solution587_2
 		for (int i = 0; i < points.length; i++)
 			if (used[i] != 0)
 				ans[ord++] = new int[]
-				{ i, used[i] };
-		Arrays.sort(ans, new Comparator<int[]>()
-		{
-			public int compare(int[] o1, int[] o2)
-			{
-				return o1[1] - o2[1];
-			}
-		});
-		for (int i = 0; i < ans.length; i++)
-		{
-			p = ans[i][0];
-			ans[i][0] = points[p][0];
-			ans[i][1] = points[p][1];
-		}
+				{ points[i][0], points[i][1] };
 		return ans;
 	}
 }
