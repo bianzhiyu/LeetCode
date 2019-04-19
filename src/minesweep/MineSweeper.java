@@ -213,7 +213,6 @@ class MainBody
 	 * Initialize mine positions.
 	 * 
 	 * @author Andrew
-	 *
 	 */
 	public static class Solution519
 	{
@@ -261,7 +260,6 @@ class MainBody
 	 * Click dealer
 	 * 
 	 * @author Andrew
-	 *
 	 */
 	public static class Solution529
 	{
