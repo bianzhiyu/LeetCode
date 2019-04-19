@@ -31,7 +31,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\heap\TestHeap.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\eulerianpath\TestEulerianPath.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\eulerianpath\EulerianPath.java
 
-javac -d  %outpath% -classpath %cpath% %curpath%\src\mineSweep\MineSweeper.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\minesweep\MineSweeper.java
 
 rem:goto:EndPause
 
