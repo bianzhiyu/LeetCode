@@ -23,7 +23,7 @@ class MainBody
 	private final static String GAMING = "Gaming";
 	private final static String WIN = "Win";
 	private final static String LOST = "Lost";
-	private final static String WAITING = "WAITING";
+	private final static String WAITING = "Waiting";
 	private final static char UNREVEAL_EMPTY = 'E';
 	private final static char UNREVEAL_MINE = 'M';
 	private final static char REVEAL_BLANK = 'B';
@@ -38,7 +38,7 @@ class MainBody
 
 	private JFrame frame;
 	private JButton startButton;
-	private JLabel totalMine, unreavNum, usedTime, status;
+	private JLabel totalMine, unrevNum, usedTime, status;
 	private JComboBox<String> sizeComboBox;
 	private JPanel mineArea;
 	private BtnWithPos[][] mineBtns;
@@ -49,24 +49,16 @@ class MainBody
 		return c >= '0' && c <= '9';
 	}
 
-	private String mask(char c)
-	{
-		if (isDigit(c))
-			return "" + c;
-		if (c == UNREVEAL_EMPTY || c == UNREVEAL_MINE || c == REVEAL_BLANK)
-			return "";
-		if (c == REVEAL_MINE)
-			return REVEAL_MINE + "";
-		return "";
-	}
-
 	private void updateMineBtnTextByInner()
 	{
 		for (int i = 0; i < inner.length; i++)
 			for (int j = 0; j < inner[i].length; j++)
 			{
-				mineBtns[i][j].setText(mask(inner[i][j]));
-				if (inner[i][j] == REVEAL_BLANK)
+				if (isDigit(inner[i][j]))
+					mineBtns[i][j].setText("" + inner[i][j]);
+				else if (inner[i][j] == REVEAL_MINE)
+					mineBtns[i][j].setText("" + inner[i][j]);
+				else if (inner[i][j] == REVEAL_BLANK)
 				{
 					mineBtns[i][j].setBackground(new Color(0xccffff));
 					mineBtns[i][j].setOpaque(true);
@@ -105,14 +97,15 @@ class MainBody
 		}
 	}
 
-	private void updateUnreavNum()
+	private int updateUnrevNum()
 	{
 		int ct = 0;
 		for (int i = 0; i < inner.length; i++)
 			for (int j = 0; j < inner[i].length; j++)
 				if (inner[i][j] == UNREVEAL_EMPTY || inner[i][j] == UNREVEAL_MINE)
 					ct++;
-		unreavNum.setText("Unreaveal Block Number = " + ct);
+		unrevNum.setText("Unreveal Block Number = " + ct);
+		return ct;
 	}
 
 	private static class BtnWithPos extends JButton
@@ -134,13 +127,9 @@ class MainBody
 		public void actionPerformed(ActionEvent e)
 		{
 			BtnWithPos bwp = (BtnWithPos) e.getSource();
-
 			int x = bwp.x, y = bwp.y;
 
-			if (isDigit(inner[x][y]))
-			{
-				// do nothing
-			} else if (inner[x][y] == UNREVEAL_MINE)
+			if (inner[x][y] == UNREVEAL_MINE)
 			{
 				inner = new Solution529().updateBoard(inner, new int[]
 				{ x, y });
@@ -153,23 +142,15 @@ class MainBody
 				inner = new Solution529().updateBoard(inner, new int[]
 				{ x, y });
 				updateMineBtnTextByInner();
+				updateUnrevNum();
 				if (MainBody.this.judgeWin())
 				{
 					MainBody.this.status.setText(MainBody.WIN);
 					JOptionPane.showMessageDialog(MainBody.this.frame, "Congratulations! You Win! *^_^*");
 				}
-				updateUnreavNum();
-			} else if (inner[x][y] == REVEAL_BLANK)
-			{
-				// do nothing
-			} else if (inner[x][y] == REVEAL_MINE)
-			{
-				// impossible, because game is already over.
 			}
-
-			// debug
-//			JOptionPane.showMessageDialog(MainBody.this.frame,
-//					"" + x + "," + y + "," + inner[x][y] + "," + bwp.getText());
+			// isDigit(inner[x][y]) || inner[x][y] == REVEAL_BLANK || inner[x][y] ==
+			// REVEAL_MINE, do nothing
 		}
 	}
 
@@ -197,23 +178,18 @@ class MainBody
 				{
 					mineBtns[i][j] = new BtnWithPos(i, j);
 					mineBtns[i][j].addActionListener(mbal);
-					mineBtns[i][j].setFont(new Font("Serif", 0, 15));
+					mineBtns[i][j].setFont(new Font("Serif", 1, 15));
 					jp.add(mineBtns[i][j]);
 				}
 
 			initializeInner(size);
-			updateUnreavNum();
+			updateUnrevNum();
 			updateMineBtnTextByInner();
 
 			new Thread(new TimeUpdater()).start();// time counter
 		}
 	}
 
-	/**
-	 * Initialize mine positions.
-	 * 
-	 * @author Andrew
-	 */
 	public static class Solution519
 	{
 		private int rows, cols, selnum;
@@ -256,11 +232,6 @@ class MainBody
 		}
 	}
 
-	/**
-	 * Click dealer
-	 * 
-	 * @author Andrew
-	 */
 	public static class Solution529
 	{
 		private final static int[][] di = new int[][]
@@ -350,8 +321,8 @@ class MainBody
 		Container ct = frame.getContentPane();
 		ct.setLayout(null);
 
-		JLabel tmpll;
-		ct.add(tmpll = new JLabel("Rule: Left click to dig, until all unrevealed blocks are mines."));
+		JLabel tmpll = new JLabel("Rule: Left click to dig, until all unrevealed blocks are mines.");
+		ct.add(tmpll);
 		tmpll.setBounds(10, 10, 1000, 30);
 		tmpll.setFont(new Font("Dialog", 1, 25));
 
@@ -373,8 +344,8 @@ class MainBody
 		line3.setLayout(new GridLayout(1, 3));
 		line3.add(totalMine = new JLabel("Total Mine = ??"));
 		totalMine.setFont(new Font("Serif", 1, 25));
-		line3.add(unreavNum = new JLabel("Unreaveal Block Number = ??"));
-		unreavNum.setFont(new Font("Serif", 1, 25));
+		line3.add(unrevNum = new JLabel("Unreveal Block Number = ??"));
+		unrevNum.setFont(new Font("Serif", 1, 25));
 		line3.add(usedTime = new JLabel("Used Time = ??"));
 		usedTime.setFont(new Font("Serif", 1, 25));
 
