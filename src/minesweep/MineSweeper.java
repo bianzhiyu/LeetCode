@@ -29,10 +29,10 @@ class MainBody
 	private final static char REVEAL_BLANK = 'B';
 	private final static char REVEAL_MINE = 'X';
 	private final static String[] sizeList = new String[]
-	{ "25 x 30 (80)", "16 x 16 (40)", "10 x 10 (10)" };
+	{ "25 x 30 (85)", "16 x 16 (40)", "10 x 10 (10)" };
 	private final static int[][] sizeArr = new int[][]
 	{
-			{ 25, 30, 80 },
+			{ 25, 30, 85 },
 			{ 16, 16, 40 },
 			{ 10, 10, 10 } };
 
@@ -306,13 +306,75 @@ class MainBody
 				MainBody.this.usedTime.setText("Used Time = " + (dt / 1000));
 				try
 				{
-					Thread.sleep(500);
+					Thread.sleep(1000);
 				} catch (InterruptedException e)
 				{
 					System.out.println(e.toString());
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+
+	private class HelpButtonAL implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			if (MainBody.this.status.getText().compareTo(MainBody.GAMING) != 0)
+				return;
+			char[][] inner = MainBody.this.inner;
+			for (int i = 0; i < inner.length; i++)
+				for (int j = 0; j < inner[i].length; j++)
+				{
+					if (isDigit(inner[i][j]))
+					{
+						int unKn = 0;
+						for (int k = 0; k < 8; k++)
+						{
+							int x = i + Solution529.di[k][0];
+							int y = j + Solution529.di[k][1];
+							if (x >= 0 && y >= 0 && x < inner.length && y < inner[0].length
+									&& (inner[x][y] == MainBody.UNREVEAL_EMPTY
+											|| inner[x][y] == MainBody.UNREVEAL_MINE))
+								unKn++;
+						}
+						if (unKn != inner[i][j] - '0')
+						{
+							new Thread(new Helper(i, j)).start();
+							return;
+						}
+					}
+				}
+		}
+	}
+
+	private class Helper implements Runnable
+	{
+		private final int x, y;
+
+		public Helper(int _x, int _y)
+		{
+			x = _x;
+			y = _y;
+		}
+
+		@Override
+		public void run()
+		{
+			BtnWithPos bn = MainBody.this.mineBtns[x][y];
+			bn.setBackground(Color.GREEN);
+			bn.setOpaque(true);
+			bn.repaint();
+			try
+			{
+				Thread.sleep(1000);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			bn.setOpaque(false);
+			bn.repaint();
 		}
 	}
 
@@ -356,9 +418,18 @@ class MainBody
 
 		ct.add(mineArea);
 
-		ct.add(status = new JLabel(WAITING));
-		status.setBounds(10, 820, 1000, 30);
+		JPanel line5 = new JPanel();
+		ct.add(line5);
+		line5.setBounds(10, 820, 1000, 30);
+		line5.setLayout(new GridLayout(1, 2));
+		line5.add(status = new JLabel(WAITING));
 		status.setFont(new Font("MONOSPACED", 1, 30));
+
+		JButton hlp = new JButton("Help ~~");
+		hlp.setMnemonic(java.awt.event.KeyEvent.VK_H);
+		line5.add(hlp);
+		hlp.addActionListener(new HelpButtonAL());
+		hlp.setFont(new Font("Dialog", 1, 30));
 	}
 
 	public void createAndShowGUI()
