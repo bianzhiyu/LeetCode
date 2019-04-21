@@ -393,6 +393,7 @@ class MainBody
 		line2.setLayout(new GridLayout(1, 2));
 		line2.add(startButton = new JButton("New Game"));
 		startButton.setFont(new Font("Dialog", 1, 25));
+		startButton.setMnemonic(java.awt.event.KeyEvent.VK_N);
 		line2.add(sizeComboBox = new JComboBox<String>(sizeList));
 		sizeComboBox.setFont(new Font("Dialog", 1, 25));
 
