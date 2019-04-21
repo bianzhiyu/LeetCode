@@ -57,16 +57,18 @@ class Solution743
 {
 	public int networkDelayTime(int[][] times, int N, int K)
 	{
-		List<List<EdgeTo>> l=new ArrayList<List<EdgeTo>>(N);
-		for (int i=0;i<N;i++)
+		List<List<EdgeTo>> l = new ArrayList<List<EdgeTo>>(N);
+		for (int i = 0; i < N; i++)
 			l.add(new ArrayList<EdgeTo>());
-		for (int i=0;i<times.length;i++)
-			l.get(times[i][0]-1).add(new EdgeTo(times[i][1]-1,times[i][2]));
-		DijkstraResult r=Dijkstra.dijksta(N, l, K-1);
-		int maxT=0;
-		for (int i=0;i<N;i++)
-			if (r.dist[i]==Integer.MAX_VALUE) return -1;
-			else if (r.dist[i]>maxT) maxT=r.dist[i];
+		for (int i = 0; i < times.length; i++)
+			l.get(times[i][0] - 1).add(new EdgeTo(times[i][1] - 1, times[i][2]));
+		DijkstraResult r = Dijkstra.dijksta(N, l, K - 1);
+		int maxT = 0;
+		for (int i = 0; i < N; i++)
+			if (r.dist[i] == Integer.MAX_VALUE)
+				return -1;
+			else if (r.dist[i] > maxT)
+				maxT = r.dist[i];
 		return maxT;
 	}
 }
@@ -261,10 +263,73 @@ class WordFilter745_4
 	}
 }
 
+//748. Shortest Completing Word
+//Runtime: 8 ms, faster than 56.13% of Java online submissions for Shortest Completing Word.
+//Memory Usage: 39.7 MB, less than 70.67% of Java online submissions for Shortest Completing Word.
+class Solution748
+{
+	private static class WD implements Comparable<WD>
+	{
+		public final String str;
+		private final int ind, len;
+
+		public WD(String _str, int _ind)
+		{
+			str = _str;
+			ind = _ind;
+			len = str.length();
+		}
+
+		public int compareTo(WD o)
+		{
+			if (len != o.len)
+				return len - o.len;
+			return ind - o.ind;
+		}
+	}
+
+	private boolean cont(String str, int[] f, int[] n)
+	{
+		Arrays.fill(n, 0);
+		for (char c : str.toUpperCase().toCharArray())
+			n[c - 'A']++;
+		for (int i = 0; i < 26; i++)
+			if (n[i] < f[i])
+				return false;
+		return true;
+	}
+
+	public String shortestCompletingWord(String licensePlate, String[] words)
+	{
+		int len = words.length;
+		WD[] s = new WD[len];
+		for (int i = 0; i < len; i++)
+			s[i] = new WD(words[i], i);
+		Arrays.parallelSort(s);
+		int[] freq = new int[26];
+		for (char c : licensePlate.toUpperCase().toCharArray())
+			if (c >= 'A' && c <= 'Z')
+				freq[c - 'A']++;
+		int[] n = new int[26];
+		for (WD str : s)
+			if (cont(str.str, freq, n))
+				return str.str;
+		return null;
+	}
+}
+
 public class LC741_750
 {
+	public static void test748()
+	{
+		String pt = "1s3 PSt";
+		String[] wds = new String[]
+		{ "step", "steps", "stripe", "stepple" };
+		System.out.println(new Solution748().shortestCompletingWord(pt, wds));
+	}
+
 	public static void main(String[] ars)
 	{
-
+		test748();
 	}
 }

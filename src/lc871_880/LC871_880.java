@@ -6,13 +6,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
-
-class ListNode 
+class ListNode
 {
 	int val;
 	ListNode next;
-	ListNode(int x) { val = x; }
+
+	ListNode(int x)
+	{
+		val = x;
+	}
 }
 
 //873. Length of Longest Fibonacci Subsequence
@@ -268,27 +274,27 @@ class Solution875
 // Memory Usage: 35.4 MB, less than 88.01% of Java online submissions for Middle of the Linked List.
 class Solution876
 {
-    public ListNode middleNode(ListNode head) 
-    {
-        int L=1;
-        ListNode p=head;
-        while (p.next!=null)
-        {
-            L++;
-            p=p.next;
-        }
-        if (L%2==1)
-            L=(L-1)/2;
-        else
-            L/=2;
-        p=head;
-        while (L>0)
-        {
-            L--;
-            p=p.next;
-        }
-        return p;
-    }
+	public ListNode middleNode(ListNode head)
+	{
+		int L = 1;
+		ListNode p = head;
+		while (p.next != null)
+		{
+			L++;
+			p = p.next;
+		}
+		if (L % 2 == 1)
+			L = (L - 1) / 2;
+		else
+			L /= 2;
+		p = head;
+		while (L > 0)
+		{
+			L--;
+			p = p.next;
+		}
+		return p;
+	}
 }
 
 //877. Stone Game
@@ -335,6 +341,76 @@ class Solution877_2
 	}
 }
 
+//878. Nth Magical Number
+//Runtime: 2 ms, faster than 83.04% of Java online submissions for Nth Magical Number.
+//Memory Usage: 31.9 MB, less than 100.00% of Java online submissions for Nth Magical Number.
+class Solution878
+{
+	private final static long MOD = 10_0000_0007;
+
+	private int gcd(int a, int b)
+	{
+		return b == 0 ? a : gcd(b, a % b);
+	}
+
+	public int nthMagicalNumber(int N, int A, int B)
+	{
+		int C = gcd(A, B);
+		int Ap = A / C, Bp = B / C;
+		int T = Ap + Bp - 1, D = Ap * B;
+		int k = N / T, r = N % T;
+		long p1 = (((long) k) * D) % MOD;
+		int a = 0, b = 0;
+		for (int i = 1; i <= r; i++)
+		{
+			int c;
+			if (a + A < b + B)
+			{
+				a += A;
+				c = a;
+			} else
+			{
+				b += B;
+				c = b;
+			}
+			if (i == r)
+				p1 = (p1 + c) % MOD;
+		}
+		return (int) p1;
+	}
+}
+
+//Runtime: 170 ms, 6.52%
+//Memory Usage: 44.6 MB
+class Solution878_2
+{
+	private final static long MOD = 10_0000_0007;
+
+	private int gcd(int a, int b)
+	{
+		return b == 0 ? a : gcd(b, a % b);
+	}
+
+	public int nthMagicalNumber(int N, int A, int B)
+	{
+		int C = gcd(A, B);
+		int Ap = A / C, Bp = B / C;
+		int T = Ap + Bp - 1, D = Ap * B;
+		HashSet<Integer> s = new HashSet<Integer>();
+		for (int i = A; i <= D; i += A)
+			s.add(i);
+		for (int i = B; i <= D; i += B)
+			s.add(i);
+		ArrayList<Integer> l = new ArrayList<Integer>(s);
+		Collections.sort(l);
+		int k = N / T, r = N % T;
+		long p1 = (((long) k) * D) % MOD;
+		if (r > 0)
+			p1 = (p1 + l.get(r - 1)) % MOD;
+		return (int) p1;
+	}
+}
+
 //880. Decoded String at Index
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Decoded String at Index.
 //Memory Usage: 35.7 MB, less than 93.75% of Java online submissions for Decoded String at Index.
@@ -342,24 +418,26 @@ class Solution880
 {
 	private boolean isNum(char c)
 	{
-		return '0'<=c && c<='9';
+		return '0' <= c && c <= '9';
 	}
+
 	public String decodeAtIndex(String S, int K)
 	{
-		char[]str=S.toCharArray();
-		int len=str.length;
-		long[]l=new long[len];
-		l[0]=1;
-		for (int i=1;i<len;i++)
+		char[] str = S.toCharArray();
+		int len = str.length;
+		long[] l = new long[len];
+		l[0] = 1;
+		for (int i = 1; i < len; i++)
 			if (isNum(str[i]))
-				l[i]=l[i-1]*(str[i]-'0');
-			else l[i]=l[i-1]+1;
-		long k=K;
-		for (int i=len-1;i>=0;i--)
-			if (isNum(str[i]))
-				k=(k-1)%l[i-1]+1;
+				l[i] = l[i - 1] * (str[i] - '0');
 			else
-				if (l[i]==k) return ""+str[i];
+				l[i] = l[i - 1] + 1;
+		long k = K;
+		for (int i = len - 1; i >= 0; i--)
+			if (isNum(str[i]))
+				k = (k - 1) % l[i - 1] + 1;
+			else if (l[i] == k)
+				return "" + str[i];
 		return "";
 	}
 }
@@ -379,14 +457,14 @@ public class LC871_880
 			String inLine;
 			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
 			{
-				inLine=inLine.substring(1,inLine.length()-1);
+				inLine = inLine.substring(1, inLine.length() - 1);
 
-				int K=Integer.parseInt(bfr.readLine());
-				
-				Solution880 s=new Solution880();
-				
-				String ans=s.decodeAtIndex(inLine, K);
-				
+				int K = Integer.parseInt(bfr.readLine());
+
+				Solution880 s = new Solution880();
+
+				String ans = s.decodeAtIndex(inLine, K);
+
 				System.out.println(ans);
 
 				bfw.write(ans);
@@ -401,6 +479,7 @@ public class LC871_880
 			System.out.println(e.toString());
 		}
 	}
+
 	public static void main(String[] args)
 	{
 		test880();
