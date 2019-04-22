@@ -488,5 +488,4 @@ public class LC1_10
 	{
 
 	}
-
 }

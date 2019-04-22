@@ -378,6 +378,39 @@ class Solution916
 	}
 }
 
+//917. Reverse Only Letters
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Only Letters.
+//Memory Usage: 35.9 MB, less than 96.63% of Java online submissions for Reverse Only Letters.
+class Solution917
+{
+	private boolean isLetter(char c)
+	{
+		return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z';
+	}
+
+	public String reverseOnlyLetters(String S)
+	{
+		char[] s = S.toCharArray();
+		int l = 0, r = s.length - 1;
+		while (l < r)
+		{
+			while (l < r && !isLetter(s[l]))
+				l++;
+			while (l < r && !isLetter(s[r]))
+				r--;
+			if (l < r)
+			{
+				char t = s[l];
+				s[l] = s[r];
+				s[r] = t;
+				l++;
+				r--;
+			}
+		}
+		return new String(s);
+	}
+}
+
 //918. Maximum Sum Circular Subarray
 //https://leetcode.com/problems/maximum-sum-circular-subarray/solution/
 //Runtime: 5 ms, faster than 98.92% of Java online submissions for Maximum Sum Circular Subarray.

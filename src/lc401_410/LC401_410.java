@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import treeCodec.TreeNode;
 
 //401. Binary Watch
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Watch.
@@ -131,6 +132,22 @@ class Solution403
 				}
 			}
 		return lenD[L - 1] > 0;
+	}
+}
+
+//404. Sum of Left Leaves
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Sum of Left Leaves.
+//Memory Usage: 37.6 MB, less than 10.60% of Java online submissions for Sum of Left Leaves.
+class Solution404
+{
+	public int sumOfLeftLeaves(TreeNode root)
+	{
+		if (root == null)
+			return 0;
+		int s = sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+		if (root.left != null && root.left.left == null && root.left.right == null)
+			s += root.left.val;
+		return s;
 	}
 }
 

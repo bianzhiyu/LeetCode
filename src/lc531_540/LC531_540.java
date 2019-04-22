@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import treeCodec.*;
 
 //537. Complex Number Multiplication
 //Runtime: 0 ms, faster than 100.00% of Java online submissions for Complex Number Multiplication.
@@ -22,6 +23,59 @@ class Solution537
 		int i = r1 * i2 + r2 * i1;
 		String ans = r + "+" + i + "i";
 		return ans;
+	}
+}
+
+//538. Convert BST to Greater Tree
+//Runtime: 6 ms, faster than 66.71% of Java online submissions for Convert BST to Greater Tree.
+//Memory Usage: 39.1 MB, less than 80.18% of Java online submissions for Convert BST to Greater Tree.
+class Solution538
+{
+	private void get(TreeNode rt, List<Integer> l)
+	{
+		if (rt == null)
+			return;
+		get(rt.left, l);
+		l.add(rt.val);
+		get(rt.right, l);
+	}
+
+	private void reset(TreeNode rt, List<Integer> l, int[] b)
+	{
+		if (rt == null)
+			return;
+		rt.val += b[Collections.binarySearch(l, rt.val)];
+		reset(rt.left, l, b);
+		reset(rt.right, l, b);
+	}
+
+	private int[] getSum(List<Integer> l)
+	{
+		int[] b = new int[l.size()];
+		int i = b.length - 1, sum = 0;
+		while (i >= 0)
+		{
+			int j = i - 1, t = 0;
+			while (j >= 0 && l.get(j) == l.get(i))
+				j--;
+			while (i > j)
+			{
+				b[i] = sum;
+				t += l.get(i);
+				i--;
+			}
+			sum += t;
+		}
+		return b;
+	}
+
+	public TreeNode convertBST(TreeNode root)
+	{
+		List<Integer> l = new ArrayList<Integer>();
+		get(root, l);
+		int[] b = getSum(l);
+		reset(root, l, b);
+		return root;
 	}
 }
 
@@ -170,9 +224,17 @@ class Solution540
 
 public class LC531_540
 {
-	public static void main(String[] args)
+	public static void test538()
 	{
-
+		String in = "[5,2,13,2]";
+		TreeNode intn = TreeCodec.deserialize(in);
+		TreeNode outtn = new Solution538().convertBST(intn);
+		String out = TreeCodec.serialize(outtn);
+		System.out.println(out);
 	}
 
+	public static void main(String[] args)
+	{
+		test538();
+	}
 }
