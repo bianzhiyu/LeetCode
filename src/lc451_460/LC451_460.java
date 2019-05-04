@@ -152,6 +152,24 @@ class Solution452_2
 	}
 }
 
+//453. Minimum Moves to Equal Array Elements
+//Runtime: 2 ms, faster than 95.05% of Java online submissions for Minimum Moves to Equal Array Elements.
+//Memory Usage: 40.8 MB, less than 83.72% of Java online submissions for Minimum Moves to Equal Array Elements.
+class Solution453
+{
+	public int minMoves(int[] nums)
+	{
+		int min = nums[0];
+		for (int i = 1; i < nums.length; i++)
+			if (nums[i] < min)
+				min = nums[i];
+		int s = 0;
+		for (int i = 0; i < nums.length; i++)
+			s += nums[i] - min;
+		return s;
+	}
+}
+
 //454. 4Sum II
 class Solution454
 {
@@ -435,10 +453,39 @@ public class LC451_460
 		}
 	}
 
+	public static void test453()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input453.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output453.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				int ans = 0;
+
+				System.out.println(ans = (new Solution453().minMoves(test.Test.parseIntArr(inLine))));
+
+				bfw.write(Integer.toString(ans));
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void main(String[] args)
 	{
-		// test454();
-		test457();
+		test453();
 	}
 
 }
