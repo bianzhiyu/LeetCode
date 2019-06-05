@@ -163,6 +163,24 @@ class Solution1017_2
 	}
 }
 
+//1018. Binary Prefix Divisible By 5
+//Runtime: 3 ms, faster than 97.47% of Java online submissions for Binary Prefix Divisible By 5.
+//Memory Usage: 40.9 MB, less than 29.06% of Java online submissions for Binary Prefix Divisible By 5.
+class Solution1018 
+{
+    public List<Boolean> prefixesDivBy5(int[] A) 
+    {
+        ArrayList<Boolean> ans=new ArrayList<Boolean>();
+        int x=0;
+        for (int i=0;i<A.length;i++)
+        {
+        	x=(x%5)*2+A[i];
+        	ans.add(x%5==0);
+        }
+        return ans;
+    }
+}
+
 public class LC1011_1020
 {
 	public static void test1011()
