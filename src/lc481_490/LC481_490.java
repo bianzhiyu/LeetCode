@@ -74,6 +74,56 @@ class Solution481
 	}
 }
 
+//482. License Key Formatting
+//Runtime: 8 ms, faster than 97.52% of Java online submissions for License Key Formatting.
+//Memory Usage: 36.7 MB, less than 100.00% of Java online submissions for License Key Formatting.
+class Solution482 
+{
+	private char[] parse(String s)
+	{
+		int dashCt=0;
+		for (int i=0;i<s.length();i++)
+			if (s.charAt(i)=='-')
+				dashCt++;
+		char[] a=new char[s.length()-dashCt];
+		int rp=0,wp=0;
+		while (wp<a.length)
+		{
+			if (s.charAt(rp)=='-')
+			{
+				rp++;
+				continue;
+			}
+			a[wp]=s.charAt(rp++);
+			if (a[wp]>='a' && a[wp]<='z')
+				a[wp]=(char) (a[wp]+('A'-'a'));
+			wp++;
+		}
+		return a;
+	}
+    public String licenseKeyFormatting(String S, int K) 
+    {
+    	if (S==null || S.length()==0)
+    		return S;
+    	char[] ns=parse(S);
+    	StringBuilder sb=new StringBuilder();
+    	int rp=0;
+    	for (rp=0;rp<ns.length%K;rp++)
+    		sb.append(ns[rp]);
+    	if (ns.length%K!=0 && rp<ns.length-1)
+    		sb.append('-');
+    	int ct=0;
+    	for (;rp<ns.length;rp++)
+    	{
+    		sb.append(ns[rp]);
+    		ct++;
+    		if (ct%K==0 && rp<ns.length-1)
+    			sb.append('-');
+    	}
+        return sb.toString();
+    }
+}
+
 //486. Predict the Winner
 //Runtime: 4 ms, faster than 42.57% of Java online submissions for Predict the Winner.
 //Memory Usage: 40 MB, less than 5.69% of Java online submissions for Predict the Winner.
