@@ -49,8 +49,6 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc71_80\LC71_80.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc81_90\LC81_90.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc91_100\LC91_100.java
 
-rem:goto:EndPause
-
 :since101
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\BBST.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc101_110\LC101_110.java
@@ -165,6 +163,7 @@ javac -d  %outpath% -classpath %cpath% %curpath%\src\lc991_1000\LC991_1000.java
 :since1001
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc1001_1010\LC1001_1010.java
 javac -d  %outpath% -classpath %cpath% %curpath%\src\lc1011_1020\LC1011_1020.java
+javac -d  %outpath% -classpath %cpath% %curpath%\src\lc1021_1030\LC1021_1030.java
 
 :sincetest
 javac -d  %outpath% -classpath %cpath% %curpath%\src\test\FileIOTest.java
