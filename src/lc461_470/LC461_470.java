@@ -28,6 +28,30 @@ class Solution462
 	}
 }
 
+//463. Island Perimeter
+//Runtime: 10 ms, faster than 46.00% of Java online submissions for Island Perimeter.
+//Memory Usage: 58.9 MB, less than 99.49% of Java online submissions for Island Perimeter.
+class Solution463
+{
+	private static final int[][] di=new int[][] {{1,0},{0,1},{-1,0},{0,-1}};
+    public int islandPerimeter(int[][] grid) 
+    {
+        int c=0;
+        for (int i=0;i<grid.length;i++)
+        	for (int j=0;j<grid[i].length;j++)
+        	{
+        		if (grid[i][j]==0) continue;
+        		for (int k=0;k<4;k++) 
+        		{
+        			int nx=i+di[k][0],ny=j+di[k][1];
+        			if (nx<0 || ny<0 || nx>=grid.length || ny>=grid[i].length || grid[nx][ny]==0)
+        				c++;
+        		}
+        	}
+        return c;
+    }
+}
+
 //464. Can I Win
 //https://leetcode.com/problems/can-i-win/discuss/216992/Very-clean-Java-solution
 //Runtime: 73 ms, faster than 71.12% of Java online submissions for Can I Win.
