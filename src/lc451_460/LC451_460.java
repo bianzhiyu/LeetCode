@@ -291,6 +291,32 @@ class Solution457
 	}
 }
 
+//459. Repeated Substring Pattern
+//Runtime: 13 ms, faster than 75.81% of Java online submissions for Repeated Substring Pattern.
+//Memory Usage: 37 MB, less than 100.00% of Java online submissions for Repeated Substring Pattern.
+class Solution459 
+{
+    public boolean repeatedSubstringPattern(String s) 
+    {
+    	char[] str=s.toCharArray();
+    	int l=0;
+    	for (int divids=2;divids<=str.length;divids++)
+    	{
+    		l=str.length%divids;
+    		if (l!=0) continue;
+    		l=str.length/divids;
+    		boolean notMatch=false;
+    		for (int i=0;i<l && !notMatch;i++)
+    			for (int j=i+l;j<str.length && !notMatch;j+=l)
+    			{
+    				if (str[i]!=str[j]) notMatch=true;
+    			}
+    		if (!notMatch) return true;
+    	}
+        return false;
+    }
+}
+
 // 460. LFU Cache
 // This question does not give a clear description.
 // This annoys me.
@@ -482,10 +508,38 @@ public class LC451_460
 			System.out.println(e.toString());
 		}
 	}
+	public static void test459()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input459.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
 
+			File outFile = new File("output" + File.separator + "output459.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				boolean ans=new Solution459().repeatedSubstringPattern(inLine.substring(1,inLine.length()-1));
+
+				bfw.write("" + ans);
+				bfw.newLine();
+				
+				System.out.println(ans);
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
 	public static void main(String[] args)
 	{
-		test453();
+		test459();
 	}
 
 }
