@@ -216,6 +216,28 @@ class Solution454_2
 	}
 }
 
+//455. Assign Cookies
+//Runtime: 9 ms, faster than 39.07% of Java online submissions for Assign Cookies.
+//Memory Usage: 39.5 MB, less than 99.73% of Java online submissions for Assign Cookies.
+class Solution455 
+{
+    public int findContentChildren(int[] g, int[] s) 
+    {
+    	Arrays.parallelSort(g);
+    	Arrays.parallelSort(s);
+    	int gp=0,ans=0;
+    	for (int sp=0;sp<s.length && gp<g.length;sp++)
+    	{
+    		if (s[sp]>=g[gp])
+    		{
+    			gp++;
+    			ans++;
+    		}
+    	}
+    	return ans;
+    }
+}
+
 //456. 132 Pattern
 //Runtime: 271 ms, faster than 30.78% of Java online submissions for 132 Pattern.
 //Memory Usage: 40.7 MB, less than 34.33% of Java online submissions for 132 Pattern.
