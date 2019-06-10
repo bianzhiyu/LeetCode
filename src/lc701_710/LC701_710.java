@@ -1,5 +1,7 @@
 package lc701_710;
 
+import java.util.PriorityQueue;
+
 import bbst.BBST;
 import bbst.MHashMap;
 import bbst.MHashSet;
@@ -23,6 +25,48 @@ class Solution701
 		return root;
 	}
 }
+
+//703. Kth Largest Element in a Stream
+//Runtime: 67 ms, faster than 33.84% of Java online submissions for Kth Largest Element in a Stream.
+//Memory Usage: 47.9 MB, less than 55.84% of Java online submissions for Kth Largest Element in a Stream.
+class KthLargest 
+{
+	private int size;
+	private PriorityQueue<Integer> q = new PriorityQueue<Integer>();
+
+	public KthLargest(int k, int[] nums) 
+    {
+        size=k;
+		for (int i = 0; i < nums.length; i++)
+		{
+			if (q.size() < size)
+				q.offer(nums[i]);
+			else if (nums[i] > q.peek())
+			{
+				q.poll();
+				q.offer(nums[i]);
+			}
+		}
+	}
+    
+    public int add(int val) 
+    {
+    	if (q.size() < size)
+			q.offer(val);
+		else if (val > q.peek())
+		{
+			q.poll();
+			q.offer(val);
+		}
+    	return q.peek();
+    }
+}
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest obj = new KthLargest(k, nums);
+ * int param_1 = obj.add(val);
+ */
 
 //704. Binary Search
 //Runtime: 2 ms, faster than 100.00% of Java online submissions for Binary Search.

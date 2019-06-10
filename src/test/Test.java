@@ -2,8 +2,8 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Random;
-
 
 class qs
 {
@@ -182,6 +182,10 @@ public class Test {
 	}
 	public static void main(String[] args)
 	{
-		FileIOTest.test377();
+		PriorityQueue<Integer> q=new PriorityQueue<Integer>();
+		q.offer(1);
+		q.offer(2);
+		System.out.println(q.peek());
 	}
+		
 }
