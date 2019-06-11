@@ -4,6 +4,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
+//461. Hamming Distance
+class Solution461 
+{
+    public int hammingDistance(int x, int y) 
+    {
+        int d=0;
+        while (x>0 || y>0)
+        {
+            if (x%2!=y%2) d++;
+            x/=2;
+            y/=2;
+        }
+        return d;
+    }
+}
+
 //462. Minimum Moves to Equal Array Elements II
 //Runtime: 5 ms, faster than 56.42% of Java online submissions for Minimum Moves to Equal Array Elements II.
 //Memory Usage: 39.8 MB, less than 91.30% of Java online submissions for Minimum Moves to Equal Array Elements II.
