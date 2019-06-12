@@ -154,6 +154,21 @@ class Solution475
 	}
 }
 
+//476. Number Complement
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Number Complement.
+//Memory Usage: 33.4 MB, less than 39.12% of Java online submissions for Number Complement.
+class Solution476
+{
+    public int findComplement(int num) 
+    {
+        long n1=num;
+        long f=1;
+        while (f<n1)
+            f=f*2+1;
+        return (int)(f-n1);
+    }
+}
+
 //477. Total Hamming Distance
 //Runtime: 29 ms, faster than 35.32% of Java online submissions for Total Hamming Distance.
 //Memory Usage: 41.3 MB, less than 29.00% of Java online submissions for Total Hamming Distance.
