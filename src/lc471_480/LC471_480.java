@@ -6,10 +6,96 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
+
+//472. Concatenated Words
+//Runtime: 60 ms, faster than 63.75% of Java online submissions for Concatenated Words.
+//Memory Usage: 53.4 MB, less than 34.14% of Java online submissions for Concatenated Words.
+class Solution472
+{
+	private static class TrieNode
+	{
+		public boolean isWord = false;
+		public TrieNode[] sons = new TrieNode[26];
+	}
+
+	private void add(TrieNode rt, String str)
+	{
+		for (int i = 0; i < str.length(); i++)
+		{
+			int c = str.charAt(i) - 'a';
+			if (rt.sons[c] == null)
+				rt.sons[c] = new TrieNode();
+			rt = rt.sons[c];
+		}
+		rt.isWord = true;
+	}
+
+	private boolean exists(TrieNode rt, String str, int start, int end)
+	{
+		for (int i = start; i < end; i++)
+		{
+			int c = str.charAt(i) - 'a';
+			if (rt.sons[c] == null)
+				return false;
+			rt = rt.sons[c];
+		}
+		return rt.isWord;
+	}
+
+	private boolean canSplit(TrieNode root, String str, int start)
+	{
+		TrieNode tmp = root;
+		for (int j = start; j < str.length() - 1; j++)
+		{
+			int c = str.charAt(j) - 'a';
+			tmp = tmp.sons[c];
+			if (tmp == null)
+				return false;
+			if (tmp.isWord)
+			{
+				if (exists(root, str, j + 1, str.length()))
+					return true;
+				if (canSplit(root, str, j + 1))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public List<String> findAllConcatenatedWordsInADict(String[] words)
+	{
+		Arrays.parallelSort(words, new Comparator<String>()
+		{
+			@Override
+			public int compare(String o1, String o2)
+			{
+				return o1.length() - o2.length();
+			}
+		});
+		TrieNode root = new TrieNode();
+		for (int i = 0; i < words.length; i++)
+			add(root, words[i]);
+		TrieNode used = new TrieNode();
+		List<String> ans = new ArrayList<String>();
+		for (int i = 0; i < words.length; i++)
+		{
+			if (exists(used, words[i], 0, words[i].length()))
+				continue;
+			if (canSplit(root, words[i], 0))
+			{
+				add(used, words[i]);
+				ans.add(words[i]);
+			}
+		}
+		return ans;
+	}
+}
 
 //473. Matchsticks to Square
 //Just use the code of 698. Partition to K Equal Sum Subsets
@@ -159,14 +245,14 @@ class Solution475
 //Memory Usage: 33.4 MB, less than 39.12% of Java online submissions for Number Complement.
 class Solution476
 {
-    public int findComplement(int num) 
-    {
-        long n1=num;
-        long f=1;
-        while (f<n1)
-            f=f*2+1;
-        return (int)(f-n1);
-    }
+	public int findComplement(int num)
+	{
+		long n1 = num;
+		long f = 1;
+		while (f < n1)
+			f = f * 2 + 1;
+		return (int) (f - n1);
+	}
 }
 
 //477. Total Hamming Distance
