@@ -77,51 +77,80 @@ class Solution481
 //482. License Key Formatting
 //Runtime: 8 ms, faster than 97.52% of Java online submissions for License Key Formatting.
 //Memory Usage: 36.7 MB, less than 100.00% of Java online submissions for License Key Formatting.
-class Solution482 
+class Solution482
 {
 	private char[] parse(String s)
 	{
-		int dashCt=0;
-		for (int i=0;i<s.length();i++)
-			if (s.charAt(i)=='-')
+		int dashCt = 0;
+		for (int i = 0; i < s.length(); i++)
+			if (s.charAt(i) == '-')
 				dashCt++;
-		char[] a=new char[s.length()-dashCt];
-		int rp=0,wp=0;
-		while (wp<a.length)
+		char[] a = new char[s.length() - dashCt];
+		int rp = 0, wp = 0;
+		while (wp < a.length)
 		{
-			if (s.charAt(rp)=='-')
+			if (s.charAt(rp) == '-')
 			{
 				rp++;
 				continue;
 			}
-			a[wp]=s.charAt(rp++);
-			if (a[wp]>='a' && a[wp]<='z')
-				a[wp]=(char) (a[wp]+('A'-'a'));
+			a[wp] = s.charAt(rp++);
+			if (a[wp] >= 'a' && a[wp] <= 'z')
+				a[wp] = (char) (a[wp] + ('A' - 'a'));
 			wp++;
 		}
 		return a;
 	}
-    public String licenseKeyFormatting(String S, int K) 
-    {
-    	if (S==null || S.length()==0)
-    		return S;
-    	char[] ns=parse(S);
-    	StringBuilder sb=new StringBuilder();
-    	int rp=0;
-    	for (rp=0;rp<ns.length%K;rp++)
-    		sb.append(ns[rp]);
-    	if (ns.length%K!=0 && rp<ns.length-1)
-    		sb.append('-');
-    	int ct=0;
-    	for (;rp<ns.length;rp++)
-    	{
-    		sb.append(ns[rp]);
-    		ct++;
-    		if (ct%K==0 && rp<ns.length-1)
-    			sb.append('-');
-    	}
-        return sb.toString();
-    }
+
+	public String licenseKeyFormatting(String S, int K)
+	{
+		if (S == null || S.length() == 0)
+			return S;
+		char[] ns = parse(S);
+		StringBuilder sb = new StringBuilder();
+		int rp = 0;
+		for (rp = 0; rp < ns.length % K; rp++)
+			sb.append(ns[rp]);
+		if (ns.length % K != 0 && rp < ns.length - 1)
+			sb.append('-');
+		int ct = 0;
+		for (; rp < ns.length; rp++)
+		{
+			sb.append(ns[rp]);
+			ct++;
+			if (ct % K == 0 && rp < ns.length - 1)
+				sb.append('-');
+		}
+		return sb.toString();
+	}
+}
+
+//485. Max Consecutive Ones
+//Runtime: 2 ms, faster than 99.83% of Java online submissions for Max Consecutive Ones.
+//Memory Usage: 38.8 MB, less than 97.75% of Java online submissions for Max Consecutive Ones.	
+class Solution485
+{
+	public int findMaxConsecutiveOnes(int[] nums)
+	{
+		int ans = 0;
+		int l = 0, t = 0;
+		while (l < nums.length)
+		{
+			while (l < nums.length && nums[l] == 0)
+			{
+				l++;
+			}
+			t = 0;
+			while (l < nums.length && nums[l] == 1)
+			{
+				l++;
+				t++;
+			}
+			if (t > ans)
+				ans = t;
+		}
+		return ans;
+	}
 }
 
 //486. Predict the Winner
@@ -177,7 +206,8 @@ class Solution486
 //Memory Usage: 36.9 MB, less than 28.46% of Java online submissions for Predict the Winner.
 class Solution486_2
 {
-	private int [] sum;
+	private int[] sum;
+
 	public boolean PredictTheWinner(int[] nums)
 	{
 		int len = nums.length;
@@ -185,18 +215,20 @@ class Solution486_2
 		sum[0] = nums[0];
 		for (int i = 1; i < nums.length; i++)
 			sum[i] = sum[i - 1] + nums[i];
-		int[][]d=new int[len][len];
-		for (int i=0;i<len;i++)
-			d[i][i]=nums[i];
-		for (int i=2;i<=len;i++)
-			for (int j=0;j+i-1<len;j++)
+		int[][] d = new int[len][len];
+		for (int i = 0; i < len; i++)
+			d[i][i] = nums[i];
+		for (int i = 2; i <= len; i++)
+			for (int j = 0; j + i - 1 < len; j++)
 			{
-				d[j][j+i-1]=nums[i+j-1]+partsum(j,j+i-2)-d[j][j+i-2];
-				int l=nums[j]+partsum(j+1,j+i-1)-d[j+1][j+i-1];
-				if (l>d[j][j+i-1]) d[j][j+i-1]=l;
+				d[j][j + i - 1] = nums[i + j - 1] + partsum(j, j + i - 2) - d[j][j + i - 2];
+				int l = nums[j] + partsum(j + 1, j + i - 1) - d[j + 1][j + i - 1];
+				if (l > d[j][j + i - 1])
+					d[j][j + i - 1] = l;
 			}
-		return d[0][len-1]>=sum[len-1]-d[0][len-1];
+		return d[0][len - 1] >= sum[len - 1] - d[0][len - 1];
 	}
+
 	private int partsum(int left, int right)
 	{
 		if (left == 0)
@@ -251,7 +283,6 @@ public class LC481_490
 
 	public static void main(String[] args)
 	{
-		// System.out.println("".trim());
 		test486();
 	}
 }

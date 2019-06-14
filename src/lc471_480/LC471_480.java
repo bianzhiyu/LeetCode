@@ -14,8 +14,8 @@ import java.util.PriorityQueue;
 import java.util.Random;
 
 //472. Concatenated Words
-//Runtime: 60 ms, faster than 63.75% of Java online submissions for Concatenated Words.
-//Memory Usage: 53.4 MB, less than 34.14% of Java online submissions for Concatenated Words.
+//Runtime: 48 ms, faster than 76.72% of Java online submissions for Concatenated Words.
+//Memory Usage: 52 MB, less than 51.46% of Java online submissions for Concatenated Words.
 class Solution472
 {
 	private static class TrieNode
@@ -70,14 +70,6 @@ class Solution472
 
 	public List<String> findAllConcatenatedWordsInADict(String[] words)
 	{
-		Arrays.parallelSort(words, new Comparator<String>()
-		{
-			@Override
-			public int compare(String o1, String o2)
-			{
-				return o1.length() - o2.length();
-			}
-		});
 		TrieNode root = new TrieNode();
 		for (int i = 0; i < words.length; i++)
 			add(root, words[i]);
