@@ -15,6 +15,44 @@ import java.util.PriorityQueue;
 
 import treeCodec.*;
 
+//501. Find Mode in Binary Search Tree
+//Runtime: 9 ms, faster than 18.67% of Java online submissions for Find Mode in Binary Search Tree.
+//Memory Usage: 40 MB, less than 46.02% of Java online submissions for Find Mode in Binary Search Tree.
+class Solution501
+{
+	private void trav(TreeNode root, HashMap<Integer, Integer> ct)
+	{
+		if (root == null)
+			return;
+		trav(root.left, ct);
+		ct.put(root.val, ct.getOrDefault(root.val, 0) + 1);
+		trav(root.right, ct);
+	}
+
+	public int[] findMode(TreeNode root)
+	{
+		HashMap<Integer, Integer> ct = new HashMap<Integer, Integer>();
+		trav(root, ct);
+		int maxCt = 0;
+		for (int key : ct.keySet())
+			if (ct.get(key) > maxCt)
+				maxCt = ct.get(key);
+
+		int times = 0;
+		for (int key : ct.keySet())
+			if (ct.get(key) == maxCt)
+				times++;
+
+		int[] ans = new int[times];
+		int pos = 0;
+		for (int key : ct.keySet())
+			if (ct.get(key) == maxCt)
+				ans[pos++] = key;
+
+		return ans;
+	}
+}
+
 //502. IPO
 //Runtime: 29 ms, faster than 88.47% of Java online submissions for IPO.
 //Memory Usage: 47.7 MB, less than 12.12% of Java online submissions for IPO.
