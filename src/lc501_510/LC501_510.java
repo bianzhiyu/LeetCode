@@ -220,6 +220,31 @@ class Solution503
 	}
 }
 
+//504. Base 7
+//Runtime: 1 ms, faster than 94.98% of Java online submissions for Base 7.
+//Memory Usage: 34.3 MB, less than 100.00% of Java online submissions for Base 7.
+class Solution504
+{
+	public String convertToBase7(int num)
+	{
+		if (num == 0)
+		{
+			return "0";
+		}
+		if (num < 0)
+		{
+			return "-" + convertToBase7(-num);
+		}
+		String ans = "";
+		while (num > 0)
+		{
+			ans = (num % 7) + ans;
+			num /= 7;
+		}
+		return ans;
+	}
+}
+
 //507. Perfect Number
 //Runtime: 6 ms, faster than 97.28% of Java online submissions for Perfect Number.
 //Memory Usage: 36.9 MB, less than 59.38% of Java online submissions for Perfect Number.
