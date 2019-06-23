@@ -265,6 +265,74 @@ class Solution519
  * new Solution(n_rows, n_cols); int[] param_1 = obj.flip(); obj.reset();
  */
 
+//520. Detect Capital
+//Runtime: 1 ms, faster than 100.00% of Java online submissions for Detect Capital.
+//Memory Usage: 34.7 MB, less than 99.90% of Java online submissions for Detect Capital.
+class Solution520 
+{
+	private static boolean isCap(char c)
+	{
+		return c>='A' && c<='Z';
+	}
+	private static boolean isSmall(char c)
+	{
+		return c>='a' && c<='z';
+	}
+	private static boolean isMod1(String s)
+	{
+		if (s==null || s.length()==0)
+		{
+			return true;
+		}
+		for (int i=0;i<s.length();i++)
+		{
+			if (!isCap(s.charAt(i)))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	private static boolean isMod2(String s)
+	{
+		if (s==null || s.length()==0)
+		{
+			return true;
+		}
+		for (int i=0;i<s.length();i++)
+		{
+			if (!isSmall(s.charAt(i)))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	private static boolean isMod3(String s)
+	{
+		if (s==null || s.length()==0)
+		{
+			return true;
+		}
+		if (!isCap(s.charAt(0)))
+		{
+			return false;
+		}
+		for (int i=1;i<s.length();i++)
+		{
+			if (!isSmall(s.charAt(i)))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+    public boolean detectCapitalUse(String word) 
+    {
+        return isMod1(word) || isMod2(word) || isMod3(word);
+    }
+}v
+
 public class LC511_520
 {
 	public static void test514()

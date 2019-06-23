@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -242,6 +243,70 @@ class Solution504
 			num /= 7;
 		}
 		return ans;
+	}
+}
+
+//506. Relative Ranks
+//Runtime: 8 ms, faster than 56.01% of Java online submissions for Relative Ranks.
+//Memory Usage: 39.2 MB, less than 90.28% of Java online submissions for Relative Ranks.
+class Solution506
+{
+	private static class intP
+	{
+		int num, ind;
+
+		public intP(int n, int i)
+		{
+			num = n;
+			ind = i;
+		}
+	}
+
+	public String[] findRelativeRanks(int[] nums)
+	{
+		int len = nums.length;
+		intP[] data = new intP[len];
+		for (int i = 0; i < len; i++)
+		{
+			data[i] = new intP(nums[i], i);
+		}
+		Arrays.parallelSort(data, new Comparator<intP>()
+		{
+			@Override
+			public int compare(intP o1, intP o2)
+			{
+				if (o1.num < o2.num)
+				{
+					return 1;
+				}
+				if (o1.num > o2.num)
+				{
+					return -1;
+				}
+				return 0;
+			}
+		});
+		String[] od = new String[len];
+		for (int i = 0; i < len; i++)
+		{
+			if (i > 2)
+			{
+				od[data[i].ind]=""+(i+1);
+			}
+			else if (i==0)
+			{
+				od[data[i].ind]="Gold Medal";
+			}
+			else if (i==1)
+			{
+				od[data[i].ind]="Silver Medal";
+			}
+			else
+			{
+				od[data[i].ind]="Bronze Medal";
+			}
+		}
+		return od;
 	}
 }
 
