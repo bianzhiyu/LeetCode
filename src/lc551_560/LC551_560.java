@@ -157,6 +157,38 @@ class Solution556_2
 	}
 }
 
+//Runtime: 1 ms, faster than 98.71% of Java online submissions for Maximum Depth of N-ary Tree.
+//Memory Usage: 45 MB, less than 75.53% of Java online submissions for Maximum Depth of N-ary Tree.
+class Node
+{
+	public int val;
+	public List<Node> children;
+
+	public Node()
+	{
+	}
+
+	public Node(int _val, List<Node> _children)
+	{
+		val = _val;
+		children = _children;
+	}
+};
+
+//559. Maximum Depth of N-ary Tree
+class Solution559
+{
+	public int maxDepth(Node root)
+	{
+		if (root == null)
+			return 0;
+		int max = 0;
+		for (Node i : root.children)
+			max = Math.max(max, maxDepth(i));
+		return max + 1;
+	}
+}
+
 //560. Subarray Sum Equals K
 //Runtime: 20 ms, faster than 57.87% of Java online submissions for Subarray Sum Equals K.
 //Memory Usage: 42.1 MB, less than 5.12% of Java online submissions for Subarray Sum Equals K.

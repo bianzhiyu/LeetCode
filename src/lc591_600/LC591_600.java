@@ -76,6 +76,34 @@ class Solution592
 	}
 }
 
+//593. Valid Square
+//Runtime: 0 ms, faster than 100.00% of Java online submissions for Valid Square.
+//Memory Usage: 34.7 MB, less than 85.19% of Java online submissions for Valid Square.
+class Solution593 
+{
+	private int norm2(int[] v)
+	{
+		return v[0]*v[0]+v[1]*v[1];
+	}
+	private boolean check(int[] v1,int[] v2,int[] v3)
+	{
+		if (v1[0]+v2[0]!=v3[0] || v1[1]+v2[1]!=v3[1]) return false;
+		if (norm2(v1)!=norm2(v2) || 2*norm2(v1)!=norm2(v3)) return false;
+		if (v1[0]*v2[0]+v1[1]*v2[1]!=0) return false;
+		return true;
+	}
+	private int[] minus(int[] p1,int[] p2)
+	{
+		return new int[]
+				{p1[0]-p2[0],p1[1]-p2[1]};
+	}
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) 
+    {
+        int[] v1=minus(p2,p1),v2=minus(p3,p1),v3=minus(p4,p1);
+        return norm2(v1)>0 && (check(v1,v2,v3) || check(v1,v3,v2) || check(v2,v3,v1));
+    }
+}
+
 //594 Longest Harmonious Subsequence    
 //Runtime: 34 ms, faster than 95.06% of Java online submissions for Longest Harmonious Subsequence.
 //Memory Usage: 42.3 MB, less than 30.44% of Java online submissions for Longest Harmonious Subsequence.
