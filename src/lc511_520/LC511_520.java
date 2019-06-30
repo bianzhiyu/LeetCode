@@ -331,7 +331,7 @@ class Solution520
     {
         return isMod1(word) || isMod2(word) || isMod3(word);
     }
-}v
+}
 
 public class LC511_520
 {

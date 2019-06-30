@@ -1,5 +1,36 @@
 package lc571_580;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import treeCodec.*;
+
+//572. Subtree of Another Tree
+//Runtime: 6 ms, faster than 85.88% of Java online submissions for Subtree of Another Tree.
+//Memory Usage: 40 MB, less than 99.21% of Java online submissions for Subtree of Another Tree.
+class Solution572
+{
+	private boolean checkSubtree(TreeNode s, TreeNode t)
+	{
+		if (t == null)
+			return s == null;
+		return s != null && checkSubtree(s.left, t.left) && checkSubtree(s.right, t.right) && s.val == t.val;
+	}
+
+	public boolean isSubtree(TreeNode s, TreeNode t)
+	{
+		if (t == null)
+			return true;
+		if (s == null)
+			return false;
+		return checkSubtree(s, t) || isSubtree(s.left, t) || isSubtree(s.right, t);
+	}
+}
+
 //576. Out of Boundary Paths
 //Runtime: 12 ms, faster than 60.96% of Java online submissions for Out of Boundary Paths.
 //Memory Usage: 33.6 MB, less than 100.00% of Java online submissions for Out of Boundary Paths.
@@ -56,6 +87,39 @@ class Solution576
 
 public class LC571_580
 {
+	public static void test572()
+	{
+		try
+		{
+			File inFile = new File("input" + File.separator + "input572.txt");
+			BufferedReader bfr = new BufferedReader(new FileReader(inFile));
+
+			File outFile = new File("output" + File.separator + "output572.txt");
+			BufferedWriter bfw = new BufferedWriter(new FileWriter(outFile));
+
+			String inLine;
+			while ((inLine = bfr.readLine()) != null && inLine.length() > 0)
+			{
+				TreeNode s = TreeCodec.deserialize(inLine);
+				TreeNode t = TreeCodec.deserialize(bfr.readLine());
+
+				boolean ans = new Solution572().isSubtree(s, t);
+
+				System.out.println(ans);
+
+				bfw.write("" + ans);
+				bfw.newLine();
+			}
+
+			bfr.close();
+			bfw.flush();
+			bfw.close();
+		} catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+
 	public static void test576()
 	{
 		Solution576 s = new Solution576();
@@ -66,9 +130,6 @@ public class LC571_580
 
 	public static void main(String[] args)
 	{
-		test576();
-		int MODULO = 1000000000 + 7;
-		MODULO = MODULO + MODULO;
-//		System.out.println(MODULO);
+		test572();
 	}
 }
