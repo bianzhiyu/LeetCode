@@ -37,6 +37,54 @@ class Solution41
 	}
 }
 
+//42. Trapping Rain Water
+//Runtime: 1 ms, faster than 98.20% of Java online submissions for Trapping Rain Water.
+//Memory Usage: 37.5 MB, less than 97.95% of Java online submissions for Trapping Rain Water.
+class Solution42
+{
+	public int trap(int[] height)
+	{
+		if (height == null || height.length == 0)
+		{
+			return 0;
+		}
+		int len = height.length;
+		int[] leftmax = new int[len], rightmax = new int[len];
+		leftmax[0] = 0;
+		for (int i = 1; i < len; i++)
+		{
+			leftmax[i] = height[i - 1];
+			if (leftmax[i - 1] > leftmax[i])
+			{
+				leftmax[i] = leftmax[i - 1];
+			}
+		}
+		rightmax[len - 1] = 0;
+		for (int i = len - 2; i >= 0; i--)
+		{
+			rightmax[i] = height[i + 1];
+			if (rightmax[i + 1] > rightmax[i])
+			{
+				rightmax[i] = rightmax[i + 1];
+			}
+		}
+		int sum = 0;
+		for (int i = 0; i < len; i++)
+		{
+			int m = leftmax[i];
+			if (rightmax[i] < m)
+			{
+				m = rightmax[i];
+			}
+			if (m > height[i])
+			{
+				sum += m - height[i];
+			}
+		}
+		return sum;
+	}
+}
+
 //t43. Multiply Strings
 //t=15ms, m=38.4MB
 //t:0.6210, m:1
