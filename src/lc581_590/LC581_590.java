@@ -11,21 +11,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-class Solution581 
-{
-    public int findUnsortedSubarray(int[] nums) 
-    {
-    	int len=nums.length;
-    	
-    	int x=0;
-    	
-    	
-    	
-    	return 0;
-        
-    }
-}
-
 //583. Delete Operation for Two Strings
 //Runtime: 4 ms, faster than 100.00% of Java online submissions for Delete Operation for Two Strings.
 //Memory Usage: 37.3 MB, less than 92.13% of Java online submissions for Delete Operation for Two Strings.
